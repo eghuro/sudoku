@@ -19,6 +19,11 @@ public class Sudoku{
         this.MATRIX=new int[SIZE][SIZE];
     }
     
+    public int getSize()
+    {
+        return this.SIZE;
+    }
+    
     public void setValue(int row,int col,int value)
     {
         if(!validPosition(row,col)|(value<1)|(value>SIZE))
@@ -70,10 +75,5 @@ public class Sudoku{
     private boolean validPosition(int row,int col)
     {
         return (row>=0)|(row<SIZE)|(col>=0)|(col<SIZE);
-    }
-    
-    public int getSize()
-    {
-        return this.SIZE;
     }
 }

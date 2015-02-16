@@ -26,7 +26,7 @@ public class Viewer {
     private final JFrame FRAME;
     private final JPanel PANEL;
     private final ItemComponent[][] COMPONENTS;
-    private SudokuViewerController ctrl;
+    private Controller ctrl;
 
     public Viewer(int size)
     {
@@ -76,7 +76,7 @@ public class Viewer {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                ctrl.generateClicked();
+                //ctrl.generateClicked();
             }
         });
         sudoku.add(gen);
@@ -85,7 +85,7 @@ public class Viewer {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                ctrl.solveClicked();
+                //ctrl.solveClicked();
             }
         });
         sudoku.add(sol);
@@ -94,7 +94,7 @@ public class Viewer {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                ctrl.verifyClicked();
+                //ctrl.verifyClicked();
             }
         });
         sudoku.add(ver);
@@ -103,7 +103,7 @@ public class Viewer {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                ctrl.clearClicked();
+                //ctrl.clearClicked();
             }
         });
         sudoku.add(clr);   
@@ -119,13 +119,17 @@ public class Viewer {
         FRAME.setVisible(true);
     }
     
-    public void setValue(int x,int y,String s)
+    public void setValue(int row,int col,String s)
     {
-        COMPONENTS[x][y].setValue(s);
+        COMPONENTS[col][row].setValue(s);
     }
     
-    public void setController(SudokuViewerController s)
+    public void setController(Controller s)
     {
         this.ctrl=s;
+    }
+    
+    public int getSize() {
+        return this.SIZE;
     }
 }
