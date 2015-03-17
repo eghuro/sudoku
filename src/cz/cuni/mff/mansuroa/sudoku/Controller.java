@@ -15,8 +15,9 @@ public class Controller {
     private Viewer view;
     
     public Controller() {
-        model = new Sudoku();
+        //model = new Sudoku();
         view = null;
+        model = null;
     }
     
     // uzivatelske prikazy
@@ -30,7 +31,8 @@ public class Controller {
     }
     
     public void generate() {
-        model = Generator.generate();
+        assert (view!=null);
+        model = Generator.generate(view.getSize());
         updateView();
     }
     
@@ -59,6 +61,7 @@ public class Controller {
         assert(model.getSize() == v.getSize());
         assert(v!=null);
         
+        this.model = new Sudoku(v.getSize());
         this.view = v;
         updateView();
     }
@@ -67,7 +70,7 @@ public class Controller {
         assert (view != null);
         int size = view.getSize();
         for (int i = 0; i < size; i++) {
-            for (int j = 0; i < size; j++) {
+            for (int j = 0; j < size; j++) {
                 view.setValue(i, j, model.getValue(i, j)+"");
             }
         }

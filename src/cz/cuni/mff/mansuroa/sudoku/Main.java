@@ -17,7 +17,11 @@ public class Main {
      */
     public static void main(String[] args) {
         //new SudokuViewerController(new Sudoku(),new Viewer(9)).setUpViewer();
-        new Viewer(9).setUp();
+        Viewer v = new Viewer(9);
+        Controller c = new Controller();
+        v.setController(c);
+        c.setViewer(v);
+        v.setUp();
     }
     
 }

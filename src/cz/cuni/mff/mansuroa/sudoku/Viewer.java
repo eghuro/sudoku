@@ -13,6 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -42,7 +43,7 @@ public class Viewer {
         
         for(int i=0;i<SIZE;++i){
             for(int j=0;j<SIZE;++j){
-                COMPONENTS[i][j]=f.getComponent();
+                COMPONENTS[i][j]=f.createComponent();
             }
         }
         
@@ -52,7 +53,7 @@ public class Viewer {
     private void fillGrid()
     {
         GridBagConstraints c;
-        for(int x=0;x<SIZE;++x){
+        for(int x = 0; x < SIZE; ++x) {
             for(int y=0;y<SIZE;++y){
                 c=new GridBagConstraints();
                 c.gridx=x;
@@ -63,8 +64,6 @@ public class Viewer {
                 PANEL.add(COMPONENTS[x][y],c);
             }
         }
-            
-        
     }
     
     private JMenuBar createMenu()
@@ -76,7 +75,7 @@ public class Viewer {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                //ctrl.generateClicked();
+                ctrl.generate();
             }
         });
         sudoku.add(gen);
@@ -85,7 +84,7 @@ public class Viewer {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                //ctrl.solveClicked();
+                ctrl.solve();
             }
         });
         sudoku.add(sol);
@@ -94,7 +93,9 @@ public class Viewer {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                //ctrl.verifyClicked();
+                boolean result = ctrl.verify();
+                String msg = result ? "VALID" : "INVALID";
+                JOptionPane.showMessageDialog(null,msg,"SUDOKU",JOptionPane.INFORMATION_MESSAGE);
             }
         });
         sudoku.add(ver);
@@ -103,7 +104,7 @@ public class Viewer {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                //ctrl.clearClicked();
+                ctrl.verify();
             }
         });
         sudoku.add(clr);   

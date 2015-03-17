@@ -11,7 +11,7 @@ package cz.cuni.mff.mansuroa.sudoku;
  */
 public class Generator {
     //TODO
-    public static Sudoku generate() {
-        return new Sudoku();
+    public static Sudoku generate(int size) {
+        return new Sudoku(size);
     }
 }

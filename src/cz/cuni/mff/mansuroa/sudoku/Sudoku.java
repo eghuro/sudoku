@@ -12,10 +12,11 @@ import java.util.Arrays;
  * @author Alexander Mansurov <alexander.mansurov@gmail.com>
  */
 public class Sudoku{
-    private final int SIZE=9;
+    private final int SIZE;
     private final int[][] MATRIX;
     
-    public Sudoku(){
+    public Sudoku(int size){
+        this.SIZE = size;
         this.MATRIX=new int[SIZE][SIZE];
     }
     
@@ -40,7 +41,7 @@ public class Sudoku{
     {
         if(!validPosition(row,col))
         {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("["+col+","+row+"]");
         }
         else
         {
@@ -74,6 +75,6 @@ public class Sudoku{
     
     private boolean validPosition(int row,int col)
     {
-        return (row>=0)|(row<SIZE)|(col>=0)|(col<SIZE);
+        return (row>=0) && (row<SIZE) && (col>=0) && (col<SIZE);
     }
 }

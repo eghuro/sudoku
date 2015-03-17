@@ -18,7 +18,7 @@ public class ItemComponentFactory {
         return INSTANCE;
     }
     
-    public ItemComponent getComponent()
+    public ItemComponent createComponent()
     {
         return new ItemComponent();
     }
