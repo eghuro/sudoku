@@ -19,7 +19,46 @@ import java.util.Arrays;
 public class Solver {
     //TODO
     public static void solve(Sudoku s) {
+        // a dummy board solve to force the JIT compiler to precompile everything. (much faster)
+        solveBoard(new int[][] { 
+                new int[] {0,0,0,0,0,0,0,0,0},
+                new int[] {0,0,0,0,0,0,0,0,0},
+                new int[] {0,0,0,0,0,0,0,0,0},
+                new int[] {0,0,0,0,0,0,0,0,0},
+                new int[] {0,0,0,0,0,0,0,0,0},
+                new int[] {0,0,0,0,0,0,0,0,0},
+                new int[] {0,0,0,0,0,0,0,0,0},
+                new int[] {0,0,0,0,0,0,0,0,0},
+                new int[] {0,0,0,0,0,0,0,0,0}});
         
+        // A delay to allow JIT compilation to run.
+        try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+		}
+        
+        if (s != null) {
+            //final int[][] board = s.;
+
+            final long timeBefore = System.nanoTime();
+
+            final int placedNumbers = solveBoard(s.getBoard());
+
+            final long timeAfter = System.nanoTime();
+
+            if (placedNumbers == 81) {
+                System.out.println("Doba reseni: " + ((timeAfter - timeBefore) / 1) + " nanoseconds.");
+            }
+            else {
+                System.out.println("Reseni neexistuje! Operace trvala " + ((timeAfter - timeBefore) / 100) + " nanoseconds.");
+            }
+
+            printBoard(s.getBoard());
+        }
+        else {
+            System.out.println("Argument null");
+        }
     }
     
    // -----
@@ -56,62 +95,8 @@ public class Solver {
     // -----
     // STATIC METHODS
     // -----
-    
-    /**
-     * @param args
-     */
-    public static final void main(String[] args) {
-        // a dummy board solve to force the JIT compiler to precompile everything. (much faster)
-        solveBoard(new int[][] { 
-                new int[] {0,0,0,0,0,0,0,0,0},
-                new int[] {0,0,0,0,0,0,0,0,0},
-                new int[] {0,0,0,0,0,0,0,0,0},
-                new int[] {0,0,0,0,0,0,0,0,0},
-                new int[] {0,0,0,0,0,0,0,0,0},
-                new int[] {0,0,0,0,0,0,0,0,0},
-                new int[] {0,0,0,0,0,0,0,0,0},
-                new int[] {0,0,0,0,0,0,0,0,0},
-                new int[] {0,0,0,0,0,0,0,0,0}});
-        
-        // A delay to allow JIT compilation to run.
-        try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e1) {
-			e1.printStackTrace();
-		}
-        
-        if (args.length > 0) {
-            try {
-                final int[][] board = readBoard(new File(args[0]));
-                
-                final long timeBefore = System.nanoTime();
 
-                final int placedNumbers = solveBoard(board);
-                
-                final long timeAfter = System.nanoTime();
-                
-                if (placedNumbers == 81) {
-                    System.out.println("La r�solution a dur� " + ((timeAfter - timeBefore) / 1) + " nanoseconds.");
-                }
-                else {
-                    System.out.println("La r�solution est impossible. L'op�ration a dur� " + ((timeAfter - timeBefore) / 100) + " nanoseconds.");
-                }
-                
-                printBoard(board);
-            } 
-            catch (final FileFormatException e) {
-                System.out.println("Le fichier est d'un format incorrect.");
-            } 
-            catch (final IOException e) {
-                System.out.println("Une erreur s'est produite lors de la lecture du fichier.");
-            }
-        }
-        else {
-            System.out.println("Vous devez fournir le chemin du fichier contenant le probl�me.");
-        }
-    }
-
-    public final static int solveBoard(final int[][] board) {
+    public static int solveBoard(final int[][] board) {
         final int[][] allowedValues = new int[9][9];
         int placedNumberCount = 0;
         
@@ -133,7 +118,7 @@ public class Solver {
         return solveBoard(board, allowedValues, placedNumberCount);
     }
 
-    private final static int solveBoard(final int[][] board, final int[][] allowedValues, int placedNumberCount) {
+    private static int solveBoard(final int[][] board, final int[][] allowedValues, int placedNumberCount) {
       
         int lastPlacedNumbersCount = 0;
       
@@ -170,7 +155,7 @@ public class Solver {
         return placedNumberCount;
     }
 
-    private final static int[][] attemptBruteForce(final int[][] board, final int[][] allowedValues, final int placedNumberCount) {
+    private static int[][] attemptBruteForce(final int[][] board, final int[][] allowedValues, final int placedNumberCount) {
 
         for (int x = 0; x < 9; x++) {
             final int[] allowedValuesRow = allowedValues[x];
@@ -200,7 +185,7 @@ public class Solver {
         return null;
     }
 
-    private final static int moveNoOtherRowOrColumnAllowed(final int[][] board, final int[][] allowedValues) {
+    private static int moveNoOtherRowOrColumnAllowed(final int[][] board, final int[][] allowedValues) {
         
         int moveCount = 0;
         
@@ -254,7 +239,7 @@ public class Solver {
         return moveCount;
     }
 
-    private final static int moveNothingElseAllowed(final int[][] board,
+    private static int moveNothingElseAllowed(final int[][] board,
             final int[][] allowedValues) {
         
         int moveCount = 0;
@@ -274,7 +259,7 @@ public class Solver {
         return moveCount;
     }
 
-    private final static void applyNakedPairs(final int[][] allowedValues) {
+    private static void applyNakedPairs(final int[][] allowedValues) {
         for (int x = 0; x < 9; x++) {
             for (int y = 0; y < 9; y++) {
                 final int value = allowedValues[x][y];
@@ -316,7 +301,7 @@ public class Solver {
         }
     }
 
-    private final static void applyLineCandidateConstraints(final int[][] allowedValues) {
+    private static void applyLineCandidateConstraints(final int[][] allowedValues) {
         for (int value = 1; value <= 9; value++) {
             final int valueMask = allowedBitFields[value];
             final int valueRemoveMask = ~valueMask;
@@ -440,13 +425,13 @@ public class Solver {
         }
     }
 
-    private final static void setValue(final int[][] board, final int[][] allowedValues, final int value, final int x, final int y) {
+    private static void setValue(final int[][] board, final int[][] allowedValues, final int value, final int x, final int y) {
         board[x][y] = value;
         allowedValues[x][y] = 0;
         applyAllowedValuesMask(board, allowedValues, x, y);
     }
     
-    private final static int getLastSetBitIndex(int value) {
+    private static int getLastSetBitIndex(int value) {
         int bitIndex = 0;
         
         while (value > 0) {
@@ -457,7 +442,7 @@ public class Solver {
         return bitIndex;
     }
 
-    private final static void applyAllowedValuesMask(final int[][] board,
+    private static void applyAllowedValuesMask(final int[][] board,
             final int[][] allowedValues, final int x, final int y) {
 
         final int mask = ~allowedBitFields[board[x][y]];
@@ -566,7 +551,7 @@ public class Solver {
         allowedValuesRow2[sectionY2] &= mask;
     }
 
-    private final static int countSetBits(int value) {
+    private static int countSetBits(int value) {
         int count = 0;
         
         while (value > 0) {
@@ -577,7 +562,7 @@ public class Solver {
         return count;
     }
 
-    private final static int arraySum(final int[] array) {
+    private static int arraySum(final int[] array) {
         int sum = 0;
         
         for (int value : array) {
@@ -587,7 +572,7 @@ public class Solver {
         return sum;
     }
 
-    private final static int[][] copyGameMatrix(final int[][] matrix) {
+    private static int[][] copyGameMatrix(final int[][] matrix) {
         return new int[][] {
             Arrays.copyOf(matrix[0], 9),
             Arrays.copyOf(matrix[1], 9),
@@ -601,7 +586,7 @@ public class Solver {
         };
     }
 
-    private final static void printBoard(final int[][] board) {
+    private static void printBoard(final int[][] board) {
         for (int y = 0; y < 9; y++) {
             for (int x = 0; x < 9; x++) {
                 System.out.print(board[x][y]);
@@ -610,42 +595,4 @@ public class Solver {
             System.out.println();
         }
     }
-
-    private final static int[][] readBoard(final File file) throws FileFormatException, IOException {
-        final int[][] board = new int[9][9];
-        final BufferedReader input =  new BufferedReader(new FileReader(file));
-
-        try {
-            String line = null; //not declared within while loop
-            int lineIndex = 0;
-            
-            while (( line = input.readLine()) != null) {
-                if (line.length() != 9 || lineIndex > 8) {
-                    throw new FileFormatException();
-                }
-            
-                for (int letterIndex = 0; letterIndex < 9; letterIndex++) {
-                    final int value = Character.getNumericValue(line.charAt(letterIndex));
-                    
-                    if (value < 0 || value > 9) {
-                        throw new FileFormatException();
-                    }
-                    
-                    board[letterIndex][lineIndex] = value;
-                }
-                
-                lineIndex++;
-            }
-            
-            if (lineIndex != 9) {
-                throw new FileFormatException();
-            }
-        }
-        finally {
-            input.close();
-        }
-        
-        return board;
-    }
-
 }

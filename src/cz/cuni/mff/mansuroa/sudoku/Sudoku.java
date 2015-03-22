@@ -77,4 +77,8 @@ public class Sudoku{
     {
         return (row>=0) && (row<SIZE) && (col>=0) && (col<SIZE);
     }
+    
+    public int[][] getBoard(){
+        return MATRIX;
+    }
 }
