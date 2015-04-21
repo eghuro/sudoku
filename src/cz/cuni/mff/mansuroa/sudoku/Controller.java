@@ -45,10 +45,12 @@ public class Controller {
     
     //uzivatelske akce
     public void change(int row, int col, int value) {
-        System.out.println("Change ["+col+"]["+row+"] to "+value);
-        model.setValue(row, col, value);
-        view.setValue(row, col, value+"");  /* TODO: lze vyhodit pokud change 
-                volano jen z GUI */
+        if (value != 0) {
+            System.out.println("Change ["+col+"]["+row+"] to "+value);
+            model.setValue(row, col, value);
+            //view.setValue(row, col, value+"");  /* TODO: lze vyhodit pokud change 
+            //        volano jen z GUI */
+        }
     }
     
     // set up
@@ -78,6 +80,7 @@ public class Controller {
     
     public void load() {
         try {
+            clear();
             FileView lw = new FileView(view.getComponent());
             this.model = Loader.load(lw.getFile());
             updateView();

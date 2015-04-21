@@ -38,19 +38,24 @@ public class Storer {
         for (int i = 0; i < size; i++ ) {
             for (int j = 0; j < size; j++ ) {
                 Element entry = createEntry(sudoku, i, j, doc);
-                rootElement.appendChild(entry);
+                if (entry!=null) {
+                    System.out.println("Appending entry");
+                    rootElement.appendChild(entry);
+                }
             }
         }
     }
 
     private static Element createEntry(Sudoku sudoku, int row, int col, Document doc) {
-        Element entry = doc.createElement("entry");
-        
-        entry.setAttribute("row", row+"");
-        entry.setAttribute("col", col+"");
-        entry.setAttribute("value", sudoku.getValue(row, col)+"");
-        
-        return entry;
+        int value = sudoku.getValue(row, col);
+        if (value != 0) {
+            Element entry = doc.createElement("entry");
+            System.out.println("New entry ["+row+","+col+"] : "+ value);
+            entry.setAttribute("row", row+"");
+            entry.setAttribute("col", col+"");
+            entry.setAttribute("value", sudoku.getValue(row, col)+"");
+            return entry;
+        } else return null;
     }
 
     private static Document createDocument(Sudoku sudoku) throws ParserConfigurationException {
@@ -59,6 +64,7 @@ public class Storer {
 
         Document doc = docBuilder.newDocument();
         Element rootElement = doc.createElement("sudoku");
+        doc.appendChild(rootElement);
 
         createElements(sudoku, doc, rootElement);
         

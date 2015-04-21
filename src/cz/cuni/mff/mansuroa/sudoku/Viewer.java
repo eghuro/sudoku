@@ -162,6 +162,11 @@ public class Viewer {
         JMenuItem store = new JMenuItem(new AbstractAction("Store current board") {
             @Override
             public void actionPerformed(ActionEvent e) {
+                for(int row = 0; row < SIZE; row++) {
+                    for(int col = 0; col < SIZE; col++) {
+                        ctrl.change(row, col, COMPONENTS[col][row].getVal());
+                    }
+                }
                 ctrl.store();
             }
         });
