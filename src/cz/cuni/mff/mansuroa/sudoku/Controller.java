@@ -10,7 +10,7 @@ package cz.cuni.mff.mansuroa.sudoku;
  * @author Alexander Mansurov <alexander.mansurov@gmail.com>
  */
 public class Controller {
-    private final String VIEW_UNASSIGNED = " ";
+    private final String VIEW_UNASSIGNED = "";
     private Sudoku model;
     private Viewer view;
     
@@ -51,6 +51,7 @@ public class Controller {
     
     //uzivatelske akce
     public void change(int row, int col, int value) {
+        System.out.println("Change ["+col+"]["+row+"] to "+value);
         model.setValue(row, col, value);
         view.setValue(row, col, value+"");  /* TODO: lze vyhodit pokud change 
                 volano jen z GUI */
@@ -71,7 +72,12 @@ public class Controller {
         int size = view.getSize();
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                view.setValue(i, j, model.getValue(i, j)+"");
+                int val = model.getValue(i, j);
+                String set = VIEW_UNASSIGNED;
+                if ((val > 0) && (val <= size)) {
+                    set = val+"";
+                }
+                view.setValue(i, j, set);
             }
         }
     }

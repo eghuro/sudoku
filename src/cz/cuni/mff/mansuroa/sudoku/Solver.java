@@ -20,7 +20,7 @@ public class Solver {
     //TODO
     public static void solve(Sudoku s) {
         // a dummy board solve to force the JIT compiler to precompile everything. (much faster)
-        solveBoard(new int[][] { 
+        /*solveBoard(new int[][] { 
                 new int[] {0,0,0,0,0,0,0,0,0},
                 new int[] {0,0,0,0,0,0,0,0,0},
                 new int[] {0,0,0,0,0,0,0,0,0},
@@ -37,10 +37,8 @@ public class Solver {
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
 		}
-        
+        */
         if (s != null) {
-            //final int[][] board = s.;
-
             final long timeBefore = System.nanoTime();
 
             final int placedNumbers = solveBoard(s.getBoard());

@@ -13,17 +13,34 @@ public class Verificator {
     public static boolean verify(Sudoku sudoku) {
         //projdu po radcich/sloupcich a overim, ze kazde cislo je prave jednou
         int size = sudoku.getSize();
+        System.out.println("Verificator: size = "+size);
         for (int i = 0; i < size; i++) {
-            boolean hasValue[] = getValueArray(size);
+            boolean haveValue[] = getValueArray(size);
             for (int j = 0; j < size; j++) {
-                if (hasValue[sudoku.getValue(i, j)]) {
+                int valIndex = sudoku.getValue(i, j) - 1;
+                if (haveValue[valIndex]) {
                     return false;
                 }
                 else {
-                    hasValue[sudoku.getValue(i,j)] = true;
+                    haveValue[valIndex] = true;
                 }
             }
         }
+        
+        for (int j = 0; j < size; j++) {
+            boolean haveValue[] = getValueArray(size);
+            for (int i = 0; i < size; i++) {
+                int valIndex = sudoku.getValue(i, j) - 1;
+                if (haveValue[valIndex]) {
+                    return false;
+                }
+                else {
+                    haveValue[valIndex] = true;
+                }
+            }
+        }
+        
+        //TODO doplnit kontroly pro ctverce 3*3
         return true;
     }
     

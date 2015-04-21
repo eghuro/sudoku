@@ -5,6 +5,9 @@
  */
 package cz.cuni.mff.mansuroa.sudoku;
 
+import javax.swing.InputVerifier;
+import javax.swing.JComponent;
+
 /**
  *
  * @author Alexander Mansurov <alexander.mansurov@gmail.com>
@@ -18,8 +21,28 @@ public class ItemComponentFactory {
         return INSTANCE;
     }
     
-    public ItemComponent createComponent()
+    public ItemComponent createComponent(int size)
     {
-        return new ItemComponent();
+        ItemComponent ic = new ItemComponent(size);//, getFormat());
+        ic.setInputVerifier(new InputVerifier(){
+
+            @Override
+            public boolean verify(JComponent input) {
+                ItemComponent ic = (ItemComponent) input;
+                String text = ic.getText();
+                try{
+                    int val = Integer.parseInt(text);
+                    if ((val > 0) && (val <= size)) {
+                        ic.setValue(text);
+                    } else {
+                        ic.setValue("");
+                    }
+                }catch(Exception e) {
+                    ic.setValue("");
+                }
+                return true;
+            }
+        });
+        return ic;
     }
 }

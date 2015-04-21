@@ -5,20 +5,48 @@
  */
 package cz.cuni.mff.mansuroa.sudoku;
 
-import javax.swing.JButton;
+import javax.swing.JTextField;
 
 /**
  *
  * @author Alexander Mansurov <alexander.mansurov@gmail.com>
  */
-public class ItemComponent extends JButton{
-    public ItemComponent()
+public class ItemComponent extends JTextField{
+    static final int COLUMNS = 1;
+    static final String EMPTY = "";
+    static final int UNASSIGNED = 0;
+    final int SIZE;
+    public static final int ERR_VALUE = -1;
+    
+    public ItemComponent(int size)//, Format f)
     {
-        super("X");
+        super(EMPTY,COLUMNS);
+        this.SIZE = size;
     }
     
     public void setValue(String s)
     {
-        super.setText(s);
+        this.setText(s);
+    }
+    
+    public int getVal() throws ValueException
+    {
+        String text = super.getText();
+        if (!text.equals(EMPTY)) {
+            try {
+                // jine chyby jiz odchyceny InputVerifierem
+                int x = Integer.parseInt(super.getText());
+                return x;
+            } catch (NumberFormatException e) {
+                //return ERR_VALUE;
+                throw new ValueException();
+            }
+        } else {
+            return UNASSIGNED;
+        }
+    }
+    
+    public class ValueException extends Exception {
+        
     }
 }

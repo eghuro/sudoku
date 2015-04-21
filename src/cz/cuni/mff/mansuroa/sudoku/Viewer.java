@@ -5,8 +5,9 @@
  */
 package cz.cuni.mff.mansuroa.sudoku;
 
+import cz.cuni.mff.mansuroa.sudoku.ItemComponent.ValueException;
 import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.JFrame;
@@ -33,7 +34,7 @@ public class Viewer {
     {
         this.SIZE=size;
         this.FRAME=new JFrame(TITLE);
-        this.PANEL=new JPanel(new GridBagLayout());
+        this.PANEL=new JPanel(new GridLayout(9,9));
         
         FRAME.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         FRAME.add(PANEL);
@@ -43,7 +44,7 @@ public class Viewer {
         
         for(int i=0;i<SIZE;++i){
             for(int j=0;j<SIZE;++j){
-                COMPONENTS[i][j]=f.createComponent();
+                COMPONENTS[i][j]=f.createComponent(SIZE);
             }
         }
         
@@ -71,19 +72,25 @@ public class Viewer {
         JMenuBar menu = new JMenuBar();
         JMenu sudoku = new JMenu("Sudoku");
         
-        JMenuItem gen = new JMenuItem(new AbstractAction("Generate"){
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ctrl.generate();
-            }
-        });
-        sudoku.add(gen);
-        
         JMenuItem sol = new JMenuItem(new AbstractAction("Solve") {
 
             @Override
             public void actionPerformed(ActionEvent e) {
+                for(int row = 0; row < SIZE; row++) {
+                    for(int col = 0; col < SIZE; col++) {
+                        try {
+                            int val = COMPONENTS[col][row].getVal();
+                            if ((val > 0 ) && (val < 10)) {
+                                ctrl.change(row, col, val);
+                            }
+                        } catch (ValueException ex) {
+                            String msg = "INVALID INPUT";
+                            JOptionPane.showMessageDialog(null,msg,"SUDOKU",JOptionPane.INFORMATION_MESSAGE);
+                            return;
+                        }
+                        
+                    }
+                }
                 ctrl.solve();
             }
         });
