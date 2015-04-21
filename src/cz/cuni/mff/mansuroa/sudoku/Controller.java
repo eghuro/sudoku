@@ -94,6 +94,8 @@ public class Controller {
         try {
             StoreView sw = new StoreView(view.getComponent());
             sw.store(this.model);
-        } catch
+        } catch (StoreException e) {
+            
+        }
     }
 }
