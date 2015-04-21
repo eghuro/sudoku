@@ -13,5 +13,9 @@ class LoadException extends Exception {
 
     public LoadException() {
     }
+
+    LoadException(Exception e) {
+        super(e);
+    }
     
 }

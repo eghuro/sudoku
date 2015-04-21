@@ -22,8 +22,6 @@ import org.xml.sax.SAXException;
  */
 class Loader {
     public static Sudoku load(File file) throws SAXException, IOException, ParserConfigurationException {
-        
-        
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         DocumentBuilder db = dbf.newDocumentBuilder();
         Document doc = db.parse(file);
