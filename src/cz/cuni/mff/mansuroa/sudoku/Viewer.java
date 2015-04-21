@@ -40,11 +40,10 @@ public class Viewer {
         FRAME.add(PANEL);
         
         COMPONENTS = new ItemComponent[SIZE][SIZE];
-        ItemComponentFactory f = ItemComponentFactory.getInstance();
         
         for(int i=0;i<SIZE;++i){
             for(int j=0;j<SIZE;++j){
-                COMPONENTS[i][j]=f.createComponent(SIZE);
+                COMPONENTS[i][j]=new ItemComponent(SIZE);
             }
         }
         

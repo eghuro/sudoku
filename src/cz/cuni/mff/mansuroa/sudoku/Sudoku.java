@@ -5,8 +5,6 @@
  */
 package cz.cuni.mff.mansuroa.sudoku;
 
-import java.util.Arrays;
-
 /**
  *
  * @author Alexander Mansurov <alexander.mansurov@gmail.com>

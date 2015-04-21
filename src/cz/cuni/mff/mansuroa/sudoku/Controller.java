@@ -30,12 +30,6 @@ public class Controller {
         updateView();
     }
     
-    public void generate() {
-        assert (view!=null);
-        model = Generator.generate(view.getSize());
-        updateView();
-    }
-    
     public void clean() {
         assert (view != null);
         int size = view.getSize();

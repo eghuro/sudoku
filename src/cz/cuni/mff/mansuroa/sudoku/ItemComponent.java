@@ -5,6 +5,8 @@
  */
 package cz.cuni.mff.mansuroa.sudoku;
 
+import javax.swing.InputVerifier;
+import javax.swing.JComponent;
 import javax.swing.JTextField;
 
 /**
@@ -22,6 +24,24 @@ public class ItemComponent extends JTextField{
     {
         super(EMPTY,COLUMNS);
         this.SIZE = size;
+        this.setInputVerifier(new InputVerifier(){
+            @Override
+            public boolean verify(JComponent input) {
+                ItemComponent ic = (ItemComponent) input;
+                String text = ic.getText();
+                try{
+                    int val = Integer.parseInt(text);
+                    if ((val > 0) && (val <= size)) {
+                        ic.setValue(text);
+                    } else {
+                        ic.setValue("");
+                    }
+                }catch(Exception e) {
+                    ic.setValue("");
+                }
+                return true;
+            }
+        });
     }
     
     public void setValue(String s)
