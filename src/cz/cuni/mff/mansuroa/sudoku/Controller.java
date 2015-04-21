@@ -77,6 +77,13 @@ public class Controller {
     }
     
     public void load() {
+        try {
+            LoadView lw = new LoadView(view.getComponent());
+            this.model = lw.load();
+            updateView();
+        } catch (LoadException e) {
+            
+        }
         
     }
     

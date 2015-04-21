@@ -5,6 +5,7 @@
  */
 package cz.cuni.mff.mansuroa.sudoku;
 
+import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -165,5 +166,9 @@ public class Viewer {
             }
         });
         return store;
+    }
+    
+    public Component getComponent() {
+        return FRAME;
     }
 }
