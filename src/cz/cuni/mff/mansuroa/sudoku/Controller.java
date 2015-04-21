@@ -30,12 +30,12 @@ public class Controller {
         updateView();
     }
     
-    public void clean() {
+    public void clear() {
         assert (view != null);
         int size = view.getSize();
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; i < size; j++) {
-                view.setValue(j, j, VIEW_UNASSIGNED);
+        for (int i = 0; i < size; ++i) {
+            for (int j = 0; j < size; ++j) {
+                view.setValue(i, j, VIEW_UNASSIGNED);
             }
         }
     }

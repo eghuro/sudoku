@@ -18,6 +18,9 @@ public class Verificator {
             boolean haveValue[] = getValueArray(size);
             for (int j = 0; j < size; j++) {
                 int valIndex = sudoku.getValue(i, j) - 1;
+                if (valIndex < 0) {
+                    return false;
+                }
                 if (haveValue[valIndex]) {
                     return false;
                 }

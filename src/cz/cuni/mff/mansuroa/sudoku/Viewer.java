@@ -110,7 +110,8 @@ public class Viewer {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                ctrl.verify();
+                //ctrl.verify();
+                ctrl.clear();
             }
         });
         sudoku.add(clr);   
