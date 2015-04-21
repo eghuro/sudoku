@@ -5,7 +5,6 @@
  */
 package cz.cuni.mff.mansuroa.sudoku;
 
-import cz.cuni.mff.mansuroa.sudoku.ItemComponent.ValueException;
 import java.awt.GridBagConstraints;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -69,43 +68,8 @@ public class Viewer {
     private JMenuBar createMenu()
     {
         JMenuBar menu = new JMenuBar();
-        JMenu sudoku = new JMenu("Sudoku");
-        
-        JMenuItem sol = new JMenuItem(new AbstractAction("Solve") {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                for(int row = 0; row < SIZE; row++) {
-                    for(int col = 0; col < SIZE; col++) {
-                        ctrl.change(row, col, COMPONENTS[col][row].getVal());
-                    }
-                }
-                ctrl.solve();
-            }
-        });
-        sudoku.add(sol);
-        
-        JMenuItem ver = new JMenuItem(new AbstractAction("Verify"){
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                boolean result = ctrl.verify();
-                String msg = result ? "VALID" : "INVALID";
-                JOptionPane.showMessageDialog(null,msg,"SUDOKU",JOptionPane.INFORMATION_MESSAGE);
-            }
-        });
-        sudoku.add(ver);
-        
-        JMenuItem clr = new JMenuItem(new AbstractAction("Clear"){
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ctrl.clear();
-            }
-        });
-        sudoku.add(clr);   
-                
-        menu.add(sudoku);
+        menu.add(makeFileMenu()); 
+        menu.add(makeSudokuMenu());
         return menu;
     }
     
@@ -128,5 +92,78 @@ public class Viewer {
     
     public int getSize() {
         return this.SIZE;
+    }
+
+    private JMenu makeFileMenu() {
+        JMenu file = new JMenu("File");
+        file.add(makeLoadItem());
+        file.add(makeStoreItem());
+        return file;
+    }
+
+    private JMenu makeSudokuMenu() {
+        JMenu sudoku = new JMenu("Sudoku");
+        sudoku.add(makeSolveItem());
+        sudoku.add(makeVerifyItem()); 
+        sudoku.add(makeClearItem());   
+        return sudoku;
+    }
+
+    private JMenuItem makeSolveItem() {
+        JMenuItem sol = new JMenuItem(new AbstractAction("Solve") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                for(int row = 0; row < SIZE; row++) {
+                    for(int col = 0; col < SIZE; col++) {
+                        ctrl.change(row, col, COMPONENTS[col][row].getVal());
+                    }
+                }
+                ctrl.solve();
+            }
+        });
+        return sol;
+    }
+
+    private JMenuItem makeVerifyItem() {
+        JMenuItem ver = new JMenuItem(new AbstractAction("Verify"){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                boolean result = ctrl.verify();
+                String msg = result ? "VALID" : "INVALID";
+                JOptionPane.showMessageDialog(null,msg,"SUDOKU",JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
+        return ver;
+    }
+
+    private JMenuItem makeClearItem() {
+        JMenuItem clr = new JMenuItem(new AbstractAction("Clear"){
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ctrl.clear();
+            }
+        });
+        return clr;
+    }
+
+    private JMenuItem makeLoadItem() {
+        JMenuItem load = new JMenuItem(new AbstractAction("Load board") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ctrl.load();
+            }
+        }); 
+        return load;
+    }
+
+    private JMenuItem makeStoreItem() {
+        JMenuItem store = new JMenuItem(new AbstractAction("Store current board") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ctrl.store();
+            }
+        });
+        return store;
     }
 }

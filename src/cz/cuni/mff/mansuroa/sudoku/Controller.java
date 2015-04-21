@@ -75,4 +75,12 @@ public class Controller {
             }
         }
     }
+    
+    public void load() {
+        
+    }
+    
+    public void store() {
+        
+    }
 }
