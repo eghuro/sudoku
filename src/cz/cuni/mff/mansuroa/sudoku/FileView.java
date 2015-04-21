@@ -14,11 +14,11 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  *
  * @author Alexander Mansurov <alexander.mansurov@gmail.com>
  */
-public class LoadView {
+public class FileView {
     JFileChooser jfc;
     Component parent;
     
-    public LoadView(Component p) {
+    public FileView(Component p) {
         this.jfc = new JFileChooser();
         FileNameExtensionFilter filter = 
                 new FileNameExtensionFilter ("Sudoku XML files", "xml");
@@ -27,7 +27,7 @@ public class LoadView {
         this.parent = p;
     }
     
-    public File load() {
+    public File getFile() {
         int ret = this.jfc.showOpenDialog(parent);
         if (ret == JFileChooser.APPROVE_OPTION) {
             return this.jfc.getSelectedFile();
