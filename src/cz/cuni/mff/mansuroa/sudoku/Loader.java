@@ -21,15 +21,19 @@ import org.xml.sax.SAXException;
  * @author Alexander Mansurov <alexander.mansurov@gmail.com>
  */
 class Loader {
-    public static Sudoku load(File file) throws SAXException, IOException, ParserConfigurationException {
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-        DocumentBuilder db = dbf.newDocumentBuilder();
-        Document doc = db.parse(file);
-        
-        NodeList entries = doc.getElementsByTagName("entry");
-        Sudoku sudoku = parseEntries(entries);
-        
-        return sudoku;
+    public static Sudoku load(File file) throws LoadException {
+        try{
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            Document doc = db.parse(file);
+
+            NodeList entries = doc.getElementsByTagName("entry");
+            Sudoku sudoku = parseEntries(entries);
+
+            return sudoku;
+        } catch(ParserConfigurationException | SAXException | IOException e) {
+            throw new LoadException(e);
+        }
         
         //<sudoku>
             //<entry row="" col="" value="" />

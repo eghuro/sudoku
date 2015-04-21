@@ -5,6 +5,10 @@
  */
 package cz.cuni.mff.mansuroa.sudoku;
 
+import java.io.IOException;
+import javax.xml.parsers.ParserConfigurationException;
+import org.xml.sax.SAXException;
+
 /**
  *
  * @author Alexander Mansurov <alexander.mansurov@gmail.com>
@@ -79,15 +83,17 @@ public class Controller {
     public void load() {
         try {
             LoadView lw = new LoadView(view.getComponent());
-            this.model = lw.load();
+            this.model = Loader.load(lw.load());
             updateView();
         } catch (LoadException e) {
             
         }
-        
     }
     
     public void store() {
-        
+        try {
+            StoreView sw = new StoreView(view.getComponent());
+            sw.store(this.model);
+        } catch
     }
 }

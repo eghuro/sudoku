@@ -6,11 +6,9 @@
 package cz.cuni.mff.mansuroa.sudoku;
 
 import java.awt.Component;
-import java.io.IOException;
+import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.xml.parsers.ParserConfigurationException;
-import org.xml.sax.SAXException;
 
 /**
  *
@@ -29,14 +27,10 @@ public class LoadView {
         this.parent = p;
     }
     
-    public Sudoku load() throws LoadException {
+    public File load() {
         int ret = this.jfc.showOpenDialog(parent);
         if (ret == JFileChooser.APPROVE_OPTION) {
-            try {
-                return Loader.load(this.jfc.getSelectedFile());
-            } catch(SAXException | IOException | ParserConfigurationException e) {
-                throw new LoadException(e);
-            }
-        } else throw new LoadException();
+            return this.jfc.getSelectedFile();
+        } else return null;
     } 
 }
