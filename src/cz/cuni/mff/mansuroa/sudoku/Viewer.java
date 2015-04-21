@@ -77,17 +77,7 @@ public class Viewer {
             public void actionPerformed(ActionEvent e) {
                 for(int row = 0; row < SIZE; row++) {
                     for(int col = 0; col < SIZE; col++) {
-                        try {
-                            int val = COMPONENTS[col][row].getVal();
-                            if ((val > 0 ) && (val < 10)) {
-                                ctrl.change(row, col, val);
-                            }
-                        } catch (ValueException ex) {
-                            String msg = "INVALID INPUT";
-                            JOptionPane.showMessageDialog(null,msg,"SUDOKU",JOptionPane.INFORMATION_MESSAGE);
-                            return;
-                        }
-                        
+                        ctrl.change(row, col, COMPONENTS[col][row].getVal());
                     }
                 }
                 ctrl.solve();
@@ -110,7 +100,6 @@ public class Viewer {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                //ctrl.verify();
                 ctrl.clear();
             }
         });

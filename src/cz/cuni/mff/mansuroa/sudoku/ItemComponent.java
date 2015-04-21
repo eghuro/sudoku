@@ -49,7 +49,7 @@ public class ItemComponent extends JTextField{
         this.setText(s);
     }
     
-    public int getVal() throws ValueException
+    public int getVal()
     {
         String text = super.getText();
         if (!text.equals(EMPTY)) {
@@ -66,7 +66,7 @@ public class ItemComponent extends JTextField{
         }
     }
     
-    public class ValueException extends Exception {
+    public class ValueException extends RuntimeException {
         
     }
 }
