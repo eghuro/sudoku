@@ -83,7 +83,6 @@ public class ItemComponent extends JTextField{
         return new ComponentAdapter(){
             @Override
             public void componentResized(ComponentEvent e) {
-                System.out.println("Component resized");
                 Dimension newDimension = e.getComponent().getSize();
                 ItemComponent ic = (ItemComponent)e.getComponent();
                 ic.setFont(newDimension);
@@ -91,6 +90,7 @@ public class ItemComponent extends JTextField{
             }
         };
     }
+    
     public class ValueException extends RuntimeException {}
     
     private void setFont(Dimension newDimension) {
@@ -100,12 +100,13 @@ public class ItemComponent extends JTextField{
         super.setFont(newFont);
     }
     
-    private static double getArea(Dimension d) {
-        return d.getHeight() * d.getWidth();
+    private static float getArea(Dimension d) {
+        return (float)(d.getHeight() * d.getWidth());
     }
     
-    private static float getNewSize(Dimension oldDimension, Dimension newDimension, Font oldFont) {
-        double oldArea = ItemComponent.getArea(oldDimension);
+    private static float getNewSize(Dimension oldDimension, Dimension newDimension, Font oldFont) { 
+        //TODO
+        /*double oldArea = ItemComponent.getArea(oldDimension);
         double newArea = ItemComponent.getArea(newDimension);
         double ratio = newArea / oldArea;
         
@@ -114,6 +115,8 @@ public class ItemComponent extends JTextField{
         float newSize = (float)Math.floor(oldFont.getSize()*Math.log(ratio));
         
         final float maxSize = 100;
-        return (newSize > maxSize) ? maxSize : newSize;
+        return (newSize > maxSize) ? maxSize : newSize;*/
+        float newArea = ItemComponent.getArea(newDimension);      
+        return newArea / 100;
     }
 }

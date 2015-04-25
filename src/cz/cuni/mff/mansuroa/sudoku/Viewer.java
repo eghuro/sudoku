@@ -6,9 +6,13 @@
 package cz.cuni.mff.mansuroa.sudoku;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import javax.swing.AbstractAction;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -32,9 +36,13 @@ public class Viewer {
 
     public Viewer(int size)
     {
+        if (size<0) throw new IllegalArgumentException();
+        
         this.SIZE=size;
         this.FRAME=new JFrame(TITLE);
         this.PANEL=new JPanel(new GridLayout(9,9));
+        
+        this.FRAME.addComponentListener(this.getFrameListener());
         
         FRAME.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         FRAME.add(PANEL);
@@ -50,18 +58,34 @@ public class Viewer {
         FRAME.setJMenuBar(createMenu());
     }
     
+    public void setUp()
+    {
+        fillGrid();
+        FRAME.pack();
+        FRAME.setVisible(true);
+    }
+    
+    public void setValue(int row,int col,String s)
+    {
+        if((row >= 0) && (row < SIZE) && (col >= 0) && (col < SIZE)) {
+            COMPONENTS[col][row].setValue(s);
+        } else throw new IllegalArgumentException();
+    }
+    
+    public void setController(Controller s)
+    {
+        this.ctrl=s;
+    }
+    
+    public int getSize() {
+        return this.SIZE;
+    }
+
     private void fillGrid()
     {
-        GridBagConstraints c;
         for(int x = 0; x < SIZE; ++x) {
             for(int y=0;y<SIZE;++y){
-                c=new GridBagConstraints();
-                c.gridx=x;
-                c.gridy=y;
-                c.fill=GridBagConstraints.BOTH;
-                c.gridwidth=1;
-                c.gridheight=1;
-                PANEL.add(COMPONENTS[x][y],c);
+                PANEL.add(COMPONENTS[x][y],getConstraints(x,y));
             }
         }
     }
@@ -74,27 +98,6 @@ public class Viewer {
         return menu;
     }
     
-    public void setUp()
-    {
-        fillGrid();
-        FRAME.pack();
-        FRAME.setVisible(true);
-    }
-    
-    public void setValue(int row,int col,String s)
-    {
-        COMPONENTS[col][row].setValue(s);
-    }
-    
-    public void setController(Controller s)
-    {
-        this.ctrl=s;
-    }
-    
-    public int getSize() {
-        return this.SIZE;
-    }
-
     private JMenu makeFileMenu() {
         JMenu file = new JMenu("File");
         file.add(makeLoadItem());
@@ -139,7 +142,6 @@ public class Viewer {
 
     private JMenuItem makeClearItem() {
         JMenuItem clr = new JMenuItem(new AbstractAction("Clear"){
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 ctrl.clear();
@@ -175,5 +177,32 @@ public class Viewer {
     
     public Component getComponent() {
         return FRAME;
+    }
+
+    private GridBagConstraints getConstraints(int x, int y) {
+        GridBagConstraints c=new GridBagConstraints();
+        c.gridx=x;
+        c.gridy=y;
+        c.fill=GridBagConstraints.BOTH;
+        c.gridwidth=1;
+        c.gridheight=1;    
+        return c;
+    }
+
+    private ComponentListener getFrameListener() {
+        return new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                JFrame frame = (JFrame)e.getComponent();
+                Dimension dimension = frame.getSize();
+                int size;
+                if (dimension.height != dimension.width) {
+                    size = Math.max(dimension.height, dimension.width);
+                } else {
+                    size = dimension.height;
+                }
+                frame.setSize(size, size);
+            }
+        };
     }
 }
