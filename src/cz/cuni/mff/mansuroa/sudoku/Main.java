@@ -16,7 +16,6 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        //new SudokuViewerController(new Sudoku(),new Viewer(9)).setUpViewer();
         Viewer v = new Viewer(9);
         Controller c = new Controller();
         v.setController(c);
