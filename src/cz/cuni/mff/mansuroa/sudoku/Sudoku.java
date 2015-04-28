@@ -1,82 +1,106 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.cuni.mff.mansuroa.sudoku;
 
 /**
- *
- * @author Alexander Mansurov <alexander.mansurov@gmail.com>
+ * Model - datova vrstva aplikace
+ * @author Alexandr Mansurov <alexander.mansurov@gmail.com>
  */
-public class Sudoku{
+public class Sudoku {
     private final int SIZE;
     private final int[][] MATRIX;
     
-    public Sudoku(int size){
+    /**
+     * Vytvori Sudoku dane velikosti.
+     * @param size sudoku bude rozmeru size * size
+     */
+    public Sudoku(int size) {
         this.SIZE = size;
         this.MATRIX=new int[SIZE][SIZE];
     }
     
-    public int getSize()
-    {
+    /**
+     * Vrati rozmer daneho Sudoku
+     * @return rozmer mrizky
+     */
+    public int getSize() {
         return this.SIZE;
     }
-    
-    public void setValue(int row,int col,int value)
-    {
-        if(!validPosition(row,col)|(value<1)|(value>SIZE))
-        {
-            throw new IllegalArgumentException();
-        }
-        else
-        {
+ 
+    /**
+     * Nastav hodnotu policka.
+     * Do daneho radku a sloupce vloz danou hodnotu.
+     *
+     * @param row radek, hodnota je >= 0 a < size
+     * @param col sloupec, hodnota je >= 0 a < size
+     * @param value hodnota je >= 1 a =< size
+     * @throws IllegalArgumentException pokud nejsou splnena omezeni
+     */
+    public void setValue(int row,int col,int value) throws IllegalArgumentException {
+        if (validPosition(row,col) | (value >= 1) | (value <= SIZE)) {
             MATRIX[col][row]=value;
+        } else {
+            throw new IllegalArgumentException("Set ["+col+","+row+"] = "+value);
         }
     }
     
-    public int getValue(int row,int col)
-    {
-        if(!validPosition(row,col))
-        {
-            throw new IllegalArgumentException("["+col+","+row+"]");
-        }
-        else
-        {
+    /**
+     * Vrat hodnotu sudoku na prislusne pozici.
+     * @param row radek
+     * @param col sloupec
+     * @return hodnota na dane pozici
+     * @throws IllegalArgumentException pokud nejde o platnou pozici
+     */
+    public int getValue(int row,int col) throws IllegalArgumentException {
+        if (validPosition(row,col)) {
             return MATRIX[col][row];
+        } else {
+            throw new IllegalArgumentException("Get ["+col+","+row+"]");
         }
     }
     
-    public void unsetValue(int row,int col)
-    {
-        if(!validPosition(row,col))
-        {
-            throw new IllegalArgumentException();
-        }
-        else
-        {
+    /**
+     * Vymaze hodnotu z dane pozice.
+     * @param row radek
+     * @param col sloupec
+     * @throws IllegalArgumentException neplatna souradnice
+     */
+    public void unsetValue(int row,int col) throws IllegalArgumentException {
+        if (validPosition(row,col)) {
             MATRIX[col][row]=0;
+        } else {
+            throw new IllegalArgumentException("Unset ["+col+","+row+"]");
         }
     }
     
-    public boolean isset(int row,int col)
-    {
-        if(!validPosition(row,col))
-        {
-            throw new IllegalArgumentException();
-        }
-        else
-        {
-            return MATRIX[col][row]!=0;
+    /**
+     * Je nejaka hodnota na dane souradnici
+     * @param row radek
+     * @param col sloupec
+     * @return pokud je na dane souradnici vyplnena hodnota
+     * @throws IllegalArgumentException neplatna souradnice
+     */
+    public boolean isset(int row,int col) throws IllegalArgumentException {
+        if (validPosition(row,col)) {
+            return MATRIX[col][row] != 0;
+        } else {
+            throw new IllegalArgumentException("isset ["+col+","+row+"]");
         }
     }
     
-    private boolean validPosition(int row,int col)
-    {
-        return (row>=0) && (row<SIZE) && (col>=0) && (col<SIZE);
+    /**
+     * Test, zda jde o platnou souradnici
+     * @param row radek
+     * @param col sloupec
+     * @return radek >= 0, radek < size, sloupec >= 0, sloupec < size
+     */
+    private boolean validPosition(int row,int col) {
+        return (row >= 0) && (row < SIZE) && (col >= 0) && (col < SIZE);
     }
     
-    public int[][] getBoard(){
+    /**
+     * Pristup k datum.
+     * @return pole s ulozenymi daty
+     */
+    public int[][] getBoard() {
         return MATRIX;
     }
 }

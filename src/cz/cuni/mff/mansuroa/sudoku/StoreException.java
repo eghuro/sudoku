@@ -1,15 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.cuni.mff.mansuroa.sudoku;
 
+import java.io.IOException;
+
 /**
- *
- * @author Alexander Mansurov <alexander.mansurov@gmail.com>
+ * Chyba pri ukladani dat do souboru.
+ * @author Alexandr Mansurov <alexander.mansurov@gmail.com>
  */
-class StoreException extends Exception {
+class StoreException extends IOException {
     public StoreException() {}
     public StoreException(Exception e) {
         super(e);

@@ -10,14 +10,14 @@ import javax.swing.JComponent;
 import javax.swing.JTextField;
 
 /**
- *
- * @author Alexander Mansurov <alexander.mansurov@gmail.com>
+ * Komponenta pro zobrazeni policka sudoku ve Vieweru
+ * @author Alexandr Mansurov <alexander.mansurov@gmail.com>
  */
 public class ItemComponent extends JTextField{
-    static final int COLUMNS = 1;
-    static final String EMPTY = "";
-    static final int UNASSIGNED = 0;
-    final int SIZE;
+    private static final int COLUMNS = 1;
+    private static final String EMPTY = "";
+    private static final int UNASSIGNED = 0;
+    private final int SIZE;
     public static final int ERR_VALUE = -1;
     private Dimension dimension;
     

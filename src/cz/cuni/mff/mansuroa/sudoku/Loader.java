@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.cuni.mff.mansuroa.sudoku;
 
 import java.io.File;
@@ -17,10 +12,21 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
- *
- * @author Alexander Mansurov <alexander.mansurov@gmail.com>
+ * Loader nacita data z XML souboru.
+ * Format souboru je:
+ * &lt;sudoku&gt;
+ *   &lt;entry row="cisloRadku" col="cisloSloupce" value="hodnota" /&gt;
+ * &lt;/sudoku&gt;
+ * @author Alexandr Mansurov <alexander.mansurov@gmail.com>
  */
 class Loader {
+    
+    /**
+     * Nacti sudoku ze souboru.
+     * @param file soubor s daty
+     * @return nactene sudoku
+     * @throws LoadException doslo k chybe
+     */
     public static Sudoku load(File file) throws LoadException {
         try{
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -40,6 +46,12 @@ class Loader {
         //</sudoku>
     }
 
+    /**
+     * Zpracuj jeden XML element "entry".
+     * Nacti cislo radku, sloupce a hodnotu a nastav je v modelu.
+     * @param sudoku Data
+     * @param entry XML element k naparsovani
+     */
     private static void parseNode(Sudoku sudoku, Element entry) {
         int row = Integer.parseInt(entry.getAttribute("row"));
         int col = Integer.parseInt(entry.getAttribute("col"));
@@ -48,6 +60,11 @@ class Loader {
         sudoku.setValue(row, col, value);
     }
 
+    /**
+     * Zpracuj vsechny elementy "entry" nalezene ve vstupnim souboru.
+     * @param entries XML elementy
+     * @return nactene Sudoku
+     */
     private static Sudoku parseEntries(NodeList entries) {
         Sudoku sudoku = new Sudoku(9);
         for (int entryNo = 0; entryNo < entries.getLength(); entryNo++) {

@@ -1,31 +1,52 @@
 package cz.cuni.mff.mansuroa.sudoku;
 
 /**
- *
- * @author Alexander Mansurov <alexander.mansurov@gmail.com>
+ * Controller zajistuje komunikaci mezi datovou vrstvou - tridou Sudoku a 
+ * grafickym rozhranim ve tride Viewer.
+ * 
+ * @author Alexandr Mansurov <alexander.mansurov@gmail.com>
  */
 public class Controller {
     private final String VIEW_UNASSIGNED = "";
     private Sudoku model;
     private Viewer view;
     
+    /**
+     * Konstruktor inicializuje model a view na null.
+     * ViewerFactory pri vytvareni Vieweru jej nasledne zaregistruje metodou
+     * setViewer, ktera k Vieweru vytvori instanci Sudoku.
+     */
     public Controller() {
         view = null;
         model = null;
     }
     
-    // uzivatelske prikazy
+    /**
+     * Over model Verifikatorem, zda jde o platne Sudoku.
+     * @return zda plati vsechna omezeni sudoku - kazde cislo prave jednou ve
+     * vsech radcich sloupcich a blocich
+     */
     public boolean verify() {
+        assert (model != null);
         return Verificator.verify(model);
     }
     
+    /**
+     * Predej stavajici data Solveru k vyreseni a prekresli obrazovku.
+     */
     public void solve() {
+        assert (model != null);
+        
         Solver.solve(model);
         updateView();
     }
     
+    /**
+     * Vycisti obrazovku a data.
+     */
     public void clear() {
         assert (view != null);
+        
         int size = view.getSize();
         for (int i = 0; i < size; ++i) {
             for (int j = 0; j < size; ++j) {
@@ -35,8 +56,16 @@ public class Controller {
         }
     }
     
-    //uzivatelske akce
+    /**
+     * Zmen hodnotu Sudoku na datove vrstve.
+     * Kontrolu hodnot provede trida Sudoku.
+     * @param row Radek
+     * @param col Sloupec
+     * @param value Hodnota (pro hodnotu 0 bude provedeno vycisteni dat na dane pozici)
+     */
     public void change(int row, int col, int value) {
+        assert (model != null);
+        
         if (value != 0) {
             model.setValue(row, col, value);
         } else {
@@ -44,28 +73,46 @@ public class Controller {
         }
     }
     
-    // set up
-    public void setViewer(Viewer v) {
-        assert(model.getSize() == v.getSize());
-        assert(v!=null);
+    /**
+     * Zaregistruj Viewer a vytvor k nemu model prislusne velikosti
+     * @param viewer Viewer k zaregistrovani
+     */
+    public void setViewer(Viewer viewer) {
+        assert(viewer != null);
         
-        this.model = new Sudoku(v.getSize());
-        this.view = v;
+        this.model = new Sudoku(viewer.getSize());
+        this.view = viewer;
         updateView();
     }
     
+    /**
+     * Nacti sudoku ze souboru.
+     * Vycisti obrazovku, zobrazi dialog pro vyber souboru, preda Loaderu
+     * zvoleny soubor a ziska novy model, prekresli obrazovku.
+     * Pokud nacitani selze, nahradi model prazdnym.
+     */
     public void load() {
+        assert (view != null);
+        
         try {
             clear();
             FileView lw = new FileView(view.getComponent());
             this.model = Loader.load(lw.getFile());
-            updateView();
         } catch (LoadException e) {
-            
+            this.model = new Sudoku(view.getSize());
+        } finally {
+            updateView();
         }
     }
     
+    /**
+     * Uloz sudoku do souboru.
+     * Zobrazi dialog pro vyber souboru a preda Storeru model a zvoleny soubor
+     * pro ulozeni.
+     */
     public void store() {
+        assert (view != null);
+        
         try {
             FileView sw = new FileView(view.getComponent());
             Storer.store(this.model, sw.getFile());
@@ -74,9 +121,12 @@ public class Controller {
         }
     }
     
+    /**
+     * Prekresli obrazovku hodnotami aktualniho modelu.
+     */
     private void updateView() {
-        System.out.println("Updating view");
         assert (view != null);
+        
         int size = view.getSize();
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
@@ -85,8 +135,7 @@ public class Controller {
                 if ((val > 0) && (val <= size)) {
                     set = val+"";
                 }
-                view.setValue(i, j, set);
-                
+                view.setValue(i, j, set);                
             }
         }
     }
