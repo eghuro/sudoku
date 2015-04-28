@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.cuni.mff.mansuroa.sudoku;
 
 /**
@@ -43,7 +38,6 @@ public class Controller {
     //uzivatelske akce
     public void change(int row, int col, int value) {
         if (value != 0) {
-            //System.out.println("Change ["+col+"]["+row+"] to "+value);
             model.setValue(row, col, value);
         } else {
             model.unsetValue(row, col);

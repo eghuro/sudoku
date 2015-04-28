@@ -9,16 +9,10 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
-import javax.swing.AbstractAction;
 import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -32,10 +26,11 @@ public class Viewer {
     private final JFrame FRAME;
     private final JPanel PANEL;
     private final ItemComponent[][] COMPONENTS;
-    private Controller ctrl;
+    private final Controller ctrl;
 
-    public Viewer(int size)
+    public Viewer(Controller ctrl, int size)
     {
+        this.ctrl = ctrl;
         if (size<0) throw new IllegalArgumentException();
         
         this.SIZE=size;
@@ -55,7 +50,8 @@ public class Viewer {
             }
         }
         
-        FRAME.setJMenuBar(createMenu());
+        MenuFactory mf = MenuFactory.getInstance();
+        FRAME.setJMenuBar(mf.createMenu(this, ctrl));
     }
     
     public void setUp()
@@ -70,11 +66,6 @@ public class Viewer {
         if((row >= 0) && (row < SIZE) && (col >= 0) && (col < SIZE)) {
             COMPONENTS[col][row].setValue(s);
         } else throw new IllegalArgumentException();
-    }
-    
-    public void setController(Controller s)
-    {
-        this.ctrl=s;
     }
     
     public int getSize() {
@@ -93,84 +84,8 @@ public class Viewer {
             }
         }
     }
+
     
-    private JMenuBar createMenu()
-    {
-        JMenuBar menu = new JMenuBar();
-        menu.add(makeFileMenu()); 
-        menu.add(makeSudokuMenu());
-        return menu;
-    }
-    
-    private JMenu makeFileMenu() {
-        JMenu file = new JMenu("File");
-        file.add(makeLoadItem());
-        file.add(makeStoreItem());
-        return file;
-    }
-
-    private JMenu makeSudokuMenu() {
-        JMenu sudoku = new JMenu("Sudoku");
-        sudoku.add(makeSolveItem());
-        sudoku.add(makeVerifyItem()); 
-        sudoku.add(makeClearItem());   
-        return sudoku;
-    }
-
-    private JMenuItem makeSolveItem() {
-        JMenuItem sol = new JMenuItem(new AbstractAction("Solve") {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                updateModel();
-                ctrl.solve();
-            }
-        });
-        return sol;
-    }
-
-    private JMenuItem makeVerifyItem() {
-        JMenuItem ver = new JMenuItem(new AbstractAction("Verify"){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                updateModel();
-                boolean result = ctrl.verify();
-                String msg = result ? "VALID" : "INVALID";
-                JOptionPane.showMessageDialog(null,msg,"SUDOKU",JOptionPane.INFORMATION_MESSAGE);
-            }
-        });
-        return ver;
-    }
-
-    private JMenuItem makeClearItem() {
-        JMenuItem clr = new JMenuItem(new AbstractAction("Clear"){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ctrl.clear();
-            }
-        });
-        return clr;
-    }
-
-    private JMenuItem makeLoadItem() {
-        JMenuItem load = new JMenuItem(new AbstractAction("Load board") {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ctrl.load();
-            }
-        }); 
-        return load;
-    }
-
-    private JMenuItem makeStoreItem() {
-        JMenuItem store = new JMenuItem(new AbstractAction("Store current board") {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                updateModel();
-                ctrl.store();
-            }
-        });
-        return store;
-    }
 
     private GridBagConstraints getConstraints(int x, int y) {
         GridBagConstraints c=new GridBagConstraints();
@@ -199,7 +114,7 @@ public class Viewer {
         };
     }
     
-    private void updateModel() {
+    public void updateModel() {
         System.out.println("Update model");
         for(int row = 0; row < SIZE; row++) {
             for(int col = 0; col < SIZE; col++) {

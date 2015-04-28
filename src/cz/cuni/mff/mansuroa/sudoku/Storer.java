@@ -27,7 +27,6 @@ public class Storer {
         try {
             Document doc = createDocument(sudoku);
             storeDocument(doc, file);
-            
         } catch (ParserConfigurationException | TransformerException ex) {
             throw new StoreException(ex);
         }

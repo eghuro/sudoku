@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.cuni.mff.mansuroa.sudoku;
 
 import java.awt.Dimension;
@@ -50,7 +45,6 @@ public class ItemComponent extends JTextField{
                 int x = Integer.parseInt(super.getText());
                 return x;
             } catch (NumberFormatException e) {
-                //return ERR_VALUE;
                 throw new ValueException();
             }
         } else {
@@ -69,7 +63,7 @@ public class ItemComponent extends JTextField{
                     if ((val > 0) && (val <= size)) {
                         ic.setValue(text);
                     } else {
-                        ic.setValue("");
+                        ic.setValue(EMPTY);
                     }
                 }catch(Exception e) {
                     ic.setValue("");
@@ -105,17 +99,6 @@ public class ItemComponent extends JTextField{
     }
     
     private static float getNewSize(Dimension oldDimension, Dimension newDimension, Font oldFont) { 
-        //TODO
-        /*double oldArea = ItemComponent.getArea(oldDimension);
-        double newArea = ItemComponent.getArea(newDimension);
-        double ratio = newArea / oldArea;
-        
-        if(Double.isInfinite(ratio)) ratio = 1.0;
-        ratio *= Math.E;
-        float newSize = (float)Math.floor(oldFont.getSize()*Math.log(ratio));
-        
-        final float maxSize = 100;
-        return (newSize > maxSize) ? maxSize : newSize;*/
         float newArea = ItemComponent.getArea(newDimension);      
         return newArea / 100;
     }

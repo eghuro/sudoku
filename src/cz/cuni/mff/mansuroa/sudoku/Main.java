@@ -16,9 +16,9 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Viewer v = new Viewer(9);
         Controller c = new Controller();
-        v.setController(c);
+        Viewer v = new Viewer(c, 9);
+        //v.setController(c);
         c.setViewer(v);
         v.setUp();
     }
