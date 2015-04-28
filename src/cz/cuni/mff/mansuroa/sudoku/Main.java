@@ -17,10 +17,8 @@ public class Main {
      */
     public static void main(String[] args) {
         Controller c = new Controller();
-        Viewer v = new Viewer(c, 9);
-        //v.setController(c);
+        Viewer v = Viewer.ViewerFactory.getViewerFactory().createViewer(c, 9);
         c.setViewer(v);
-        v.setUp();
     }
     
 }

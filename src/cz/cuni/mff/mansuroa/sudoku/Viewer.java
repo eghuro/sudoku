@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.cuni.mff.mansuroa.sudoku;
 
 import java.awt.Component;
@@ -27,42 +22,21 @@ public class Viewer {
     private final JPanel PANEL;
     private final ItemComponent[][] COMPONENTS;
     private final Controller ctrl;
-
-    public Viewer(Controller ctrl, int size)
-    {
+    
+    private Viewer(ItemComponent[][] components, MenuFactory mf, ComponentListener frameListener, Controller ctrl, int size) {
         this.ctrl = ctrl;
         if (size<0) throw new IllegalArgumentException();
-        
         this.SIZE=size;
+        this.PANEL=new JPanel(new GridLayout(size,size));
+        this.COMPONENTS = components;
         this.FRAME=new JFrame(TITLE);
-        this.PANEL=new JPanel(new GridLayout(9,9));
-        
-        this.FRAME.addComponentListener(this.getFrameListener());
-        
-        FRAME.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        FRAME.add(PANEL);
-        
-        COMPONENTS = new ItemComponent[SIZE][SIZE];
-        
-        for(int i=0;i<SIZE;++i){
-            for(int j=0;j<SIZE;++j){
-                COMPONENTS[i][j]=new ItemComponent(SIZE);
-            }
-        }
-        
-        MenuFactory mf = MenuFactory.getInstance();
-        FRAME.setJMenuBar(mf.createMenu(this, ctrl));
+        this.FRAME.addComponentListener(frameListener);
+        this.FRAME.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.FRAME.add(PANEL);
+        this.FRAME.setJMenuBar(mf.createMenu(this, ctrl));
     }
     
-    public void setUp()
-    {
-        fillGrid();
-        FRAME.pack();
-        FRAME.setVisible(true);
-    }
-    
-    public void setValue(int row,int col,String s)
-    {
+    public void setValue(int row,int col,String s) {
         if((row >= 0) && (row < SIZE) && (col >= 0) && (col < SIZE)) {
             COMPONENTS[col][row].setValue(s);
         } else throw new IllegalArgumentException();
@@ -75,44 +49,6 @@ public class Viewer {
     public Component getComponent() {
         return FRAME;
     }
-
-    private void fillGrid()
-    {
-        for(int x = 0; x < SIZE; ++x) {
-            for(int y=0;y<SIZE;++y){
-                PANEL.add(COMPONENTS[x][y],getConstraints(x,y));
-            }
-        }
-    }
-
-    
-
-    private GridBagConstraints getConstraints(int x, int y) {
-        GridBagConstraints c=new GridBagConstraints();
-        c.gridx=x;
-        c.gridy=y;
-        c.fill=GridBagConstraints.BOTH;
-        c.gridwidth=1;
-        c.gridheight=1;    
-        return c;
-    }
-
-    private ComponentListener getFrameListener() {
-        return new ComponentAdapter() {
-            @Override
-            public void componentResized(ComponentEvent e) {
-                JFrame frame = (JFrame)e.getComponent();
-                Dimension dimension = frame.getSize();
-                int size;
-                if (dimension.height != dimension.width) {
-                    size = Math.max(dimension.height, dimension.width);
-                } else {
-                    size = dimension.height;
-                }
-                frame.setSize(size, size);
-            }
-        };
-    }
     
     public void updateModel() {
         System.out.println("Update model");
@@ -120,6 +56,66 @@ public class Viewer {
             for(int col = 0; col < SIZE; col++) {
                 ctrl.change(row, col, COMPONENTS[col][row].getVal());
             }
+        }
+    }
+ 
+    public static class ViewerFactory {
+        private static final ViewerFactory INSTANCE = new ViewerFactory();
+        public static ViewerFactory getViewerFactory() { return INSTANCE; }
+        private ViewerFactory() { }
+
+        public Viewer createViewer(Controller controller, int size) {
+            ItemComponent[][] components = this.getComponents(size);
+            Viewer v= new Viewer(components, MenuFactory.getInstance(), this.getFrameListener(), controller, size);
+            this.fillGrid(v, components, size);
+            v.FRAME.pack();
+            v.FRAME.setVisible(true);
+            return v;
+        }
+
+        private ComponentListener getFrameListener() {
+            return new ComponentAdapter() {
+                @Override
+                public void componentResized(ComponentEvent e) {
+                    JFrame frame = (JFrame)e.getComponent();
+                    Dimension dimension = frame.getSize();
+                    int size;
+                    if (dimension.height != dimension.width) {
+                        size = Math.max(dimension.height, dimension.width);
+                    } else {
+                        size = dimension.height;
+                    }
+                    frame.setSize(size, size);
+                }
+            };
+        }
+
+        private ItemComponent[][] getComponents(int size) {
+            ItemComponent[][] components = new ItemComponent[size][size];
+            for(int i=0;i<size;++i){
+                for(int j=0;j<size;++j){
+                    components[i][j]=new ItemComponent(size);
+                }
+            }
+            return components;
+        }
+        
+        private void fillGrid(Viewer v, ItemComponent[][] components, int size) {
+            for(int x = 0; x < size; ++x) {
+                for(int y=0;y<size;++y){
+                    v.PANEL.add(components[x][y],getConstraints(x,y));
+                }
+            }
+        }
+        
+        private GridBagConstraints getConstraints(int x, int y) {
+            GridBagConstraints c=new GridBagConstraints();
+            c.gridx=x;
+            c.gridy=y;
+            c.fill=GridBagConstraints.BOTH;
+            c.gridwidth=1;
+            c.gridheight=1;    
+            return c;
         }
     }
 }
