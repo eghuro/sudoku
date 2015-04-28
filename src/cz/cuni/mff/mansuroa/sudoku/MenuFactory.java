@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 
 /**
  * Tovarna na vyrobu menu Vieweru.
+ * 
  * @author Alexandr Mansurov <alexander.mansurov@gmail.com>
  */
 public class MenuFactory {
@@ -18,6 +19,7 @@ public class MenuFactory {
 
     /**
      * Pristup k instanci tovarny.
+     * 
      * @return instance
      */
     public static MenuFactory getInstance() {
@@ -25,7 +27,8 @@ public class MenuFactory {
     }
 
     /**
-     * Vytvori menu pro dany Viewer a Controller
+     * Vytvori menu pro dany Viewer a Controller.
+     * 
      * @param viewer Viewer
      * @param controller Controller
      * @return menu
@@ -36,7 +39,7 @@ public class MenuFactory {
     }
     
     /**
-     * Builder pro vyrobu menu
+     * Builder pro vyrobu menu.
      */
     private class MenuBuilder {
         private final Viewer VIEWER;
@@ -44,7 +47,8 @@ public class MenuFactory {
         private final JMenuBar MENU;
 
         /**
-         * Vytvori builder pro dany Viewer a Controller
+         * Vytvori builder pro dany Viewer a Controller.
+         * 
          * @param viewer instance Vieweru
          * @param controller instance Controlleru
          */
@@ -58,7 +62,8 @@ public class MenuFactory {
         }
 
         /**
-         * Vytvori menu "File"
+         * Vytvori menu "File".
+         * 
          * @return "this"
          */
         public MenuBuilder makeFileMenu() {
@@ -67,7 +72,8 @@ public class MenuFactory {
         }
 
         /**
-         * Vytvori menu "Sudoku"
+         * Vytvori menu "Sudoku".
+         * 
          * @return this
          */
         public MenuBuilder makeSudokuMenu() {
@@ -84,7 +90,8 @@ public class MenuFactory {
         }
 
         /**
-         * Vytvor menu s danym nazvem a polozkami
+         * Vytvori menu s danym nazvem a polozkami.
+         * 
          * @param name nazev menu
          * @param items polozky menu
          * @return vytvorene menu
@@ -96,7 +103,8 @@ public class MenuFactory {
         }
 
         /**
-         * Vytvori polozku menu "Solve", ktera vola solve v Controlleru
+         * Vytvori polozku menu "Solve", ktera vola solve v Controlleru.
+         * 
          * @return polozka menu
          */
         private JMenuItem makeSolveItem() {
@@ -104,14 +112,15 @@ public class MenuFactory {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     VIEWER.updateModel();
-                    CONTROLLER.solve(); 
+                    CONTROLLER.solve();
                 }
             });
         }
 
         /**
          * Vytvori polozku menu "Verify", ktera vola verify v Controlleru a 
-         * nasledne zobrazi dialog s vysledkem
+         * nasledne zobrazi dialog s vysledkem.
+         * 
          * @return polozka menu
          */
         private JMenuItem makeVerifyItem() {
@@ -121,13 +130,14 @@ public class MenuFactory {
                     VIEWER.updateModel();
                     boolean result = CONTROLLER.verify();
                     String msg = result ? "VALID" : "INVALID";
-                    JOptionPane.showMessageDialog(null,msg,"SUDOKU",JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, msg, "SUDOKU", JOptionPane.INFORMATION_MESSAGE);
                 }
             });
         }
 
         /**
-         * Vytvori polozku menu "Clear", ktera vola clear v Controlleru
+         * Vytvori polozku menu "Clear", ktera vola clear v Controlleru.
+         * 
          * @return polozka menu
          */
         private JMenuItem makeClearItem() {
@@ -140,7 +150,8 @@ public class MenuFactory {
         }
 
         /**
-         * Vytvori polozku menu "Load", ktera vola load v Controlleru
+         * Vytvori polozku menu "Load", ktera vola load v Controlleru.
+         * 
          * @return polozka menu
          */
         private JMenuItem makeLoadItem() {
@@ -154,6 +165,7 @@ public class MenuFactory {
 
         /**
          * Vytvori polozku menu "Store", ktera vola store v Controlleru.
+         * 
          * @return polozka menu
          */
         private JMenuItem makeStoreItem() {
@@ -167,7 +179,8 @@ public class MenuFactory {
         }
         
         /**
-         * Vytvori polozku menu "Quit", ktera ukonci aplikaci
+         * Vytvori polozku menu "Quit", ktera ukonci aplikaci.
+         * 
          * @return polozka menu
          */
         private JMenuItem makeQuitItem() {

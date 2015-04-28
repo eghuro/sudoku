@@ -13,6 +13,7 @@ import org.xml.sax.SAXException;
 
 /**
  * Loader nacita data z XML souboru.
+ * 
  * Format souboru je:
  * &lt;sudoku&gt;
  *   &lt;entry row="cisloRadku" col="cisloSloupce" value="hodnota" /&gt;
@@ -23,12 +24,13 @@ class Loader {
     
     /**
      * Nacti sudoku ze souboru.
+     * 
      * @param file soubor s daty
      * @return nactene sudoku
      * @throws LoadException doslo k chybe
      */
     public static Sudoku load(File file) throws LoadException {
-        try{
+        try {
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();
             Document doc = db.parse(file);
@@ -37,7 +39,7 @@ class Loader {
             Sudoku sudoku = parseEntries(entries);
 
             return sudoku;
-        } catch(ParserConfigurationException | SAXException | IOException e) {
+        } catch (ParserConfigurationException | SAXException | IOException e) {
             throw new LoadException(e);
         }
         
@@ -49,6 +51,7 @@ class Loader {
     /**
      * Zpracuj jeden XML element "entry".
      * Nacti cislo radku, sloupce a hodnotu a nastav je v modelu.
+     * 
      * @param sudoku Data
      * @param entry XML element k naparsovani
      */
@@ -62,6 +65,7 @@ class Loader {
 
     /**
      * Zpracuj vsechny elementy "entry" nalezene ve vstupnim souboru.
+     * 
      * @param entries XML elementy
      * @return nactene Sudoku
      */

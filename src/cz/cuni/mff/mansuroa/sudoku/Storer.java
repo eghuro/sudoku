@@ -15,11 +15,13 @@ import org.w3c.dom.Element;
 
 /**
  * Storer uklada data do XML souboru.
+ * 
  * @author Alexandr Mansurov <alexander.mansurov@gmail.com>
  */
 public class Storer {
     /**
      * Ulozi data sudoku do souboru.
+     * 
      * @param sudoku data
      * @param file soubor
      * @throws StoreException ulozeni se nezdarilo
@@ -35,18 +37,18 @@ public class Storer {
 
     /**
      * Vytvor XML elementy.
-     * Projdi data a vytvor XML element entry pro kazde policko
+     * Projdi data a vytvor XML element entry pro kazde policko.
+     * 
      * @param sudoku data
      * @param doc vysledny dokument
      * @param rootElement korenovy element - kam novy element pripojit
      */
     private static void createElements(Sudoku sudoku, Document doc, Element rootElement) {
         int size = sudoku.getSize();
-        for (int i = 0; i < size; i++ ) {
-            for (int j = 0; j < size; j++ ) {
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
                 Element entry = createEntry(sudoku, i, j, doc);
-                if (entry!=null) {
-                    // System.out.println("Appending entry");
+                if (entry != null) {
                     rootElement.appendChild(entry);
                 }
             }
@@ -65,16 +67,19 @@ public class Storer {
         int value = sudoku.getValue(row, col);
         if (value != 0) {
             Element entry = doc.createElement("entry");
-            System.out.println("New entry ["+row+","+col+"] : "+ value);
-            entry.setAttribute("row", row+"");
-            entry.setAttribute("col", col+"");
-            entry.setAttribute("value", sudoku.getValue(row, col)+"");
+            System.out.println("New entry [" + row + "," + col + "] : " + value);
+            entry.setAttribute("row", row + "");
+            entry.setAttribute("col", col + "");
+            entry.setAttribute("value", sudoku.getValue(row, col) + "");
             return entry;
-        } else return null;
+        } else {
+            return null;
+        }
     }
 
     /**
      * Vytvori XML dokument s daty daneho sudoku.
+     * 
      * @param sudoku data k ulozeni
      * @return XML dokument
      * @throws ParserConfigurationException doslo k chybe
@@ -93,7 +98,8 @@ public class Storer {
     }
 
     /**
-     * Uloz vytvoreny XML dokument do souboru
+     * Uloz vytvoreny XML dokument do souboru.
+     * 
      * @param doc XML dokument
      * @param file Soubor
      * @throws TransformerConfigurationException nelze vytvorit transformer

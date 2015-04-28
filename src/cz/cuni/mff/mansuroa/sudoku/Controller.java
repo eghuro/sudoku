@@ -59,6 +59,7 @@ public class Controller {
     /**
      * Zmen hodnotu Sudoku na datove vrstve.
      * Kontrolu hodnot provede trida Sudoku.
+     * 
      * @param row Radek
      * @param col Sloupec
      * @param value Hodnota (pro hodnotu 0 bude provedeno vycisteni dat na dane pozici)
@@ -74,11 +75,12 @@ public class Controller {
     }
     
     /**
-     * Zaregistruj Viewer a vytvor k nemu model prislusne velikosti
+     * Zaregistruj Viewer a vytvor k nemu model prislusne velikosti.
+     * 
      * @param viewer Viewer k zaregistrovani
      */
     public void setViewer(Viewer viewer) {
-        assert(viewer != null);
+        assert (viewer != null);
         
         this.model = new Sudoku(viewer.getSize());
         this.view = viewer;
@@ -117,7 +119,6 @@ public class Controller {
             FileView sw = new FileView(view.getComponent());
             Storer.store(this.model, sw.getFile());
         } catch (StoreException e) {
-            
         }
     }
     
@@ -133,7 +134,7 @@ public class Controller {
                 int val = model.getValue(i, j);
                 String set = VIEW_UNASSIGNED;
                 if ((val > 0) && (val <= size)) {
-                    set = val+"";
+                    set = val + "";
                 }
                 view.setValue(i, j, set);                
             }

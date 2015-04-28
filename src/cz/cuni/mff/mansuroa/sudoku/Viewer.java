@@ -35,12 +35,13 @@ public class Viewer {
      * @param ctrl Controller
      * @param size pocet policek na radku resp. v sloupci, resp. v bloku
      */
-    private Viewer(ItemComponent[][] components, MenuFactory mf, ComponentListener frameListener, Controller ctrl, int size) {
+    private Viewer(ItemComponent[][] components, MenuFactory mf,
+            ComponentListener frameListener, Controller ctrl, int size) {
         this.CNTRL = ctrl;
-        this.SIZE=size;
-        this.PANEL=new JPanel(new GridLayout(size,size));
+        this.SIZE = size;
+        this.PANEL = new JPanel(new GridLayout(size, size));
         this.COMPONENTS = components;
-        this.FRAME=new JFrame(TITLE);
+        this.FRAME = new JFrame(TITLE);
         this.FRAME.addComponentListener(frameListener);
         this.FRAME.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.FRAME.add(PANEL);
@@ -55,14 +56,18 @@ public class Viewer {
      * @param value hodnota
      * @throws IllegalArgumentException neplatna pozice
      */
-    public void setValue(int row,int col,String value) throws IllegalArgumentException {
-        if(validPosition(row, col)) {
+    public void setValue(int row, int col, String value) 
+            throws IllegalArgumentException {
+        if (validPosition(row, col)) {
             COMPONENTS[col][row].setValue(value);
-        } else throw new IllegalArgumentException();
+        } else {
+            throw new IllegalArgumentException();
+        }
     }
     
     /**
      * Vrati rozmer zobrazovaneho Sudoku.
+     * 
      * @return pocet policek na radku resp. v sloupci, resp. v bloku
      */
     public int getSize() {
@@ -71,6 +76,7 @@ public class Viewer {
     
     /**
      * Umozni pristup k panelu pro zobrazeni okna.
+     * 
      * @return okno
      */
     public Component getComponent() {
@@ -82,15 +88,16 @@ public class Viewer {
      */
     public void updateModel() {
         System.out.println("Update model");
-        for(int row = 0; row < SIZE; row++) {
-            for(int col = 0; col < SIZE; col++) {
+        for (int row = 0; row < SIZE; row++) {
+            for (int col = 0; col < SIZE; col++) {
                 CNTRL.change(row, col, COMPONENTS[col][row].getVal());
             }
         }
     }
  
     /**
-     * Vyhodnoceni platnosti pozice
+     * Vyhodnoceni platnosti pozice.
+     * 
      * @param row radek
      * @param col sloupec
      * @return radek i sloupec nezaporne, mensi nez rozmer mrizky
@@ -106,12 +113,13 @@ public class Viewer {
      */
     public static class ViewerFactory {
         /**
-         * Jedina instance tovarny
+         * Jedina instance tovarny.
          */
         private static final ViewerFactory INSTANCE = new ViewerFactory();
         
         /**
          * Pristup k instanci.
+         * 
          * @return instance ViewerFactory
          */
         public static ViewerFactory getViewerFactory() { return INSTANCE; }
@@ -119,14 +127,16 @@ public class Viewer {
         private ViewerFactory() { }
 
         /**
-         * Vytvori Viewer s danym Controllerem dane velikosti
+         * Vytvori Viewer s danym Controllerem dane velikosti.
+         * 
          * @param controller Controller, zajistujici kontakt mezi View a Modelem
          * @param size rozmer vysledne mrizky
          * @return nove postaveny, zobrazeny, s controllerem propojeny Viewer
          */
         private Viewer createViewer(Controller controller, int size) {
             ItemComponent[][] components = this.getComponents(size);
-            Viewer v= new Viewer(components, MenuFactory.getInstance(), this.getFrameListener(), controller, size);
+            Viewer v = new Viewer(components, MenuFactory.getInstance(), 
+                    this.getFrameListener(), controller, size);
             this.fillGrid(v, components);
             v.FRAME.pack();
             v.FRAME.setVisible(true);
@@ -136,27 +146,31 @@ public class Viewer {
         
         /**
          * Vytvori Viewer dane velikosti, kteremu bude dan novy Controller.
-         * Fasada nad dalsim rozhranim - netreba se starat o vytvareni controlleru,
-         * ani tvorbu Vieweru.
+         * Fasada nad dalsim rozhranim - netreba se starat o vytvareni
+         * controlleru, ani tvorbu Vieweru.
+         *
          * @param size rozmer vysledne mrizky
          * @return nove postavene a zobrazene okno aplikace
          * @throws IllegalArgumentException size zaporne
          */
         public Viewer createViewer(int size) throws IllegalArgumentException {
-            if (size<0) throw new IllegalArgumentException();
+            if (size < 0) {
+                throw new IllegalArgumentException();
+            }
             return this.createViewer(new Controller(), size);
         }
 
         /**
          * Vytvori ComponentListener, ktery bude reagovat na zmenu velikosti
-         * JFrame a zajisti, ze okno bude mit vzdy shodnou vysku a sirku
+         * JFrame a zajisti, ze okno bude mit vzdy shodnou vysku a sirku.
+         * 
          * @return vytvoreny ComponentListener
          */
         private ComponentListener getFrameListener() {
             return new ComponentAdapter() {
                 @Override
                 public void componentResized(ComponentEvent e) {
-                    JFrame frame = (JFrame)e.getComponent();
+                    JFrame frame = (JFrame) e.getComponent();
                     Dimension dimension = frame.getSize();
                     int size;
                     if (dimension.height != dimension.width) {
@@ -170,28 +184,30 @@ public class Viewer {
         }
 
         /**
-         * Vytvori policka mrizky grafickeho rozhrani
+         * Vytvori policka mrizky grafickeho rozhrani.
+         * 
          * @param size rozmer mrizky
          * @return pole vytvorenych komponent
          */
         private ItemComponent[][] getComponents(int size) {
             ItemComponent[][] components = new ItemComponent[size][size];
-            for(int i=0;i<size;++i){
-                for(int j=0;j<size;++j){
-                    components[i][j]=new ItemComponent(size);
+            for (int i = 0; i < size; ++i) {
+                for (int j = 0; j < size; ++j) {
+                    components[i][j] = new ItemComponent(size);
                 }
             }
             return components;
         }
         
         /**
-         * Vlozi ItemComponenty z pole do panelu Vieweru
+         * Vlozi ItemComponenty z pole do panelu Vieweru.
+         * 
          * @param viewer Viewer
          * @param components pole ItemComponent
          */
         private void fillGrid(Viewer viewer, ItemComponent[][] components) {
-            for(int x = 0; x < components.length; ++x) {
-                for(int y = 0; y < components.length; ++y){
+            for (int x = 0; x < components.length; ++x) {
+                for (int y = 0; y < components.length; ++y){
                     viewer.PANEL.add(components[x][y],getConstraints(x,y));
                 }
             }
@@ -199,18 +215,19 @@ public class Viewer {
         
         /**
          * Vytvori GridBagConstraints pro GridBagLayout okna pro komponentu
-         * v Gridu na pozici x, y
+         * v Gridu na pozici x, y.
+         * 
          * @param x vodorovna souradnice v gridu
          * @param y svisla souradnice v gridu
          * @return GridBagConstraints
          */
         private GridBagConstraints getConstraints(int x, int y) {
-            GridBagConstraints c=new GridBagConstraints();
-            c.gridx=x;
-            c.gridy=y;
-            c.fill=GridBagConstraints.BOTH;
-            c.gridwidth=1;
-            c.gridheight=1;    
+            GridBagConstraints c = new GridBagConstraints();
+            c.gridx = x;
+            c.gridy = y;
+            c.fill = GridBagConstraints.BOTH;
+            c.gridwidth = 1;
+            c.gridheight = 1;    
             return c;
         }
     }

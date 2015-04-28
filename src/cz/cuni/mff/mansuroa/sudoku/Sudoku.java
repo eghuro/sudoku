@@ -1,7 +1,8 @@
 package cz.cuni.mff.mansuroa.sudoku;
 
 /**
- * Model - datova vrstva aplikace
+ * Model - datova vrstva aplikace.
+ * 
  * @author Alexandr Mansurov <alexander.mansurov@gmail.com>
  */
 public class Sudoku {
@@ -10,15 +11,17 @@ public class Sudoku {
     
     /**
      * Vytvori Sudoku dane velikosti.
+     * 
      * @param size sudoku bude rozmeru size * size
      */
     public Sudoku(int size) {
         this.SIZE = size;
-        this.MATRIX=new int[SIZE][SIZE];
+        this.MATRIX = new int[SIZE][SIZE];
     }
     
     /**
-     * Vrati rozmer daneho Sudoku
+     * Vrati rozmer daneho Sudoku.
+     * 
      * @return rozmer mrizky
      */
     public int getSize() {
@@ -34,70 +37,75 @@ public class Sudoku {
      * @param value hodnota je >= 1 a =< size
      * @throws IllegalArgumentException pokud nejsou splnena omezeni
      */
-    public void setValue(int row,int col,int value) throws IllegalArgumentException {
-        if (validPosition(row,col) | (value >= 1) | (value <= SIZE)) {
-            MATRIX[col][row]=value;
+    public void setValue(int row, int col, int value) throws IllegalArgumentException {
+        if (validPosition(row, col) | (value >= 1) | (value <= SIZE)) {
+            MATRIX[col][row] = value;
         } else {
-            throw new IllegalArgumentException("Set ["+col+","+row+"] = "+value);
+            throw new IllegalArgumentException("Set [" + col + "," + row + "] = " + value);
         }
     }
     
     /**
      * Vrat hodnotu sudoku na prislusne pozici.
+     * 
      * @param row radek
      * @param col sloupec
      * @return hodnota na dane pozici
      * @throws IllegalArgumentException pokud nejde o platnou pozici
      */
-    public int getValue(int row,int col) throws IllegalArgumentException {
-        if (validPosition(row,col)) {
+    public int getValue(int row, int col) throws IllegalArgumentException {
+        if (validPosition(row, col)) {
             return MATRIX[col][row];
         } else {
-            throw new IllegalArgumentException("Get ["+col+","+row+"]");
+            throw new IllegalArgumentException("Get [" + col + "," + row + "]");
         }
     }
     
     /**
      * Vymaze hodnotu z dane pozice.
+     * 
      * @param row radek
      * @param col sloupec
      * @throws IllegalArgumentException neplatna souradnice
      */
-    public void unsetValue(int row,int col) throws IllegalArgumentException {
-        if (validPosition(row,col)) {
-            MATRIX[col][row]=0;
+    public void unsetValue(int row, int col) throws IllegalArgumentException {
+        if (validPosition(row, col)) {
+            MATRIX[col][row] = 0;
         } else {
-            throw new IllegalArgumentException("Unset ["+col+","+row+"]");
+            throw new IllegalArgumentException("Unset [" + col + "," + row + "]");
         }
     }
     
     /**
-     * Je nejaka hodnota na dane souradnici
+     * Je nejaka hodnota na dane souradnici.
+     * 
      * @param row radek
      * @param col sloupec
      * @return pokud je na dane souradnici vyplnena hodnota
      * @throws IllegalArgumentException neplatna souradnice
      */
-    public boolean isset(int row,int col) throws IllegalArgumentException {
-        if (validPosition(row,col)) {
+    public boolean isset(int row, int col) throws IllegalArgumentException {
+        if (validPosition(row, col)) {
             return MATRIX[col][row] != 0;
         } else {
-            throw new IllegalArgumentException("isset ["+col+","+row+"]");
+            throw new IllegalArgumentException("isset [" + col + "," + row + "]");
         }
     }
     
     /**
-     * Test, zda jde o platnou souradnici
+     * Test, zda jde o platnou souradnici.
+     * 
      * @param row radek
      * @param col sloupec
      * @return radek >= 0, radek < size, sloupec >= 0, sloupec < size
      */
-    private boolean validPosition(int row,int col) {
+    private boolean validPosition(int row, int col) {
         return (row >= 0) && (row < SIZE) && (col >= 0) && (col < SIZE);
     }
     
     /**
      * Pristup k datum.
+     * 
      * @return pole s ulozenymi daty
      */
     public int[][] getBoard() {

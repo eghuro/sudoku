@@ -4,6 +4,7 @@ import java.io.IOException;
 
 /**
  * Chyba pri ukladani dat do souboru.
+ * 
  * @author Alexandr Mansurov <alexander.mansurov@gmail.com>
  */
 class StoreException extends IOException {
