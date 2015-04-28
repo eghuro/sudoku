@@ -35,18 +35,18 @@ public class Controller {
         for (int i = 0; i < size; ++i) {
             for (int j = 0; j < size; ++j) {
                 view.setValue(i, j, VIEW_UNASSIGNED);
+                model.unsetValue(i, j);
             }
         }
     }
     
-    //TODO
-    public void startTimer() {}
-    
     //uzivatelske akce
     public void change(int row, int col, int value) {
         if (value != 0) {
-            System.out.println("Change ["+col+"]["+row+"] to "+value);
+            //System.out.println("Change ["+col+"]["+row+"] to "+value);
             model.setValue(row, col, value);
+        } else {
+            model.unsetValue(row, col);
         }
     }
     
@@ -60,7 +60,7 @@ public class Controller {
         updateView();
     }
     
-        public void load() {
+    public void load() {
         try {
             clear();
             FileView lw = new FileView(view.getComponent());
@@ -81,6 +81,7 @@ public class Controller {
     }
     
     private void updateView() {
+        System.out.println("Updating view");
         assert (view != null);
         int size = view.getSize();
         for (int i = 0; i < size; i++) {
@@ -91,6 +92,7 @@ public class Controller {
                     set = val+"";
                 }
                 view.setValue(i, j, set);
+                
             }
         }
     }

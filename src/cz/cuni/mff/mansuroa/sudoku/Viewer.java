@@ -80,6 +80,10 @@ public class Viewer {
     public int getSize() {
         return this.SIZE;
     }
+    
+    public Component getComponent() {
+        return FRAME;
+    }
 
     private void fillGrid()
     {
@@ -117,11 +121,7 @@ public class Viewer {
         JMenuItem sol = new JMenuItem(new AbstractAction("Solve") {
             @Override
             public void actionPerformed(ActionEvent e) {
-                for(int row = 0; row < SIZE; row++) {
-                    for(int col = 0; col < SIZE; col++) {
-                        ctrl.change(row, col, COMPONENTS[col][row].getVal());
-                    }
-                }
+                updateModel();
                 ctrl.solve();
             }
         });
@@ -132,6 +132,7 @@ public class Viewer {
         JMenuItem ver = new JMenuItem(new AbstractAction("Verify"){
             @Override
             public void actionPerformed(ActionEvent e) {
+                updateModel();
                 boolean result = ctrl.verify();
                 String msg = result ? "VALID" : "INVALID";
                 JOptionPane.showMessageDialog(null,msg,"SUDOKU",JOptionPane.INFORMATION_MESSAGE);
@@ -164,19 +165,11 @@ public class Viewer {
         JMenuItem store = new JMenuItem(new AbstractAction("Store current board") {
             @Override
             public void actionPerformed(ActionEvent e) {
-                for(int row = 0; row < SIZE; row++) {
-                    for(int col = 0; col < SIZE; col++) {
-                        ctrl.change(row, col, COMPONENTS[col][row].getVal());
-                    }
-                }
+                updateModel();
                 ctrl.store();
             }
         });
         return store;
-    }
-    
-    public Component getComponent() {
-        return FRAME;
     }
 
     private GridBagConstraints getConstraints(int x, int y) {
@@ -204,5 +197,14 @@ public class Viewer {
                 frame.setSize(size, size);
             }
         };
+    }
+    
+    private void updateModel() {
+        System.out.println("Update model");
+        for(int row = 0; row < SIZE; row++) {
+            for(int col = 0; col < SIZE; col++) {
+                ctrl.change(row, col, COMPONENTS[col][row].getVal());
+            }
+        }
     }
 }
