@@ -25,7 +25,6 @@ public class Viewer {
     
     private Viewer(ItemComponent[][] components, MenuFactory mf, ComponentListener frameListener, Controller ctrl, int size) {
         this.ctrl = ctrl;
-        if (size<0) throw new IllegalArgumentException();
         this.SIZE=size;
         this.PANEL=new JPanel(new GridLayout(size,size));
         this.COMPONENTS = components;
@@ -64,7 +63,8 @@ public class Viewer {
         public static ViewerFactory getViewerFactory() { return INSTANCE; }
         private ViewerFactory() { }
 
-        private Viewer createViewer(Controller controller, int size) {
+        private Viewer createViewer(Controller controller, int size) throws IllegalArgumentException {
+            if (size<0) throw new IllegalArgumentException();
             ItemComponent[][] components = this.getComponents(size);
             Viewer v= new Viewer(components, MenuFactory.getInstance(), this.getFrameListener(), controller, size);
             this.fillGrid(v, components, size);

@@ -36,7 +36,7 @@ public class MenuFactory {
         }
 
         public MenuBuilder makeFileMenu() {
-            MENU.add(makeMenu("File", makeLoadItem(CTRL), makeStoreItem(VIEW, CTRL)));
+            MENU.add(makeMenu("File", makeLoadItem(), makeStoreItem(), makeQuitItem()));
             return this;
         }
 
@@ -86,21 +86,30 @@ public class MenuFactory {
             });
         }
 
-        private JMenuItem makeLoadItem(Controller ctrl) {
+        private JMenuItem makeLoadItem() {
             return new JMenuItem(new AbstractAction("Load board") {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    ctrl.load();
+                    CTRL.load();
                 }
             });
         }
 
-        private JMenuItem makeStoreItem(Viewer view, Controller ctrl) {
+        private JMenuItem makeStoreItem() {
             return new JMenuItem(new AbstractAction("Store current board") {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    view.updateModel();
-                    ctrl.store();
+                    VIEW.updateModel();
+                    CTRL.store();
+                }
+            });
+        }
+        
+        private JMenuItem makeQuitItem() {
+            return new JMenuItem(new AbstractAction("Quit") {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    System.exit(0);
                 }
             });
         }
