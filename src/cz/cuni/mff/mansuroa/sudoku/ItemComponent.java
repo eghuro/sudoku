@@ -18,24 +18,19 @@ public class ItemComponent extends JTextField {
     private static final int COLUMNS = 1;
     private static final String EMPTY = "";
     private static final int UNASSIGNED = 0;
+    
     private final int SIZE;
     
     public static final int ERR_VALUE = -1;
-    
-    private Dimension dimension;
     
     /**
      * Vytvori komponentu pro sudoku dane velikosti.
      * 
      * @param size velikost sudoku
      */
-    public ItemComponent(int size) {
+    private ItemComponent(int size) {
         super(EMPTY, COLUMNS);
-        this.SIZE = size;
-        this.dimension = super.getSize();
-        
-        super.setInputVerifier(ItemComponent.getInputVerifier(size));
-        super.addComponentListener(ItemComponent.getComponentListener());
+        this.SIZE = size; 
     }
     
     /**
@@ -66,51 +61,6 @@ public class ItemComponent extends JTextField {
         } else {
             return UNASSIGNED;
         }
-    }
-    
-    /**
-     * Vytvori overovac vstupu pro danou komponentu.
-     * 
-     * @param size rozmer sudoku
-     * @return InputVerifier pro platne vstupni hodnoty
-     */
-    private static InputVerifier getInputVerifier(int size) {
-        return new InputVerifier() {
-            @Override
-            public boolean verify(JComponent input) {
-                ItemComponent ic = (ItemComponent) input;
-                String text = ic.getText();
-                try {
-                    int val = Integer.parseInt(text);
-                    if ((val > 0) && (val <= size)) {
-                        ic.setValue(text);
-                    } else {
-                        ic.setValue(EMPTY);
-                    }
-                } catch (Exception e) {
-                    ic.setValue("");
-                }
-                return true;
-            }
-        };
-    }
-    
-    /**
-     * Vytvori ComponentListener pro zmenu fontu pri zmene rozmeru komponenty.
-     * 
-     * @return ComponentAdapter implementujici componentResized() a upravujici 
-     * velikost textu
-     */
-    private static ComponentListener getComponentListener() {
-        return new ComponentAdapter() {
-            @Override
-            public void componentResized(ComponentEvent e) {
-                Dimension newDimension = e.getComponent().getSize();
-                ItemComponent ic = (ItemComponent) e.getComponent();
-                ic.setFont(newDimension);
-                ic.dimension = newDimension;
-            }
-        };
     }
     
     /**
@@ -149,5 +99,64 @@ public class ItemComponent extends JTextField {
     private static float getNewSize(Dimension newDimension) { 
         float newArea = ItemComponent.getArea(newDimension);
         return newArea / 100;
+    }
+    
+    public static class ItemComponentFactory {
+        private static final ItemComponentFactory INSTANCE = new ItemComponentFactory();
+        private ItemComponentFactory() {}
+        public static ItemComponentFactory getInstance() {
+            return INSTANCE;
+        }
+        
+        public ItemComponent create(int size) {
+            ItemComponent component = new ItemComponent(size);
+            component.setInputVerifier(ItemComponentFactory.getInputVerifier(size));
+            component.addComponentListener(ItemComponentFactory.getComponentListener());
+            return component;
+        }
+        
+       /**
+        * Vytvori ComponentListener pro zmenu fontu pri zmene rozmeru komponenty.
+        * 
+        * @return ComponentAdapter implementujici componentResized() a upravujici 
+        * velikost textu
+        */
+       private static ComponentListener getComponentListener() {
+           return new ComponentAdapter() {
+               @Override
+               public void componentResized(ComponentEvent e) {
+                   Dimension newDimension = e.getComponent().getSize();
+                   ItemComponent ic = (ItemComponent) e.getComponent();
+                   ic.setFont(newDimension);
+               }
+           };
+       }
+       
+        /**
+         * Vytvori overovac vstupu pro danou komponentu.
+         * 
+         * @param size rozmer sudoku
+         * @return InputVerifier pro platne vstupni hodnoty
+         */
+        private static InputVerifier getInputVerifier(int size) {
+            return new InputVerifier() {
+                @Override
+                public boolean verify(JComponent input) {
+                    ItemComponent ic = (ItemComponent) input;
+                    String text = ic.getText();
+                    try {
+                        int val = Integer.parseInt(text);
+                        if ((val > 0) && (val <= size)) {
+                            ic.setValue(text);
+                        } else {
+                            ic.setValue(EMPTY);
+                        }
+                    } catch (Exception e) {
+                        ic.setValue("");
+                    }
+                    return true;
+                }
+            };
+        }
     }
 }

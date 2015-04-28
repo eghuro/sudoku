@@ -1,5 +1,6 @@
 package cz.cuni.mff.mansuroa.sudoku;
 
+import cz.cuni.mff.mansuroa.sudoku.ItemComponent.ItemComponentFactory;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -190,10 +191,11 @@ public class Viewer {
          * @return pole vytvorenych komponent
          */
         private ItemComponent[][] getComponents(int size) {
+            ItemComponentFactory factory = ItemComponentFactory.getInstance();
             ItemComponent[][] components = new ItemComponent[size][size];
             for (int i = 0; i < size; ++i) {
                 for (int j = 0; j < size; ++j) {
-                    components[i][j] = new ItemComponent(size);
+                    components[i][j] = factory.create(size);
                 }
             }
             return components;
