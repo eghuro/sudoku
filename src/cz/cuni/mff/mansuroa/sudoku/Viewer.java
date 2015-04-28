@@ -64,13 +64,18 @@ public class Viewer {
         public static ViewerFactory getViewerFactory() { return INSTANCE; }
         private ViewerFactory() { }
 
-        public Viewer createViewer(Controller controller, int size) {
+        private Viewer createViewer(Controller controller, int size) {
             ItemComponent[][] components = this.getComponents(size);
             Viewer v= new Viewer(components, MenuFactory.getInstance(), this.getFrameListener(), controller, size);
             this.fillGrid(v, components, size);
             v.FRAME.pack();
             v.FRAME.setVisible(true);
+            controller.setViewer(v);
             return v;
+        }
+        
+        public Viewer createViewer(int size){
+            return this.createViewer(new Controller(), size);
         }
 
         private ComponentListener getFrameListener() {
