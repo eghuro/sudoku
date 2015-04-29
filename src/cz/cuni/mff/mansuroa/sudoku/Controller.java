@@ -1,5 +1,7 @@
 package cz.cuni.mff.mansuroa.sudoku;
 
+import javax.swing.JOptionPane;
+
 /**
  * Controller zajistuje komunikaci mezi datovou vrstvou - tridou Sudoku a 
  * grafickym rozhranim ve tride Viewer.
@@ -37,8 +39,14 @@ public class Controller {
     public void solve() {
         assert (model != null);
         
-        Solver.solve(model);
-        updateView();
+        try {
+            Solver.solve(model);
+        } catch (SolverException e) {
+            JOptionPane.showMessageDialog(view.getComponent(), "Reseni nenalezeno.", "Solve error", JOptionPane.ERROR_MESSAGE);
+            this.model = new Sudoku(view.getSize()); // sudoku mohlo byt modifikovano, navrat do konsistentniho stavu
+        } finally {
+            updateView();
+        }
     }
     
     /**
@@ -101,7 +109,8 @@ public class Controller {
             FileView lw = new FileView(view.getComponent());
             this.model = Loader.load(lw.getFile());
         } catch (LoadException e) {
-            this.model = new Sudoku(view.getSize());
+            this.model = new Sudoku(view.getSize()); // model byl modifikovan, navrat do konsistentniho stavu
+            JOptionPane.showMessageDialog(view.getComponent(), "Nacteni ze souboru selhalo.", "Load error", JOptionPane.ERROR_MESSAGE);
         } finally {
             updateView();
         }
@@ -119,6 +128,8 @@ public class Controller {
             FileView sw = new FileView(view.getComponent());
             Storer.store(this.model, sw.getFile());
         } catch (StoreException e) {
+            JOptionPane.showMessageDialog(view.getComponent(), "Ulozeni do souboru selhalo.", "Store error", JOptionPane.ERROR_MESSAGE);
+
         }
     }
     

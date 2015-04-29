@@ -29,7 +29,7 @@ class Loader {
      * @return nactene sudoku
      * @throws LoadException doslo k chybe
      */
-    public static Sudoku load(File file) throws LoadException {
+    public static final Sudoku load(final File file) throws LoadException {
         try {
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();
@@ -54,13 +54,23 @@ class Loader {
      * 
      * @param sudoku Data
      * @param entry XML element k naparsovani
+     * @throws LoadException neplatna hodnota nebo pokus nacist jiz nactene pole
      */
-    private static void parseNode(Sudoku sudoku, Element entry) {
+    private static void parseNode(final Sudoku sudoku, final Element entry) throws LoadException {
         int row = Integer.parseInt(entry.getAttribute("row"));
         int col = Integer.parseInt(entry.getAttribute("col"));
-        int value = Integer.parseInt(entry.getAttribute("value"));
-               
-        sudoku.setValue(row, col, value);
+        
+        if (!sudoku.isset(row, col)) {
+            int value = Integer.parseInt(entry.getAttribute("value"));   
+         
+            try {
+                sudoku.setValue(row, col, value);
+            } catch (IllegalArgumentException e) {
+                throw new LoadException(e);
+            }
+        } else {
+            throw new LoadException();
+        }
     }
 
     /**
@@ -68,8 +78,9 @@ class Loader {
      * 
      * @param entries XML elementy
      * @return nactene Sudoku
+     * @throws LoadException chyba pri zpracovani nektereho elementu
      */
-    private static Sudoku parseEntries(NodeList entries) {
+    private static Sudoku parseEntries(NodeList entries) throws LoadException{
         Sudoku sudoku = new Sudoku(9);
         for (int entryNo = 0; entryNo < entries.getLength(); entryNo++) {
             Node entryNode = entries.item(entryNo);

@@ -3,72 +3,35 @@ package cz.cuni.mff.mansuroa.sudoku;
 import java.util.Arrays;
 
 /**
- *
+ * Sudoku solver.
+ * Je pouzit open source solver, ktery byl prizpusoben pro integraci do zbytku 
+ * aplikace.
+ * 
  * JSON Sudoku solver is covered under the Creative Commons Attribution 3.0 Unported License
  * http://creativecommons.org/licenses/by/3.0/
  * 
  * @author: Kevin Coulombe {@link http://www.byteauthor.com/2010/08/sudoku-solver-update/}
- * 
  * modified
  */
 public class Solver {
-    //TODO
-    public static void solve(Sudoku s) {
-        // a dummy board solve to force the JIT compiler to precompile everything. (much faster)
-        /*solveBoard(new int[][] { 
-                new int[] {0,0,0,0,0,0,0,0,0},
-                new int[] {0,0,0,0,0,0,0,0,0},
-                new int[] {0,0,0,0,0,0,0,0,0},
-                new int[] {0,0,0,0,0,0,0,0,0},
-                new int[] {0,0,0,0,0,0,0,0,0},
-                new int[] {0,0,0,0,0,0,0,0,0},
-                new int[] {0,0,0,0,0,0,0,0,0},
-                new int[] {0,0,0,0,0,0,0,0,0},
-                new int[] {0,0,0,0,0,0,0,0,0}});
-        
-        // A delay to allow JIT compilation to run.
-        try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e1) {
-			e1.printStackTrace();
-		}
-        */
-        if (s != null) {
-            final long timeBefore = System.nanoTime();
-
-            final int placedNumbers = solveBoard(s.getBoard());
-
-            final long timeAfter = System.nanoTime();
-
-            if (placedNumbers == 81) {
-                System.out.println("Doba reseni: " + ((timeAfter - timeBefore) / 1) + " nanoseconds.");
+    /**
+     * Vyresi zadane sudoku.
+     * Vyzkousi nektere heuristiky a pripadne zkusi reseni hrubou silou.
+     * 
+     * @param sudoku sudoku k vyreseni
+     * @throws SolverException argument "null" nebo reseni neexistuje
+     */
+    public static void solve(Sudoku sudoku) throws SolverException {
+        if (sudoku != null) {
+            final int placedNumbers = solveBoard(sudoku.getBoard());
+            if (placedNumbers != 81) {
+                throw new SolverException("No solution exists!");
             }
-            else {
-                System.out.println("Reseni neexistuje! Operace trvala " + ((timeAfter - timeBefore) / 100) + " nanoseconds.");
-            }
-
-            printBoard(s.getBoard());
         }
         else {
-            System.out.println("Argument null");
+            throw new SolverException(new NullPointerException("Argument null"));
         }
     }
-    
-   // -----
-    // INNER TYPES
-    // -----
-    
-    private final static class FileFormatException extends Exception {
-
-        /**
-         * 
-         */
-        private static final long serialVersionUID = -6708704362775269448L;
-    }
-
-    // -----
-    // CONSTANTS
-    // -----
     
     private final static int[] allowedBitFields = new int[] {
             0,
@@ -85,11 +48,7 @@ public class Solver {
     
     private final static int allAllowed = arraySum(allowedBitFields);
 
-    // -----
-    // STATIC METHODS
-    // -----
-
-    public static int solveBoard(final int[][] board) {
+    private static int solveBoard(final int[][] board) {
         final int[][] allowedValues = new int[9][9];
         int placedNumberCount = 0;
         
@@ -107,7 +66,6 @@ public class Solver {
             }
         }
         
-
         return solveBoard(board, allowedValues, placedNumberCount);
     }
 
