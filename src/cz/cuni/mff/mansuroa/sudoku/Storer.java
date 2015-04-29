@@ -16,9 +16,11 @@ import org.w3c.dom.Element;
 /**
  * Storer uklada data do XML souboru.
  * 
- * @author Alexandr Mansurov <alexander.mansurov@gmail.com>
+ * @author Alexandr Mansurov
  */
 public class Storer {
+    private Storer() {}
+    
     /**
      * Ulozi data sudoku do souboru.
      * 

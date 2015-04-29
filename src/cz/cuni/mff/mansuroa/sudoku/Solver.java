@@ -10,10 +10,12 @@ import java.util.Arrays;
  * JSON Sudoku solver is covered under the Creative Commons Attribution 3.0 Unported License
  * http://creativecommons.org/licenses/by/3.0/
  * 
- * @author: Kevin Coulombe {@link http://www.byteauthor.com/2010/08/sudoku-solver-update/}
+ * @author: Kevin Coulombe http://www.byteauthor.com/2010/08/sudoku-solver-update/
  * modified
  */
 public class Solver {
+    private Solver(){}
+    
     /**
      * Vyresi zadane sudoku.
      * Vyzkousi nektere heuristiky a pripadne zkusi reseni hrubou silou.

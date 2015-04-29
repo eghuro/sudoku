@@ -5,9 +5,9 @@ import java.io.IOException;
 /**
  * Chyba pri nacitani dat ze souboru.
  * 
- * @author Alexandr Mansurov <alexander.mansurov@gmail.com>
+ * @author Alexandr Mansurov
  */
-class LoadException extends IOException {
+public class LoadException extends IOException {
 
     public LoadException() {
     }

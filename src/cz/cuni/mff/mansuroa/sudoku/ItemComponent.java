@@ -12,7 +12,7 @@ import javax.swing.JTextField;
 /**
  * Komponenta pro zobrazeni policka sudoku ve Vieweru.
  * 
- * @author Alexandr Mansurov <alexander.mansurov@gmail.com>
+ * @author Alexandr Mansurov
  */
 public class ItemComponent extends JTextField {
     private static final int COLUMNS = 1;
@@ -101,14 +101,30 @@ public class ItemComponent extends JTextField {
         return newArea / 100;
     }
     
+    /**
+     * Tovarna na ItemComponent
+     */
     public static class ItemComponentFactory {
         private static final ItemComponentFactory INSTANCE = new ItemComponentFactory();
         private ItemComponentFactory() {}
+        
+        /**
+         * Umozni pristup k jedine instanci trnyovarny.
+         * @return instance tovarny
+         */
         public static ItemComponentFactory getInstance() {
             return INSTANCE;
         }
         
+        /**
+         * Vytvori ItemComponent pro sudoku dane velikosti.
+         * 
+         * @param size velikost sudoku (nezaporne)
+         * @return nova komponenta
+         */
         public ItemComponent create(int size) {
+            if (size<0) throw new IllegalArgumentException();
+            
             ItemComponent component = new ItemComponent(size);
             component.setInputVerifier(ItemComponentFactory.getInputVerifier(size));
             component.addComponentListener(ItemComponentFactory.getComponentListener());

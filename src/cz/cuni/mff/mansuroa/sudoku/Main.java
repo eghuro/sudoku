@@ -3,9 +3,11 @@ package cz.cuni.mff.mansuroa.sudoku;
 /**
  * Vstupni bod aplikace obsahujici metodu main.
  * 
- * @author Alexandr Mansurov <alexander.mansurov@gmail.com>
+ * @author Alexandr Mansurov
  */
-public class Main {
+public final class Main {
+    private Main(){}
+    
     /**
      * Metoda main vytvori uzivatelske rozhrani.
      * 

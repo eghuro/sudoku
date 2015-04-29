@@ -18,9 +18,12 @@ import org.xml.sax.SAXException;
  * &lt;sudoku&gt;
  *   &lt;entry row="cisloRadku" col="cisloSloupce" value="hodnota" /&gt;
  * &lt;/sudoku&gt;
- * @author Alexandr Mansurov <alexander.mansurov@gmail.com>
+ * 
+ * Pro kazdou dvojici (radek, sloupec) existuje nejvyse jeden zaznam entry.
+ * @author Alexandr Mansurov
  */
-class Loader {
+public class Loader {
+    private Loader() {}
     
     /**
      * Nacti sudoku ze souboru.

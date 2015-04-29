@@ -5,9 +5,9 @@ import java.io.IOException;
 /**
  * Chyba pri ukladani dat do souboru.
  * 
- * @author Alexandr Mansurov <alexander.mansurov@gmail.com>
+ * @author Alexandr Mansurov
  */
-class StoreException extends IOException {
+public class StoreException extends IOException {
     public StoreException() {}
     public StoreException(Exception e) {
         super(e);

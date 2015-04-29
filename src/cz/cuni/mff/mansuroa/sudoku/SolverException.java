@@ -2,9 +2,9 @@ package cz.cuni.mff.mansuroa.sudoku;
 
 /**
  * Doslo k chybe pri reseni sudoku
- * @author Alexandr Mansurov <alexander.mansurov@gmail.com>
+ * @author Alexandr Mansurov
  */
-class SolverException extends Exception {
+public class SolverException extends Exception {
 
     public SolverException(String no_solution_exists) {
         super(no_solution_exists);

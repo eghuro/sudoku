@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
 /**
  * Tovarna na vyrobu menu Vieweru.
  * 
- * @author Alexandr Mansurov <alexander.mansurov@gmail.com>
+ * @author Alexandr Mansurov
  */
 public class MenuFactory {
     private static final MenuFactory INSTANCE = new MenuFactory();

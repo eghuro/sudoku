@@ -3,7 +3,7 @@ package cz.cuni.mff.mansuroa.sudoku;
 /**
  * Model - datova vrstva aplikace.
  * 
- * @author Alexandr Mansurov <alexander.mansurov@gmail.com>
+ * @author Alexandr Mansurov
  */
 public class Sudoku {
     private final int SIZE;
@@ -32,9 +32,9 @@ public class Sudoku {
      * Nastav hodnotu policka.
      * Do daneho radku a sloupce vloz danou hodnotu.
      *
-     * @param row radek, hodnota je >= 0 a < size
-     * @param col sloupec, hodnota je >= 0 a < size
-     * @param value hodnota je >= 1 a =< size
+     * @param row radek, hodnota je &gt;= 0 a &lt; size
+     * @param col sloupec, hodnota je &gt;= 0 a &lt; size
+     * @param value hodnota je &gt;= 1 a =&lt; size
      * @throws IllegalArgumentException pokud nejsou splnena omezeni
      */
     public void setValue(int row, int col, int value) throws IllegalArgumentException {

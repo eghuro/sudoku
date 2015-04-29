@@ -17,7 +17,7 @@ import javax.swing.JPanel;
  * API umoznuje predevsim zmenit hodnotu nektereho policka Sudoku, dale
  * pomocne metody pro dalsi komponenty.
  * 
- * @author Alexandr Mansurov <alexander.mansurov@gmail.com>
+ * @author Alexandr Mansurov
  */
 public class Viewer {
     private final String TITLE="Sudoku";

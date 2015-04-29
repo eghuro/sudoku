@@ -6,7 +6,7 @@ import javax.swing.JOptionPane;
  * Controller zajistuje komunikaci mezi datovou vrstvou - tridou Sudoku a 
  * grafickym rozhranim ve tride Viewer.
  * 
- * @author Alexandr Mansurov <alexander.mansurov@gmail.com>
+ * @author Alexandr Mansurov
  */
 public class Controller {
     private final String VIEW_UNASSIGNED = "";
