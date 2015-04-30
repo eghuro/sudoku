@@ -60,6 +60,7 @@ public class Storer {
 
     /**
      * Vytvori element entry s daty o jednom policku.
+     * 
      * @param sudoku data
      * @param row souradnice (radek)
      * @param col souradnice (sloupec)

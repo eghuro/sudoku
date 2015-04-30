@@ -50,6 +50,12 @@ public class Solver {
     
     private final static int allAllowed = arraySum(allowedBitFields);
 
+    /**
+     * Vyresi sudoku pro zadanou matici.
+     * 
+     * @param board zadani
+     * @return pocet umistenych cisel
+     */
     private static int solveBoard(final int[][] board) {
         final int[][] allowedValues = new int[9][9];
         int placedNumberCount = 0;
@@ -71,8 +77,15 @@ public class Solver {
         return solveBoard(board, allowedValues, placedNumberCount);
     }
 
-    private static int solveBoard(final int[][] board, final int[][] allowedValues, int placedNumberCount) {
-      
+    /**
+     * Vyresi sudoku pro zadanou matici a povolene hodnoty.
+     * 
+     * @param board resene sudoku
+     * @param allowedValues povolene hodnoty
+     * @param placedNumberCount pocet zatim umistenych cisel
+     * @return novy pocet zatim umistenych cisel
+     */
+    private static int solveBoard(final int[][] board, final int[][] allowedValues, int placedNumberCount) {   
         int lastPlacedNumbersCount = 0;
       
         while (placedNumberCount - lastPlacedNumbersCount > 3 && placedNumberCount < 68 && placedNumberCount > 10) {
@@ -108,8 +121,15 @@ public class Solver {
         return placedNumberCount;
     }
 
+    /**
+     * Zkus resit hrubou silou.
+     * 
+     * @param board zadani
+     * @param allowedValues povolene hodnoty
+     * @param placedNumberCount pocet umistenych cislic
+     * @return vyresene sudoku
+     */
     private static int[][] attemptBruteForce(final int[][] board, final int[][] allowedValues, final int placedNumberCount) {
-
         for (int x = 0; x < 9; x++) {
             final int[] allowedValuesRow = allowedValues[x];
             final int[] boardRow = board[x];
@@ -138,8 +158,14 @@ public class Solver {
         return null;
     }
 
+    /**
+     * Nejaka hodnota je povolena pouze v jednom poli v nejakem radku nebo sloupci.
+     * 
+     * @param board resene sudoku
+     * @param allowedValues povolene hodnoty
+     * @return pocet vyresenych poli
+     */
     private static int moveNoOtherRowOrColumnAllowed(final int[][] board, final int[][] allowedValues) {
-        
         int moveCount = 0;
         
         for (int value = 1; value <= 9; value++) {
@@ -174,8 +200,7 @@ public class Solver {
                     if ((allowedValues[x][y] & allowedBitField) > 0) {
                         if (allowedX < 0) {
                             allowedX = x;
-                        }
-                        else {
+                        } else {
                             allowedX = -1;
                             break;
                         }
@@ -192,6 +217,13 @@ public class Solver {
         return moveCount;
     }
 
+    /**
+     * Pouze jedna hodnota je povolena.
+     * 
+     * @param board zadani
+     * @param allowedValues povolene hodoty
+     * @return pocet vyresenych poli
+     */
     private static int moveNothingElseAllowed(final int[][] board,
             final int[][] allowedValues) {
         
@@ -212,6 +244,13 @@ public class Solver {
         return moveCount;
     }
 
+    /**
+     * Pokud v nejakem radku nebo sloupci maji dve pole pouze dve stejne mozne 
+     * hodnoty, pak zadne dalsi pole na danem radku nebo sloupci nebude obsahovat
+     * tyto dve hodnoty
+     * 
+     * @param allowedValues povolene hodnoty
+     */
     private static void applyNakedPairs(final int[][] allowedValues) {
         for (int x = 0; x < 9; x++) {
             for (int y = 0; y < 9; y++) {
@@ -254,6 +293,13 @@ public class Solver {
         }
     }
 
+    /**
+     * Analyzuje radky a sloupce a hleda v jakem ze tri bloku je nektera hodnota
+     * v danem radku ci sloupci. Pokud muze byt pouze v jednom bloku, pak urcite
+     * neni v jinem radku resp. sloupci v tom bloku.
+     * 
+     * @param allowedValues povolene hodnoty
+     */
     private static void applyLineCandidateConstraints(final int[][] allowedValues) {
         for (int value = 1; value <= 9; value++) {
             final int valueMask = allowedBitFields[value];
@@ -294,11 +340,9 @@ public class Solver {
                                     
                                     if (scanningSecondPairX != finalX) {
                                         applyX = finalX;
-                                    }
-                                    else if (scanningSecondPairX - scanningX > 1) {
+                                    } else if (scanningSecondPairX - scanningX > 1) {
                                         applyX = scanningSecondPairX - 1;
-                                    }
-                                    else {
+                                    } else {
                                         applyX = scanningX - 1;
                                     }
                                     
@@ -354,11 +398,9 @@ public class Solver {
                                     
                                     if (scanningSecondPairY != finalY) {
                                         applyY = finalY;
-                                    }
-                                    else if (scanningSecondPairY - scanningY > 1) {
+                                    } else if (scanningSecondPairY - scanningY > 1) {
                                         applyY = scanningSecondPairY - 1;
-                                    }
-                                    else {
+                                    } else {
                                         applyY = scanningY - 1;
                                     }
                                     
@@ -378,12 +420,27 @@ public class Solver {
         }
     }
 
+    /**
+     * Nastav hodnotu
+     * 
+     * @param board resene sudoku
+     * @param allowedValues povolene hodnoty
+     * @param value hodnota
+     * @param x souradnice
+     * @param y souradnice
+     */
     private static void setValue(final int[][] board, final int[][] allowedValues, final int value, final int x, final int y) {
         board[x][y] = value;
         allowedValues[x][y] = 0;
         applyAllowedValuesMask(board, allowedValues, x, y);
     }
     
+    /**
+     * Vrati index posledniho nastaveneho bitu.
+     * 
+     * @param value hodnota
+     * @return index bitu
+     */
     private static int getLastSetBitIndex(int value) {
         int bitIndex = 0;
         
@@ -395,9 +452,16 @@ public class Solver {
         return bitIndex;
     }
 
+    /**
+     * Nastav masku povolenych hodnot.
+     * 
+     * @param board resene sudoku
+     * @param allowedValues povolene hodnoty
+     * @param x souradnice
+     * @param y souradnice
+     */
     private static void applyAllowedValuesMask(final int[][] board,
             final int[][] allowedValues, final int x, final int y) {
-
         final int mask = ~allowedBitFields[board[x][y]];
         
         for (int maskApplyX = 0; maskApplyX < 9; maskApplyX++) {
@@ -504,6 +568,12 @@ public class Solver {
         allowedValuesRow2[sectionY2] &= mask;
     }
 
+    /**
+     * Secte nastavene bity
+     * 
+     * @param value cislo
+     * @return pocet nastave
+     */
     private static int countSetBits(int value) {
         int count = 0;
         
@@ -515,6 +585,11 @@ public class Solver {
         return count;
     }
 
+    /**
+     * Secte hodnoty v poli
+     * @param array pole
+     * @return soucet
+     */
     private static int arraySum(final int[] array) {
         int sum = 0;
         
@@ -525,6 +600,11 @@ public class Solver {
         return sum;
     }
 
+    /**
+     * Kopiruje pole
+     * @param matrix puvodni
+     * @return kopie
+     */
     private static int[][] copyGameMatrix(final int[][] matrix) {
         return new int[][] {
             Arrays.copyOf(matrix[0], 9),
@@ -537,15 +617,5 @@ public class Solver {
             Arrays.copyOf(matrix[7], 9),
             Arrays.copyOf(matrix[8], 9),
         };
-    }
-
-    private static void printBoard(final int[][] board) {
-        for (int y = 0; y < 9; y++) {
-            for (int x = 0; x < 9; x++) {
-                System.out.print(board[x][y]);
-            }
-            
-            System.out.println();
-        }
     }
 }
