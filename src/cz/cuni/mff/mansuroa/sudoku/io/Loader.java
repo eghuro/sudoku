@@ -63,17 +63,16 @@ public class Loader {
     private static void parseNode(final Sudoku sudoku, final Element entry) throws LoadException {
         int row = Integer.parseInt(entry.getAttribute("row"));
         int col = Integer.parseInt(entry.getAttribute("col"));
-        
-        if (!sudoku.isset(row, col)) {
-            int value = Integer.parseInt(entry.getAttribute("value"));   
-         
-            try {
+
+        try{
+            if (!sudoku.isset(row, col)) {
+                int value = Integer.parseInt(entry.getAttribute("value"));
                 sudoku.setValue(row, col, value);
-            } catch (IllegalArgumentException e) {
-                throw new LoadException(e);
+            } else {
+                throw new LoadException();
             }
-        } else {
-            throw new LoadException();
+        } catch (IllegalArgumentException e) {
+            throw new LoadException(e);
         }
     }
 

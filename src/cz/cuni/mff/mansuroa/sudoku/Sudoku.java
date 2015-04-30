@@ -38,7 +38,7 @@ public class Sudoku {
      * @throws IllegalArgumentException pokud nejsou splnena omezeni
      */
     public void setValue(int row, int col, int value) throws IllegalArgumentException {
-        if (validPosition(row, col) | (value >= 1) | (value <= SIZE)) {
+        if (validPosition(row, col) & (value >= 1) & (value <= SIZE)) {
             MATRIX[col][row] = value;
         } else {
             throw new IllegalArgumentException("Set [" + col + "," + row + "] = " + value);
