@@ -1,5 +1,6 @@
-package cz.cuni.mff.mansuroa.sudoku;
+package cz.cuni.mff.mansuroa.sudoku.gui;
 
+import cz.cuni.mff.mansuroa.sudoku.Controller;
 import java.awt.event.ActionEvent;
 import java.util.Arrays;
 import javax.swing.AbstractAction;

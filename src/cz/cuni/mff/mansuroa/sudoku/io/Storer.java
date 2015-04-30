@@ -1,5 +1,6 @@
-package cz.cuni.mff.mansuroa.sudoku;
+package cz.cuni.mff.mansuroa.sudoku.io;
 
+import cz.cuni.mff.mansuroa.sudoku.Sudoku;
 import java.io.File;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -69,7 +70,6 @@ public class Storer {
         int value = sudoku.getValue(row, col);
         if (value != 0) {
             Element entry = doc.createElement("entry");
-            System.out.println("New entry [" + row + "," + col + "] : " + value);
             entry.setAttribute("row", row + "");
             entry.setAttribute("col", col + "");
             entry.setAttribute("value", sudoku.getValue(row, col) + "");

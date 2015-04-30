@@ -1,5 +1,6 @@
-package cz.cuni.mff.mansuroa.sudoku;
+package cz.cuni.mff.mansuroa.sudoku.io;
 
+import cz.cuni.mff.mansuroa.sudoku.Sudoku;
 import java.io.File;
 import java.io.IOException;
 import javax.xml.parsers.DocumentBuilder;

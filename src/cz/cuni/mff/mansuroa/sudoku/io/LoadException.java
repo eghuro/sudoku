@@ -1,4 +1,4 @@
-package cz.cuni.mff.mansuroa.sudoku;
+package cz.cuni.mff.mansuroa.sudoku.io;
 
 import java.io.IOException;
 

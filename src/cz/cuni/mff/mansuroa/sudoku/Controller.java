@@ -1,5 +1,12 @@
 package cz.cuni.mff.mansuroa.sudoku;
 
+import cz.cuni.mff.mansuroa.sudoku.io.LoadException;
+import cz.cuni.mff.mansuroa.sudoku.io.Storer;
+import cz.cuni.mff.mansuroa.sudoku.io.StoreException;
+import cz.cuni.mff.mansuroa.sudoku.io.Loader;
+import cz.cuni.mff.mansuroa.sudoku.gui.Viewer;
+import cz.cuni.mff.mansuroa.sudoku.gui.FileView;
+import java.io.File;
 import javax.swing.JOptionPane;
 
 /**
@@ -35,17 +42,14 @@ public class Controller {
     
     /**
      * Predej stavajici data Solveru k vyreseni a prekresli obrazovku.
+     * Reseni probiha v samostatnemvlakne.
      */
     public void solve() {
         assert (model != null);
-        
-        try {
-            Solver.solve(model);
-        } catch (SolverException e) {
-            JOptionPane.showMessageDialog(view.getComponent(), "Reseni nenalezeno.", "Solve error", JOptionPane.ERROR_MESSAGE);
-            this.model = new Sudoku(view.getSize()); // sudoku mohlo byt modifikovano, navrat do konsistentniho stavu
-        } finally {
-            updateView();
+        if (Verificator.verify(model)) {
+            worker.start();
+        } else {
+            JOptionPane.showMessageDialog(view.getComponent(), "Zadani neni validni.", "Solve error", JOptionPane.ERROR_MESSAGE);
         }
     }
     
@@ -107,7 +111,10 @@ public class Controller {
         try {
             clear();
             FileView lw = new FileView(view.getComponent());
-            this.model = Loader.load(lw.getFile());
+            File file = lw.getFile();
+            if (file != null) {
+                this.model = Loader.load(file);
+            }
         } catch (LoadException e) {
             this.model = new Sudoku(view.getSize()); // model byl modifikovan, navrat do konsistentniho stavu
             JOptionPane.showMessageDialog(view.getComponent(), "Nacteni ze souboru selhalo.", "Load error", JOptionPane.ERROR_MESSAGE);
@@ -126,7 +133,10 @@ public class Controller {
         
         try {
             FileView sw = new FileView(view.getComponent());
-            Storer.store(this.model, sw.getFile());
+            File file = sw.getFile();
+            if (file != null){
+                Storer.store(this.model, file);
+            }
         } catch (StoreException e) {
             JOptionPane.showMessageDialog(view.getComponent(), "Ulozeni do souboru selhalo.", "Store error", JOptionPane.ERROR_MESSAGE);
 
@@ -151,4 +161,21 @@ public class Controller {
             }
         }
     }
+    
+    private final Thread worker = new Thread() {
+        @Override
+        /**
+         * Vyres sudoku. Zobraz dialog, pokud reseni selze. Prekresli obrazovku.
+         */
+        public void run() {
+            try {
+                Solver.solve(model);
+            } catch (SolverException e) {
+                JOptionPane.showMessageDialog(view.getComponent(), "Reseni nenalezeno.", "Solve error", JOptionPane.ERROR_MESSAGE);
+                model = new Sudoku(view.getSize()); // sudoku mohlo byt modifikovano, navrat do konsistentniho stavu
+            } finally {
+                updateView();
+            }
+        }
+    };
 }

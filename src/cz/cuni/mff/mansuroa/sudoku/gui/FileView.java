@@ -1,4 +1,4 @@
-package cz.cuni.mff.mansuroa.sudoku;
+package cz.cuni.mff.mansuroa.sudoku.gui;
 
 import java.awt.Component;
 import java.io.File;

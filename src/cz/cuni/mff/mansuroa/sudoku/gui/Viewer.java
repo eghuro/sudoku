@@ -1,6 +1,7 @@
-package cz.cuni.mff.mansuroa.sudoku;
+package cz.cuni.mff.mansuroa.sudoku.gui;
 
-import cz.cuni.mff.mansuroa.sudoku.ItemComponent.ItemComponentFactory;
+import cz.cuni.mff.mansuroa.sudoku.Controller;
+import cz.cuni.mff.mansuroa.sudoku.gui.ItemComponent.ItemComponentFactory;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -88,7 +89,6 @@ public class Viewer {
      * Zapise aktualni hodnoty z mrizky do modelu.
      */
     public void updateModel() {
-        System.out.println("Update model");
         for (int row = 0; row < SIZE; row++) {
             for (int col = 0; col < SIZE; col++) {
                 CNTRL.change(row, col, COMPONENTS[col][row].getVal());

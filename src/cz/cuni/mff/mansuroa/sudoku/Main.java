@@ -1,5 +1,7 @@
 package cz.cuni.mff.mansuroa.sudoku;
 
+import cz.cuni.mff.mansuroa.sudoku.gui.Viewer;
+
 /**
  * Vstupni bod aplikace obsahujici metodu main.
  * 

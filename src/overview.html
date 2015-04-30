@@ -1,0 +1,35 @@
+<body>
+ <p>Aplikace Sudoku s GUI. Uzivatel muze naklikat zadani a aplikace dopocita 
+     vysledek. Sudoku lze nacist ze/ulozit do souboru.</p>
+ <p>Aplikace ma model-view-controller architekturu. Model je trıda Sudoku, view
+     primarne trida Viewer, controller je ve tride Controller. </p>
+ <p>Trida Sudoku poskytuje jednoduche API pro nastaveni, vymazani a cteni hodnot
+     v sudoku.</p>
+ <p>Trida Viewer zobrazuje okno aplikace. API umoznuje predevsim nastavit 
+     hodnotu nektereho policka a naopak ziskat aktualni hodnoty do modelu. 
+     Viewer uzce spolupracuje s Controllerem - vola prislusne metody po 
+     zaregistrovani uzivatelskych akci. Viewer se sklada z policek, 
+     reprezentovanych tridou ItemComponent, ktera moznuje zejmena nastavit a 
+     ziskat aktualni hodnotu z policka. ItemComponent se vytvari pomoci tovarny 
+     ItemComponentFactory. Pri vytvareni se k policku pripoji InputVerifier, 
+     overujici platnost vstupnich hodnot a ComponentListener, nenici velikost 
+     fontu pri zmene velikosti. Viewer se vytvari pomoci tovarny ViewerFactory, 
+     ktera vytvori Controller a ItemComponenty a preda nove vytvorenemu Vieweru 
+     spolu s tovarnou na menu a FrameListenerem, ktery zajistuje, ze okno je 
+     neustale ctvercove. Dale zaregistruje Viewer v Controlleru.</p>
+ <p>Trida Controller poskytuje API pro obsluhu pozadovanych funkci - umoznuje
+     vyresit sudoku, nacist a ulozit sudoku do souboru, dale umoznuje overit, 
+     zda aktualni sudoku splnuje vsechny podminky a vycistit sudoku - jak GUI, 
+     tak model a zmenit hodnotu v modelu. Data jsou ukladana v XML souborech. 
+     Pro vyber souboru se pouziva FileView obalujici JFileChooser. O nacitani se
+     stara Loader, ktery take hlida korektnost vstupu. Ukladani provadi Storer. 
+     Pokud dojde pri nacitani k vyjimce, Controller nahradi sudoku novou 
+     instanci - prazdnym sudoku - a oznami chybu uzivateli.</p>
+ <p>O reseni sudoku se stara Solver. Je pouzit open source solver, ktery byl 
+     prizpusoben pro integraci do zbytku aplikace. Solver vyzkousi nektere  
+     heuristiky a pripadne zkusi resit hrubou silou. Pokud reseni neexistuje, 
+     Controller nahradi sudoku novou instanci - prazdnym sudoku - a oznami chybu 
+     uzivateli.</p>
+ <p>O kontrolu platnosti se stara Verificator, ktery overuje splneni vsech 
+     omezeni.</p>
+</body>

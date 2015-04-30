@@ -15,7 +15,7 @@ import java.util.Arrays;
  */
 public class Solver {
     private Solver(){}
-    
+        
     /**
      * Vyresi zadane sudoku.
      * Vyzkousi nektere heuristiky a pripadne zkusi reseni hrubou silou.

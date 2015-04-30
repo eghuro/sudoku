@@ -1,4 +1,4 @@
-package cz.cuni.mff.mansuroa.sudoku;
+package cz.cuni.mff.mansuroa.sudoku.gui;
 
 import java.awt.Dimension;
 import java.awt.Font;
@@ -109,7 +109,7 @@ public class ItemComponent extends JTextField {
         private ItemComponentFactory() {}
         
         /**
-         * Umozni pristup k jedine instanci trnyovarny.
+         * Umozni pristup k jedine instanci tovarny.
          * @return instance tovarny
          */
         public static ItemComponentFactory getInstance() {
