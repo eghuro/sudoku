@@ -113,7 +113,11 @@ public class MenuFactory {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     VIEWER.updateModel();
-                    CONTROLLER.solve();
+                    try {
+                        CONTROLLER.solve();
+                    } catch (InterruptedException ex) {
+                        System.out.println(ex.toString());
+                    }
                 }
             });
         }
