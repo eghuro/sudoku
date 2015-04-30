@@ -123,12 +123,9 @@ public class Verificator {
     private static boolean checkBlock(int blockRow, int blockCol, Sudoku sudoku) {
         int size = sudoku.getSize();
         int koef = (int) Math.ceil(Math.sqrt(sudoku.getSize()));
-        System.out.println("Size: "+size+"\tKoef: "+koef+"\tBlock row: "+blockRow+"\tBlock col:"+blockCol);
         boolean[] haveValue = getValueArray(size);
-        System.out.println("Block");
         for (int row = blockRow * koef; row < ((blockRow+1) * koef); row++) {
             for (int col = blockCol * koef; col < ((blockCol+1) * koef); col++) {
-                System.out.println("["+row+","+col+"]");
                 if (!checkPosition(row, col, haveValue, sudoku)) {
                     return false;
                 }

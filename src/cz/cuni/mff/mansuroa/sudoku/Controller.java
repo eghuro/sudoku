@@ -7,7 +7,9 @@ import cz.cuni.mff.mansuroa.sudoku.io.Loader;
 import cz.cuni.mff.mansuroa.sudoku.gui.Viewer;
 import cz.cuni.mff.mansuroa.sudoku.gui.FileView;
 import java.io.File;
+import java.util.concurrent.ExecutionException;
 import javax.swing.JOptionPane;
+import javax.swing.SwingWorker;
 
 /**
  * Controller zajistuje komunikaci mezi datovou vrstvou - tridou Sudoku a 
@@ -42,12 +44,36 @@ public class Controller {
     
     /**
      * Predej stavajici data Solveru k vyreseni a prekresli obrazovku.
-     * Reseni probiha v samostatnemvlakne.
+     * Reseni probiha v samostatnem vlakne pomoci SwingWorkeru.
+     * 
+     * @throws java.lang.InterruptedException soucasne vlakno bylo preruseno pri cekani na vysledek
      */
-    public void solve() {
+    public void solve() throws InterruptedException {
         assert (model != null);
         if (Verificator.verify(model)) {
-            worker.start();
+            SwingWorker worker = new SwingWorker() {
+                @Override
+                protected Object doInBackground() throws Exception {
+                    try {
+                       Solver.solve(model);
+                    } catch (SolverException e) {
+                        return false;
+                    }
+                    return true;
+                }
+            };
+            worker.execute();
+            try{
+                if (!(Boolean)worker.get()) {
+                    JOptionPane.showMessageDialog(view.getComponent(), "Reseni nenalezeno.", "Solve error", JOptionPane.ERROR_MESSAGE);
+                    model = new Sudoku(view.getSize()); // sudoku mohlo byt modifikovano, navrat do konsistentniho stavu
+                }
+            } catch (ExecutionException e) {
+                JOptionPane.showMessageDialog(view.getComponent(), "Reseni nenalezeno.", "Execution error", JOptionPane.ERROR_MESSAGE);
+                model = new Sudoku(view.getSize()); // sudoku mohlo byt modifikovano, navrat do konsistentniho stavu
+            } finally {
+                updateView(); 
+            }
         } else {
             JOptionPane.showMessageDialog(view.getComponent(), "Zadani neni validni.", "Solve error", JOptionPane.ERROR_MESSAGE);
         }
@@ -161,21 +187,4 @@ public class Controller {
             }
         }
     }
-    
-    private final Thread worker = new Thread() {
-        @Override
-        /**
-         * Vyres sudoku. Zobraz dialog, pokud reseni selze. Prekresli obrazovku.
-         */
-        public void run() {
-            try {
-                Solver.solve(model);
-            } catch (SolverException e) {
-                JOptionPane.showMessageDialog(view.getComponent(), "Reseni nenalezeno.", "Solve error", JOptionPane.ERROR_MESSAGE);
-                model = new Sudoku(view.getSize()); // sudoku mohlo byt modifikovano, navrat do konsistentniho stavu
-            } finally {
-                updateView();
-            }
-        }
-    };
 }
