@@ -136,7 +136,7 @@ public class Controller {
         
         try {
             clear();
-            FileView lw = new FileView(view.getComponent());
+            FileView lw = new FileView(view.getComponent(), "Open");
             File file = lw.getFile();
             if (file != null) {
                 this.model = Loader.load(file);
@@ -158,7 +158,7 @@ public class Controller {
         assert (view != null);
         
         try {
-            FileView sw = new FileView(view.getComponent());
+            FileView sw = new FileView(view.getComponent(), "Save");
             File file = sw.getFile();
             if (file != null){
                 Storer.store(this.model, file);

@@ -18,12 +18,14 @@ public class FileView {
      * Vytvori FileChooser, nastavi filtr na jmeno souboru.
      * 
      * @param parent rodicovske okno
+     * @param text text na tlacitku
      */
-    public FileView(Component parent) {
+    public FileView(Component parent, String text) {
         this.jfc = new JFileChooser();
         FileNameExtensionFilter filter = 
                 new FileNameExtensionFilter ("Sudoku XML files", "xml");
         this.jfc.setFileFilter(filter);
+        this.jfc.setApproveButtonText(text);
         this.parent = parent;
     }
     
