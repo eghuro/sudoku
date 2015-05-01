@@ -1,0 +1,27 @@
+\documentclass[10pt]{article}
+\usepackage[czech]{babel}
+\usepackage[utf8]{inputenc}
+\begin{document}
+\title{Sudoku\\Dokumentace z\'apo\v{c}tov\'eho programu}
+\author{Alexandr Mansurov}
+\maketitle
+\section{Specifikace}
+\paragraph{~}Aplikace Sudoku s GUI. Uživatel může naklikat zadání a aplikace dopočítá výsledek. Sudoku lze načíst ze/uložit do souboru
+\section{Architektura}
+\paragraph{~}Aplikace m\'a model-view-controller architekturu. Model je t\v{r}\'ida Sudoku, view prim\'arn\v{e} t\v{r}\'ida Viewer, controller je ve t\v{r}\'id\v{e} Controller.
+\paragraph{~}T\v{r}\'ida Sudoku poskytuje jednoduch\'e API pro nastaven\'i, vymaz\'an\'i a \v{c}ten\'i hodnot v sudoku.
+\paragraph{~}T\v{r}\'ida Viewer zobrazuje okno aplikace. API umo\v{z}\v{n}uje p\v{r}edev\v{s}\'im nastavit hodnotu n\v{e}kter\'eho pol\'i\v{c}ka a naopak z\'iskat aktu\'aln\'i hodnoty do modelu. Viewer \'uzce spolupracuje s Controllerem - vol\'a p\v{r}\'islu\v{s}n\'e metody po zaregistrov\'an\'i u\v{z}ivatelsk\'ych akc\'i. Viewer se skl\'ad\'a z pol\'i\v{c}ek, reprezentovan\'ych t\v{r}\'idou ItemComponent, kter\'a umo\v{z}\v{n}uje zejm\'ena nastavit a z\'iskat aktu\'aln\'i hodnotu z pol\'i\v{c}ka. ItemComponent se vytv\'a\v{r}\'i pomoc\'i tov\'arny ItemComponentFactory. P\v{r}i vytv\'a\v{r}en\'i se k pol\'i\v{c}ku p\v{r}ipoj\'i InputVerifier, ov\v{e}\v{r}uj\'ic\'i platnost vstupn\'ich hodnot a ComponentListener, m\v{e}n\'ic\'i velikost fontu p\v{r}i zm\v{e}n\v{e} velikosti. Viewer se vytv\'a\v{r}\'i pomoc\'i tov\'arny ViewerFactory, kter\'a vytvo\v{r}\'i Controller a ItemComponenty a p\v{r}ed\'a nov\v{e} vytvo\v{r}en\'emu Vieweru spolu s tov\'arnou na menu a FrameListenerem, kter\'y zaji\v{s}\v{t}uje, \v{z}e okno je neust\'ale \v{c}tvercov\'e. D\'ale zaregistruje Viewer v Controlleru.
+\paragraph{~} T\v{r}\'ida Controller poskytuje API pro obsluhu po\v{z}adovan\'ych funkc\'i - umo\v{z}\v{n}uje vy\v{r}e\v{s}it sudoku, na\v{c}\'ist a ulo\v{z}it sudoku do souboru, d\'ale umo\v{z}\v{n}uje ov\v{e}\v{r}it, zda aktu\'aln\'i sudoku spl\v{n}uje v\v{s}echny podm\'inky a vy\v{c}istit sudoku - jak GUI, tak model a zm\v{e}nit hodnotu v modelu. 
+\paragraph{~}Data jsou ukl\'ad\'ana v XML souborech. Pro v\'yb\v{e}r souboru se pou\v{z}\'iv\'a FileView obaluj\'ic\'i JFileChooser. O na\v{c}\'it\'an\'i se star\'a Loader, kter\'y tak\'e hl\'id\'a korektnost vstupu. Ukl\'ad\'an\'i prov\'ad\'i Storer. Pokud dojde p\v{r}i na\v{c}\'it\'an\'i k v\'yjimce, Controller nahrad\'i sudoku novou instanc\'i - pr\'azdn\'ym sudoku - a ozn\'am\'i chybu u\v{z}ivateli.
+\paragraph{~}O \v{r}e\v{s}en\'i sudoku se star\'a Solver. Je pou\v{z}it open source solver, kter\'y byl p\v{r}izp\r{u}soben pro integraci do zbytku aplikace. Solver vyzkou\v{s}\'i n\v{e}kter\'e heuristiky a p\v{r}\'ipadn\v{e} zkus\'i \v{r}e\v{s}it hrubou silou. Pokud \v{r}e\v{s}en\'i neexistuje, Controller nahrad\'i sudoku novou instanc\'i - pr\'azdn\'ym sudoku - a ozn\'am\'i chybu u\v{z}ivateli.
+\paragraph{~}O kontrolu platnosti se star\'a Verificator, kter\'y ov\v{e}\v{r}uje spln\v{e}n\'i v\v{s}ech omezen\'i.
+\section{Form\'at ulo\v{z}en\'eho sudoku}
+\paragraph{~}Data se ukl\'adaj\'i do a na\v{c}\'itaj\'i z XML souboru. Ko\v{r}enov\'y element ulo\v{z}en\'eho sudoku je $<$sudoku$>$. Hodnoty p\v{r}\'islu\v{s}n\'ych pol\'i\v{c}ek maj\'i tvar:\\ $<$entry row$=""$ col$=""$ value$="" />$\\
+ V\v{s}echny atributy jsou typu Integer, odpov\'idaj\'i \v{c}\'islu \v{r}\'adku a sloupce a p\v{r}\'islu\v{s}n\'e hodnot\v{e}. Platn\'a pozice je v\v{z}dy v\v{e}t\v{s}\'i rovna 0 a men\v{s}\'i ne\v{z} 9. Platn\'a hodnota je v\v{e}t\v{s}\'i rovna 1 a men\v{s}\'i rovna 9.
+\section{Testov\'an\'i}
+\paragraph{~}Ve slo\v{z}ce tests jsou ulo\v{z}eny testovac\'i soubory se zad\'an\'imi z extremesudoku.info a testovac\'i soubory s neplatn\'ymi vstupy.
+\section{Kompilace a spou\v{s}t\v{e}n\'i}
+\paragraph{~}Aplikace se kompiluje pomoc\'i programu ant. Dodan\'y ant build.xml skript je generovan\'y z NetBeans. Spu\v{s}t\v{e}n\'i antu bez parametr\r{u} z\'arove\v{n} vygeneruje program\'atorskou dokumentaci v html. Aplikace vy\v{z}aduje Javu 8.
+\section{Grafick\'e rozhran\'i}
+\paragraph{~}Grafick\'e rozhran\'i se skl\'ad\'a z pol\'i\v{c}ek sudoku a menu. V menu File je mo\v{z}nost na\v{c}\'ist a ulo\v{z}it sudoku a ukon\v{c}it aplikaci. V menu Sudoku je nab\'idka vy\v{r}e\v{s}it sudoku, ov\v{e}\v{r}it podm\'inky sudoku zadan\'eho v okn\v{e} a mo\v{z}nost vy\v{c}istit okno.
+\end{document}
