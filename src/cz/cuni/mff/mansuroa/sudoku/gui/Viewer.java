@@ -20,9 +20,10 @@ import javax.swing.JPanel;
  * 
  * @author Alexandr Mansurov
  */
+//ALF: BAD DESING - Viewer should take care only of its JPanel and not to bother with JFrame as well.
 public class Viewer {
     private final String TITLE="Sudoku";
-    private final int SIZE;
+    private final int SIZE; //ALF: NAMING CONVENTIONS - UPPER-CASED NAMES ARE USED FROM ENUM CONSTANTS AND NOT FOR FIELDS !!!
     private final JFrame FRAME;
     private final JPanel PANEL;
     private final ItemComponent[][] COMPONENTS;
@@ -88,6 +89,7 @@ public class Viewer {
     /**
      * Zapise aktualni hodnoty z mrizky do modelu.
      */
+    //ALF: BAD Design - Not a MVC --- The Grid (i.e., ItemComponent) should call controller itself, once it change its value)
     public void updateModel() {
         for (int row = 0; row < SIZE; row++) {
             for (int col = 0; col < SIZE; col++) {
@@ -112,6 +114,7 @@ public class Viewer {
      * Jde o singleton, verejne API je facade createViewer, ktere bere pouze 
      * rozmer vysledneho sudoku
      */
+    //ALF: It should not be inner class 
     public static class ViewerFactory {
         /**
          * Jedina instance tovarny.
@@ -134,6 +137,7 @@ public class Viewer {
          * @param size rozmer vysledne mrizky
          * @return nove postaveny, zobrazeny, s controllerem propojeny Viewer
          */
+        //ALF: The is not reason why this method should be private, or if you want this method to be private than it should be static
         private Viewer createViewer(Controller controller, int size) {
             ItemComponent[][] components = this.getComponents(size);
             Viewer v = new Viewer(components, MenuFactory.getInstance(), 
@@ -167,6 +171,7 @@ public class Viewer {
          * 
          * @return vytvoreny ComponentListener
          */
+        //ALF: Why is not this method static?
         private ComponentListener getFrameListener() {
             return new ComponentAdapter() {
                 @Override
@@ -190,6 +195,7 @@ public class Viewer {
          * @param size rozmer mrizky
          * @return pole vytvorenych komponent
          */
+        //ALF: Why is not this method static?
         private ItemComponent[][] getComponents(int size) {
             ItemComponentFactory factory = ItemComponentFactory.getInstance();
             ItemComponent[][] components = new ItemComponent[size][size];
@@ -207,6 +213,7 @@ public class Viewer {
          * @param viewer Viewer
          * @param components pole ItemComponent
          */
+        //ALF: Why is not this method static?
         private void fillGrid(Viewer viewer, ItemComponent[][] components) {
             for (int x = 0; x < components.length; ++x) {
                 for (int y = 0; y < components.length; ++y){
@@ -223,6 +230,7 @@ public class Viewer {
          * @param y svisla souradnice v gridu
          * @return GridBagConstraints
          */
+        //ALF: Why is not this method static?
         private GridBagConstraints getConstraints(int x, int y) {
             GridBagConstraints c = new GridBagConstraints();
             c.gridx = x;

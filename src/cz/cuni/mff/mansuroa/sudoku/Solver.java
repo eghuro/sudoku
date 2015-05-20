@@ -275,7 +275,6 @@ public class Solver {
         for (int y = 0; y < 9; y++) {
             for (int x = 0; x < 9; x++) {
                 final int value = allowedValues[x][y];
-                
                 if (value != 0 && countSetBits(value) == 2) {
                     for (int scanningX = x + 1; scanningX < 9; scanningX++) {
                         if (allowedValues[scanningX][y] == value) {
@@ -314,17 +313,18 @@ public class Solver {
                         sectionAvailabilityColumn[finalX] |= (1 << (y / 3));
                     }
                 }
-                
+                //ALF: pokud jsem zpracoval cely (3line) blok
                 if (finalX == 2 || finalX == 5 || finalX == 8) {
                     for (int scanningX = finalX - 2; scanningX <= finalX; scanningX++) {
                         final int bitCount = countSetBits(sectionAvailabilityColumn[scanningX]);
                         
                         if (bitCount == 1) {
-                            for (int applyX = finalX - 2; applyX <= finalX; applyX++) {
-                                if (scanningX != applyX) {
-                                    for (int applySectionY = 0; applySectionY < 3; applySectionY++) {
-                                        if ((sectionAvailabilityColumn[scanningX] & (1 << applySectionY)) != 0) {
-                                            for (int applyY = applySectionY * 3; applyY < (applySectionY + 1) * 3; applyY++) {
+                          //ALF - exactly in one section  - tohle mu nefunguje spravne
+                          for (int applyX = finalX - 2; applyX <= finalX; applyX++) {
+                                if (scanningX != applyX) { //ALF: Not the line where the value is in exactly one section 
+                                    for (int applySectionY = 0; applySectionY < 3; applySectionY++) { // ALF: The all sections on the other line
+                                        if ((sectionAvailabilityColumn[scanningX] & (1 << applySectionY)) != 0) { // ALF: WTF if can contain the value  
+                                            for (int applyY = applySectionY * 3; applyY < (applySectionY + 1) * 3; applyY++) { // ALF: Take all comuns of that section and remove them
                                                 allowedValues[applyX][applyY] &= valueRemoveMask;
                                             }
                                         }
@@ -332,18 +332,18 @@ public class Solver {
                                 }
                             }
                         }
-                        
+                        //ALF What is doing here - in two sections
                         if (bitCount == 2 && scanningX < finalX) {
                             for (int scanningSecondPairX = scanningX + 1; scanningSecondPairX <= finalX; scanningSecondPairX++) {
                                 if (sectionAvailabilityColumn[scanningX] == sectionAvailabilityColumn[scanningSecondPairX]) {
                                     final int applyX;
                                     
                                     if (scanningSecondPairX != finalX) {
-                                        applyX = finalX;
+                                        applyX = finalX; // ALF: LAst line
                                     } else if (scanningSecondPairX - scanningX > 1) {
-                                        applyX = scanningSecondPairX - 1;
+                                        applyX = scanningSecondPairX - 1; // ALF: Middle line
                                     } else {
-                                        applyX = scanningX - 1;
+                                        applyX = scanningX - 1; // Firstr line
                                     }
                                     
                                     for (int applySectionY = 0; applySectionY < 3; applySectionY++) {
@@ -430,7 +430,7 @@ public class Solver {
      * @param y souradnice
      */
     private static void setValue(final int[][] board, final int[][] allowedValues, final int value, final int x, final int y) {
-        board[x][y] = value;
+        board[x][y] = value; //ALF: Incorrect modification of the model Sudoku !!!
         allowedValues[x][y] = 0;
         applyAllowedValuesMask(board, allowedValues, x, y);
     }
@@ -462,12 +462,14 @@ public class Solver {
      */
     private static void applyAllowedValuesMask(final int[][] board,
             final int[][] allowedValues, final int x, final int y) {
-        final int mask = ~allowedBitFields[board[x][y]];
+
+      final int mask = ~allowedBitFields[board[x][y]];
         
         for (int maskApplyX = 0; maskApplyX < 9; maskApplyX++) {
             allowedValues[maskApplyX][y] &= mask;
         }
         
+        //ALF: More readable will be to use the notiion from the previous loop, but (two dimensional adressing)
         final int[] allowedValuesRow = allowedValues[x];
         
         for (int maskApplyY = 0; maskApplyY < 9; maskApplyY++) {
@@ -477,10 +479,12 @@ public class Solver {
         int sectionX1 = 0;
         int sectionX2 = 0;
         
+        //ALF: Efficient, but unreadable. I would prefere much easier version, where the bit is clread in whole block, and not only in remaining 4 boxes. Or you shoud get a comment here
+        //ALF: Awfull, you used "nice" math in Verifier amd here uha vase such a strange case?
         switch (x) {
             case 0:
-                sectionX1 = x + 1;
-                sectionX2 = x + 2;
+                sectionX1 = x + 1; //ALF: In the word case you should have a constants here, not computation
+                sectionX2 = x + 2; //ALF: It is enought here to set only X1, since X2 can be3 easily computed as X1 + 3
                 break;
             case 1:
                 sectionX1 = x - 1;
@@ -519,7 +523,7 @@ public class Solver {
 
         int sectionY1 = 0;
         int sectionY2 = 0;
-        
+         
         switch (y) {
             case 0:
                 sectionY1 = y + 1;

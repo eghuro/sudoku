@@ -63,8 +63,9 @@ public class Controller {
                 }
             };
             worker.execute();
+            
             try{
-                if (!(Boolean)worker.get()) {
+                if (!(Boolean)worker.get()) { //ALF: Effectively blocking Event-dispatch thread until the Sudoku is solved.
                     JOptionPane.showMessageDialog(view.getComponent(), "Reseni nenalezeno.", "Solve error", JOptionPane.ERROR_MESSAGE);
                     model = new Sudoku(view.getSize()); // sudoku mohlo byt modifikovano, navrat do konsistentniho stavu
                 }

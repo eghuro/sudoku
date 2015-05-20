@@ -19,8 +19,8 @@ public class ItemComponent extends JTextField {
     private static final String EMPTY = "";
     private static final int UNASSIGNED = 0;
     
-    private final int SIZE;
-    
+    //private final int SIZE; //ALF: Unused field
+
     public static final int ERR_VALUE = -1;
     
     /**
@@ -30,8 +30,10 @@ public class ItemComponent extends JTextField {
      */
     private ItemComponent(int size) {
         super(EMPTY, COLUMNS);
-        this.SIZE = size; 
+        //this.SIZE = size; 
     }
+    
+     
     
     /**
      * Nastavi hodnotu do dane komponenty.
@@ -41,7 +43,8 @@ public class ItemComponent extends JTextField {
     public void setValue(String value ){
         super.setText(value);
     }
-    
+
+     //ALF: BAD design. Much better would be to have an int field,holding current number of the ItemComponent and set JTextFiled.setText() according this value 
     /**
      * Vrati hodnotu z dane komponenty.
      * 
@@ -66,6 +69,7 @@ public class ItemComponent extends JTextField {
     /**
      * Vyjimka pri neplatne hodnote v komponente.
      */
+     //ALF: No reason why this class should not be static. In fact, it even should not be an inner class. 
     public class ValueException extends RuntimeException {}
     
     /**
@@ -97,13 +101,14 @@ public class ItemComponent extends JTextField {
      * @return nova velikost fontu
      */
     private static float getNewSize(Dimension newDimension) { 
-        float newArea = ItemComponent.getArea(newDimension);
+        float newArea = ItemComponent.getArea(newDimension); //ALF: WTF, why this should reasonable work? (Making square of font 10 times small then the height)  
         return newArea / 100;
     }
     
     /**
      * Tovarna na ItemComponent
      */
+    //ALF: BAD design factory is typically not an inner class 
     public static class ItemComponentFactory {
         private static final ItemComponentFactory INSTANCE = new ItemComponentFactory();
         private ItemComponentFactory() {}
@@ -160,6 +165,7 @@ public class ItemComponent extends JTextField {
                 public boolean verify(JComponent input) {
                     ItemComponent ic = (ItemComponent) input;
                     String text = ic.getText();
+                    System.out.println("ItemComponent.ItemComponentFactory.getInputVerifier(...).new InputVerifier() {...}.verify() + text=" + text);
                     try {
                         int val = Integer.parseInt(text);
                         if ((val > 0) && (val <= size)) {
@@ -167,7 +173,7 @@ public class ItemComponent extends JTextField {
                         } else {
                             ic.setValue(EMPTY);
                         }
-                    } catch (Exception e) {
+                    } catch (Exception e) { //ALF: Bad coding style. You should catch only the propper exception - which can be throw from Integer.parseInt, and not the "generic one" - Exception
                         ic.setValue("");
                     }
                     return true;

@@ -6,7 +6,7 @@ package cz.cuni.mff.mansuroa.sudoku;
  * @author Alexandr Mansurov
  */
 public class Sudoku {
-    private final int SIZE;
+    private final int SIZE; //ALF: Naming conventions.
     private final int[][] MATRIX;
     
     /**
@@ -109,6 +109,6 @@ public class Sudoku {
      * @return pole s ulozenymi daty
      */
     public int[][] getBoard() {
-        return MATRIX;
+        return MATRIX; //ALF: It would be better to return a copy of the array, so that no one can change the data accidentally 
     }
 }

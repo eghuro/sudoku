@@ -16,6 +16,6 @@ public final class Main {
      * @param args na parametry prikazove radky se nebere ohled
      */
     public static void main(String[] args) {
-        Viewer v = Viewer.ViewerFactory.getViewerFactory().createViewer(9);
+        Viewer v = Viewer.ViewerFactory.getViewerFactory().createViewer(9); //ALF: Violating contract. Calling methods from Swing/AWT outside Event Dispatching thread
     }
 }

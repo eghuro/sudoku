@@ -14,6 +14,7 @@ import javax.swing.JOptionPane;
  * 
  * @author Alexandr Mansurov
  */
+//ALF: Overdesigned -- overly complex to create a very simple menu. I do not see a reason, why to make a factory (or factory with builder) to create this simple menu.
 public class MenuFactory {
     private static final MenuFactory INSTANCE = new MenuFactory();
     private MenuFactory() {}
@@ -43,7 +44,7 @@ public class MenuFactory {
      * Builder pro vyrobu menu.
      */
     private class MenuBuilder {
-        private final Viewer VIEWER;
+        private final Viewer VIEWER; //ALF: Naming conventions.
         private final Controller CONTROLLER;
         private final JMenuBar MENU;
 
@@ -99,6 +100,7 @@ public class MenuFactory {
          */
         private JMenu makeMenu (final String name, JMenuItem ... items) {
             JMenu menu = new JMenu(name);
+            //ALF: An unnecessarily complex way of making for-each loop
             Arrays.stream(items).forEach(item -> menu.add(item));
             return menu;
         }
@@ -192,7 +194,7 @@ public class MenuFactory {
             return new JMenuItem(new AbstractAction("Quit") {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    System.exit(0);
+                    System.exit(0); // ALF: Not a proper way to terminate a program
                 }
             });
         }
