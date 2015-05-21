@@ -14,8 +14,6 @@ import javax.swing.SwingWorker;
 /**
  * Controller zajistuje komunikaci mezi datovou vrstvou - tridou Sudoku a 
  * grafickym rozhranim ve tride Viewer.
- * 
- * @author Alexandr Mansurov
  */
 public class Controller {
     private final String VIEW_UNASSIGNED = "";
@@ -66,17 +64,17 @@ public class Controller {
             
             try{
                 if (!(Boolean)worker.get()) { //ALF: Effectively blocking Event-dispatch thread until the Sudoku is solved.
-                    JOptionPane.showMessageDialog(view.getComponent(), "Reseni nenalezeno.", "Solve error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(view.getPanel(), "Reseni nenalezeno.", "Solve error", JOptionPane.ERROR_MESSAGE);
                     model = new Sudoku(view.getSize()); // sudoku mohlo byt modifikovano, navrat do konsistentniho stavu
                 }
             } catch (ExecutionException e) {
-                JOptionPane.showMessageDialog(view.getComponent(), "Reseni nenalezeno.", "Execution error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(view.getPanel(), "Reseni nenalezeno.", "Execution error", JOptionPane.ERROR_MESSAGE);
                 model = new Sudoku(view.getSize()); // sudoku mohlo byt modifikovano, navrat do konsistentniho stavu
             } finally {
                 updateView(); 
             }
         } else {
-            JOptionPane.showMessageDialog(view.getComponent(), "Zadani neni validni.", "Solve error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(view.getPanel(), "Zadani neni validni.", "Solve error", JOptionPane.ERROR_MESSAGE);
         }
     }
     
@@ -137,14 +135,14 @@ public class Controller {
         
         try {
             clear();
-            FileView lw = new FileView(view.getComponent(), "Open");
+            FileView lw = new FileView(view.getPanel(), "Open");
             File file = lw.getFile();
             if (file != null) {
                 this.model = Loader.load(file);
             }
         } catch (LoadException e) {
             this.model = new Sudoku(view.getSize()); // model byl modifikovan, navrat do konsistentniho stavu
-            JOptionPane.showMessageDialog(view.getComponent(), "Nacteni ze souboru selhalo.", "Load error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(view.getPanel(), "Nacteni ze souboru selhalo.", "Load error", JOptionPane.ERROR_MESSAGE);
         } finally {
             updateView();
         }
@@ -159,13 +157,13 @@ public class Controller {
         assert (view != null);
         
         try {
-            FileView sw = new FileView(view.getComponent(), "Save");
+            FileView sw = new FileView(view.getPanel(), "Save");
             File file = sw.getFile();
             if (file != null){
                 Storer.store(this.model, file);
             }
         } catch (StoreException e) {
-            JOptionPane.showMessageDialog(view.getComponent(), "Ulozeni do souboru selhalo.", "Store error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(view.getPanel(), "Ulozeni do souboru selhalo.", "Store error", JOptionPane.ERROR_MESSAGE);
 
         }
     }

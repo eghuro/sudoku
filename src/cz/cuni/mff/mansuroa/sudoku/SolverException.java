@@ -2,7 +2,6 @@ package cz.cuni.mff.mansuroa.sudoku;
 
 /**
  * Doslo k chybe pri reseni sudoku
- * @author Alexandr Mansurov
  */
 public class SolverException extends Exception {
 

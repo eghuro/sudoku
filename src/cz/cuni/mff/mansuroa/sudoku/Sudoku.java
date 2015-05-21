@@ -2,12 +2,10 @@ package cz.cuni.mff.mansuroa.sudoku;
 
 /**
  * Model - datova vrstva aplikace.
- * 
- * @author Alexandr Mansurov
  */
 public class Sudoku {
-    private final int SIZE; //ALF: Naming conventions.
-    private final int[][] MATRIX;
+    private final int size;
+    private final int[][] matrix;
     
     /**
      * Vytvori Sudoku dane velikosti.
@@ -15,8 +13,8 @@ public class Sudoku {
      * @param size sudoku bude rozmeru size * size
      */
     public Sudoku(int size) {
-        this.SIZE = size;
-        this.MATRIX = new int[SIZE][SIZE];
+        this.size = size;
+        this.matrix = new int[size][size];
     }
     
     /**
@@ -25,7 +23,7 @@ public class Sudoku {
      * @return rozmer mrizky
      */
     public int getSize() {
-        return this.SIZE;
+        return this.size;
     }
  
     /**
@@ -38,8 +36,8 @@ public class Sudoku {
      * @throws IllegalArgumentException pokud nejsou splnena omezeni
      */
     public void setValue(int row, int col, int value) throws IllegalArgumentException {
-        if (validPosition(row, col) & (value >= 1) & (value <= SIZE)) {
-            MATRIX[col][row] = value;
+        if (validPosition(row, col) & (value >= 1) & (value <= size)) {
+            matrix[col][row] = value;
         } else {
             throw new IllegalArgumentException("Set [" + col + "," + row + "] = " + value);
         }
@@ -55,7 +53,7 @@ public class Sudoku {
      */
     public int getValue(int row, int col) throws IllegalArgumentException {
         if (validPosition(row, col)) {
-            return MATRIX[col][row];
+            return matrix[col][row];
         } else {
             throw new IllegalArgumentException("Get [" + col + "," + row + "]");
         }
@@ -70,7 +68,7 @@ public class Sudoku {
      */
     public void unsetValue(int row, int col) throws IllegalArgumentException {
         if (validPosition(row, col)) {
-            MATRIX[col][row] = 0;
+            matrix[col][row] = 0;
         } else {
             throw new IllegalArgumentException("Unset [" + col + "," + row + "]");
         }
@@ -86,7 +84,7 @@ public class Sudoku {
      */
     public boolean isset(int row, int col) throws IllegalArgumentException {
         if (validPosition(row, col)) {
-            return MATRIX[col][row] != 0;
+            return matrix[col][row] != 0;
         } else {
             throw new IllegalArgumentException("isset [" + col + "," + row + "]");
         }
@@ -100,7 +98,7 @@ public class Sudoku {
      * @return radek >= 0, radek < size, sloupec >= 0, sloupec < size
      */
     private boolean validPosition(int row, int col) {
-        return (row >= 0) && (row < SIZE) && (col >= 0) && (col < SIZE);
+        return (row >= 0) && (row < size) && (col >= 0) && (col < size);
     }
     
     /**
@@ -109,6 +107,6 @@ public class Sudoku {
      * @return pole s ulozenymi daty
      */
     public int[][] getBoard() {
-        return MATRIX; //ALF: It would be better to return a copy of the array, so that no one can change the data accidentally 
+        return matrix; //ALF: It would be better to return a copy of the array, so that no one can change the data accidentally 
     }
 }

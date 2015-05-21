@@ -7,8 +7,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  * Zobrazeni dialogu pro vyber souboru.
- * 
- * @author Alexandr Mansurov
  */
 public class FileView {
     private final JFileChooser jfc;

@@ -11,8 +11,6 @@ import javax.swing.JOptionPane;
 
 /**
  * Tovarna na vyrobu menu Vieweru.
- * 
- * @author Alexandr Mansurov
  */
 //ALF: Overdesigned -- overly complex to create a very simple menu. I do not see a reason, why to make a factory (or factory with builder) to create this simple menu.
 public class MenuFactory {
@@ -29,38 +27,33 @@ public class MenuFactory {
     }
 
     /**
-     * Vytvori menu pro dany Viewer a Controller.
+     * Vytvori menu pro dany Controller.
      * 
-     * @param viewer Viewer
      * @param controller Controller
      * @return menu
      */
-    public JMenuBar createMenu(Viewer viewer, Controller controller) {
+    public JMenuBar createMenu(Controller controller) {
         // fasada nad skrytym builderem
-        return new MenuBuilder(viewer, controller).makeFileMenu().makeSudokuMenu().build();
+        return new MenuBuilder(controller).makeFileMenu().makeSudokuMenu().build();
     }
     
     /**
      * Builder pro vyrobu menu.
      */
     private class MenuBuilder {
-        private final Viewer VIEWER; //ALF: Naming conventions.
-        private final Controller CONTROLLER;
-        private final JMenuBar MENU;
+        private final Controller controller;
+        private final JMenuBar menu;
 
         /**
          * Vytvori builder pro dany Viewer a Controller.
          * 
-         * @param viewer instance Vieweru
          * @param controller instance Controlleru
          */
-        public MenuBuilder(Viewer viewer, Controller controller) {
-            assert (viewer != null);
+        public MenuBuilder(Controller controller) {
             assert (controller != null);
             
-            this.VIEWER=viewer;
-            this.CONTROLLER=controller;
-            this.MENU=new JMenuBar();
+            this.controller=controller;
+            this.menu=new JMenuBar();
         }
 
         /**
@@ -69,7 +62,7 @@ public class MenuFactory {
          * @return "this"
          */
         public MenuBuilder makeFileMenu() {
-            MENU.add(makeMenu("File", makeLoadItem(), makeStoreItem(), makeQuitItem()));
+            menu.add(makeMenu("File", makeLoadItem(), makeStoreItem(), makeQuitItem()));
             return this;
         }
 
@@ -79,7 +72,7 @@ public class MenuFactory {
          * @return this
          */
         public MenuBuilder makeSudokuMenu() {
-            MENU.add(makeMenu("Sudoku", makeSolveItem(), makeVerifyItem(), makeClearItem()));
+            menu.add(makeMenu("Sudoku", makeSolveItem(), makeVerifyItem(), makeClearItem()));
             return this;
         }
 
@@ -88,7 +81,7 @@ public class MenuFactory {
          * @return menu
          */
         public JMenuBar build() {
-            return this.MENU;
+            return this.menu;
         }
 
         /**
@@ -114,9 +107,8 @@ public class MenuFactory {
             return new JMenuItem(new AbstractAction("Solve"){
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    VIEWER.updateModel();
                     try {
-                        CONTROLLER.solve();
+                        controller.solve();
                     } catch (InterruptedException ex) {
                         System.out.println(ex.toString());
                     }
@@ -134,8 +126,7 @@ public class MenuFactory {
             return new JMenuItem(new AbstractAction("Verify"){
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    VIEWER.updateModel();
-                    boolean result = CONTROLLER.verify();
+                    boolean result = controller.verify();
                     String msg = result ? "VALID" : "INVALID";
                     JOptionPane.showMessageDialog(null, msg, "SUDOKU", JOptionPane.INFORMATION_MESSAGE);
                 }
@@ -151,7 +142,7 @@ public class MenuFactory {
             return new JMenuItem(new AbstractAction("Clear"){
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    CONTROLLER.clear();
+                    controller.clear();
                 }
             });
         }
@@ -165,7 +156,7 @@ public class MenuFactory {
             return new JMenuItem(new AbstractAction("Load board") {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    CONTROLLER.load();
+                    controller.load();
                 }
             });
         }
@@ -179,8 +170,7 @@ public class MenuFactory {
             return new JMenuItem(new AbstractAction("Store current board") {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    VIEWER.updateModel();
-                    CONTROLLER.store();
+                    controller.store();
                 }
             });
         }

@@ -2,8 +2,6 @@ package cz.cuni.mff.mansuroa.sudoku;
 
 /**
  * Verificator kontroluje, zda data tridy Sudoku splnuji prislusna omezeni.
- * 
- * @author Alexandr Mansurov
  */
 public class Verificator {
     private Verificator(){}

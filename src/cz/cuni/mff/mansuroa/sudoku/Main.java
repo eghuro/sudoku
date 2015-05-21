@@ -1,11 +1,10 @@
 package cz.cuni.mff.mansuroa.sudoku;
 
 import cz.cuni.mff.mansuroa.sudoku.gui.Viewer;
+import cz.cuni.mff.mansuroa.sudoku.gui.ViewerFactory;
 
 /**
  * Vstupni bod aplikace obsahujici metodu main.
- * 
- * @author Alexandr Mansurov
  */
 public final class Main {
     private Main(){}
@@ -16,6 +15,6 @@ public final class Main {
      * @param args na parametry prikazove radky se nebere ohled
      */
     public static void main(String[] args) {
-        Viewer v = Viewer.ViewerFactory.getViewerFactory().createViewer(9); //ALF: Violating contract. Calling methods from Swing/AWT outside Event Dispatching thread
+        Viewer v = ViewerFactory.getViewerFactory().createViewer(9); //ALF: Violating contract. Calling methods from Swing/AWT outside Event Dispatching thread
     }
 }
