@@ -54,29 +54,45 @@ public class Controller {
         assert (model != null);
         if (Verificator.verify(model)) {
             SwingWorker worker = new SwingWorker() {
+                private boolean solveException = false;
+                private String message = null;
+                
                 @Override
-                protected Object doInBackground() throws Exception {
+                protected Sudoku doInBackground() {
+                    this.solveException = false;
+                    Sudoku copy = model.copy();
                     try {
-                       Solver.solve(model);
+                       Solver.solve(copy);
                     } catch (SolverException e) {
-                        return false;
+                        this.solveException = true;
+                        this.message = e.getMessage();
+                        copy = model;
                     }
-                    return true;
+                    return copy;
+                }
+                
+                @Override
+                protected void done() {
+                    try {
+                        if(solveException) {
+                            assert (message != null);
+                            
+                            System.out.println(message);
+                            JOptionPane.showMessageDialog(view.getPanel(), "Reseni nenalezeno.", "Execution error", JOptionPane.ERROR_MESSAGE);
+                            model = (Sudoku)get();
+                        } else {
+                            model = (Sudoku)get();
+                        }
+                        updateView();
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                        JOptionPane.showMessageDialog(view.getPanel(), "Reseni nenalezeno.", "Execution error", JOptionPane.ERROR_MESSAGE);
+                        
+                        model = new Sudoku(view.getSize());
+                    }
                 }
             };
-            worker.execute();
-            
-            try{
-                if (!(Boolean)worker.get()) { //ALF: Effectively blocking Event-dispatch thread until the Sudoku is solved.
-                    JOptionPane.showMessageDialog(view.getPanel(), "Reseni nenalezeno.", "Solve error", JOptionPane.ERROR_MESSAGE);
-                    model = new Sudoku(view.getSize()); // sudoku mohlo byt modifikovano, navrat do konsistentniho stavu
-                }
-            } catch (ExecutionException e) {
-                JOptionPane.showMessageDialog(view.getPanel(), "Reseni nenalezeno.", "Execution error", JOptionPane.ERROR_MESSAGE);
-                model = new Sudoku(view.getSize()); // sudoku mohlo byt modifikovano, navrat do konsistentniho stavu
-            } finally {
-                updateView(); 
-            }              
+            worker.execute();       
         } else {
             JOptionPane.showMessageDialog(view.getPanel(), "Zadani neni validni.", "Solve error", JOptionPane.ERROR_MESSAGE);
         }
