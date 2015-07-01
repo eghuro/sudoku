@@ -17,6 +17,8 @@ public class ItemComponent extends JTextField {
     private final int row;
     private final int col;
     
+    private int value;
+    
     /**
      * Vytvori komponentu pro sudoku dane velikosti.
      * 
@@ -27,39 +29,38 @@ public class ItemComponent extends JTextField {
         super(EMPTY, COLUMNS);
         this.row = row;
         this.col = col;
+        this.value = UNASSIGNED;
     }     
     
     /**
      * Nastavi hodnotu do dane komponenty.
      * 
      * @param value nova hodnota
+     * @throws ValueException pokud hodnota neni platna
      */
-    public void setValue(String value ){
-        super.setText(value);
+    public void setValue(String value ) throws ValueException {
+        int val;
+        if (value.equals(EMPTY)) {
+            val = UNASSIGNED;
+        } else {
+            val = Integer.parseInt(value);
+        }
+        this.setValue(val);
+    }
+    
+    private void setValue(int value) {
+        this.value = value;
+        super.setText(""+value);
     }
 
-     //ALF: BAD design. Much better would be to have an int field,holding current number of the ItemComponent and set JTextFiled.setText() according this value 
     /**
      * Vrati hodnotu z dane komponenty.
      * 
      * @return hodnota v dane komponente
-     * @throws ValueException pokud by v komponente nebyl platny integer
      */
-    public int getVal() throws ValueException {
-        String text = super.getText();
-        if (!text.equals(EMPTY)) {
-            try {
-                // jine chyby jiz odchyceny InputVerifierem
-                int x = Integer.parseInt(super.getText());
-                return x;
-            } catch (NumberFormatException e) {
-                throw new ValueException();
-            }
-        } else {
-            return UNASSIGNED;
-        }
+    public int getVal() {
+        return this.value;
     }
-
     
     /**
      * Nastavi font pri uprave rozmeru komponenty.

@@ -101,12 +101,13 @@ public class Sudoku {
         return (row >= 0) && (row < size) && (col >= 0) && (col < size);
     }
     
-    /**
-     * Pristup k datum.
-     * 
-     * @return pole s ulozenymi daty
-     */
-    public int[][] getBoard() {
-        return matrix; //ALF: It would be better to return a copy of the array, so that no one can change the data accidentally 
+    public Sudoku copy() {
+        Sudoku copy = new Sudoku(size);
+        for (int row = 1; row < size; row++) {
+            for (int col = 0; col < size; col++) {
+                copy.setValue(row,col, getValue(row,col));
+            }
+        }
+        return copy;
     }
 }
