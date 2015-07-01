@@ -67,7 +67,7 @@ public class Solver {
 
         for (int x = 0; x < 9; x++) {
             for (int y = 0; y < 9; y++) {
-                if (board.getValue(y, x) > 0) {
+                if (board.isset(y, x)) {
                     allowedValues[x][y] = 0;
                     applyAllowedValuesMask(board, allowedValues, x, y);
                     placedNumberCount++;
@@ -111,7 +111,7 @@ public class Solver {
                     for (int y = 0; y < 9; y++) {
                         board.setValue(y, x, bruteForcedBoard.getValue(y, x));
 
-                        if (bruteForcedBoard.getValue(y, x) > 0) {
+                        if (bruteForcedBoard.isset(y, x)) {
                             placedNumberCount++;
                         }
                     }
