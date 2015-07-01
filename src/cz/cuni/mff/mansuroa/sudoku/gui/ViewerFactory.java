@@ -43,14 +43,15 @@ public class ViewerFactory {
    private static Viewer createViewer(Controller controller, int size) {
        ItemComponent[][] components = ViewerFactory.getComponents(size, controller);
        
-       Viewer v = new Viewer(components, controller, size);
-       JFrame frame = ViewerFactory.buildFrame(v.getPanel());
+       Viewer viewer = new Viewer(components, controller, size);
+       JFrame frame = ViewerFactory.buildFrame(viewer.getPanel());
        
        ViewerFactory.setMenuBarOnFrame(frame, controller);
-       ViewerFactory.fillGrid(v, components);
+       ViewerFactory.fillGrid(viewer, components);
        
-       controller.setViewer(v);
-       return v;
+       controller.setViewer(viewer);
+       controller.setFrame(frame);
+       return viewer;
    }
 
    /**

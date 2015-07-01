@@ -184,7 +184,7 @@ public class MenuFactory {
             return new JMenuItem(new AbstractAction("Quit") {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    System.exit(0); // ALF: Not a proper way to terminate a program
+                    controller.exit();
                 }
             });
         }

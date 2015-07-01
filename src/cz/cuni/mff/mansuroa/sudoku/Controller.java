@@ -6,8 +6,10 @@ import cz.cuni.mff.mansuroa.sudoku.io.StoreException;
 import cz.cuni.mff.mansuroa.sudoku.io.Loader;
 import cz.cuni.mff.mansuroa.sudoku.gui.Viewer;
 import cz.cuni.mff.mansuroa.sudoku.gui.FileView;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.util.concurrent.ExecutionException;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 
@@ -19,6 +21,7 @@ public class Controller {
     private final String VIEW_UNASSIGNED = "";
     private Sudoku model;
     private Viewer view;
+    private JFrame frame;
     
     /**
      * Konstruktor inicializuje model a view na null.
@@ -28,6 +31,7 @@ public class Controller {
     public Controller() {
         view = null;
         model = null;
+        frame = null;
     }
     
     /**
@@ -185,5 +189,17 @@ public class Controller {
                 view.setValue(i, j, set);                
             }
         }
+    }
+    
+    public void setFrame(JFrame frame) {
+        this.frame = frame;
+    }
+    
+    /**
+     * Ukonceni aplikace
+     */
+    public void exit() {
+        assert (frame != null);
+        frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
     }
 }
