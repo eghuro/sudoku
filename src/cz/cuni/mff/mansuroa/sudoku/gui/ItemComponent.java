@@ -50,7 +50,11 @@ public class ItemComponent extends JTextField {
     
     private void setValue(int value) {
         this.value = value;
-        super.setText(""+value);
+        if (value==UNASSIGNED) {
+            super.setText(EMPTY);
+        } else {
+            super.setText(""+value);
+        }
     }
 
     /**
