@@ -39,14 +39,17 @@ public class ViewerFactory {
     * @param size rozmer vysledne mrizky
     * @return nove postaveny, zobrazeny, s controllerem propojeny Viewer
     */
-   //ALF: The is not reason why this method should be private, or if you want this method to be private than it should be static
+   /*
+    * ponechano private static - createViewer(int) je verejne API, udela potrebne
+    * kontroly a spusti soukromou metodu, ktera nekontroluje vstup, ale kona praci
+    */
    private static Viewer createViewer(Controller controller, int size) {
        ItemComponent[][] components = ViewerFactory.getComponents(size, controller);
        
        Viewer viewer = new Viewer(components, controller, size);
        JFrame frame = ViewerFactory.buildFrame(viewer.getPanel());
-       
-       ViewerFactory.setMenuBarOnFrame(frame, controller);
+
+       frame.setJMenuBar(MenuFactory.createMenu(controller));
        ViewerFactory.fillGrid(viewer, components);
        
        controller.setViewer(viewer);
@@ -67,7 +70,7 @@ public class ViewerFactory {
        if (size < 0) {
            throw new IllegalArgumentException();
        }
-       return ViewerFactory.createViewer(new Controller(), size);
+       return createViewer(new Controller(), size);
    }
 
    /**
@@ -151,10 +154,5 @@ public class ViewerFactory {
         frame.pack();
         frame.setVisible(true);
         return frame;
-    }
-
-    private static void setMenuBarOnFrame(JFrame frame, Controller ctrl) {
-        MenuFactory menuFactory = MenuFactory.getInstance();
-        frame.setJMenuBar(menuFactory.createMenu(ctrl));
     }
 }
