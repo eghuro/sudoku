@@ -143,8 +143,6 @@ public class ViewerFactory {
    }
    
     private static JFrame buildFrame(JPanel panel) {
-        MenuFactory menuFactory = MenuFactory.getInstance();
-        
         JFrame frame = new JFrame(TITLE);
         frame.addComponentListener(ViewerFactory.getFrameListener());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
