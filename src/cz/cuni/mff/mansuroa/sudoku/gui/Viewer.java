@@ -39,7 +39,7 @@ public class Viewer {
      * @param value hodnota
      * @throws IllegalArgumentException neplatna pozice
      */
-    public void setValue(int row, int col, String value) 
+    public void setValue(int row, int col, int value) 
             throws IllegalArgumentException {
         if (validPosition(row, col)) {
             components[col][row].setValue(value);

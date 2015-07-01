@@ -6,6 +6,7 @@ import cz.cuni.mff.mansuroa.sudoku.io.StoreException;
 import cz.cuni.mff.mansuroa.sudoku.io.Loader;
 import cz.cuni.mff.mansuroa.sudoku.gui.Viewer;
 import cz.cuni.mff.mansuroa.sudoku.gui.FileView;
+import cz.cuni.mff.mansuroa.sudoku.gui.ItemComponent;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.util.concurrent.ExecutionException;
@@ -18,7 +19,6 @@ import javax.swing.SwingWorker;
  * grafickym rozhranim ve tride Viewer.
  */
 public class Controller {
-    private final String VIEW_UNASSIGNED = "";
     private Sudoku model;
     private Viewer view;
     private JFrame frame;
@@ -76,7 +76,7 @@ public class Controller {
                 model = new Sudoku(view.getSize()); // sudoku mohlo byt modifikovano, navrat do konsistentniho stavu
             } finally {
                 updateView(); 
-            }
+            }              
         } else {
             JOptionPane.showMessageDialog(view.getPanel(), "Zadani neni validni.", "Solve error", JOptionPane.ERROR_MESSAGE);
         }
@@ -91,7 +91,7 @@ public class Controller {
         int size = view.getSize();
         for (int i = 0; i < size; ++i) {
             for (int j = 0; j < size; ++j) {
-                view.setValue(i, j, VIEW_UNASSIGNED);
+                view.setValue(i, j, ItemComponent.getUnassignedValue());
                 model.unsetValue(i, j);
             }
         }
@@ -182,11 +182,11 @@ public class Controller {
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 int val = model.getValue(i, j);
-                String set = VIEW_UNASSIGNED;
                 if ((val > 0) && (val <= size)) {
-                    set = val + "";
-                }
-                view.setValue(i, j, set);                
+                    view.setValue(i, j, val);
+                } else {
+                    view.setValue(i,j,ItemComponent.getUnassignedValue());
+                }              
             }
         }
     }

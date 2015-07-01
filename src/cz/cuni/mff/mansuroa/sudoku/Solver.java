@@ -65,8 +65,8 @@ public class Solver {
             Arrays.fill(allowedValuesRow, allAllowed);
         }
 
-        for (int x = 0; x < 9; x++) {
-            for (int y = 0; y < 9; y++) {
+        for (int x = 0; x < size; x++) {
+            for (int y = 0; y < size; y++) {
                 if (board.isset(y, x)) {
                     allowedValues[x][y] = 0;
                     applyAllowedValuesMask(board, allowedValues, x, y);

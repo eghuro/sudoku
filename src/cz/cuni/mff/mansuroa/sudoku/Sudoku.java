@@ -105,7 +105,9 @@ public class Sudoku {
         Sudoku copy = new Sudoku(size);
         for (int row = 0; row < size; row++) {
             for (int col = 0; col < size; col++) {
-                copy.setValue(row,col, getValue(row,col));
+                if(isset(row,col)) {
+                    copy.setValue(row,col, getValue(row,col));
+                }
             }
         }
         return copy;

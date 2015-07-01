@@ -73,13 +73,13 @@ public class ItemComponentFactory {
                try {
                    int val = Integer.parseInt(text);
                    if ((val > 0) && (val <= size)) {
-                       ic.setValue(text);
+                       ic.setValue(val);
                        controller.change(ic.getRow(), ic.getCol(), val);
                    } else {
-                       ic.setValue(ItemComponent.EMPTY);
+                       ic.setEmpty();
                    }
                } catch (NumberFormatException e) {
-                   ic.setValue("");
+                   ic.setEmpty();
                }
                return true;
            }

@@ -11,8 +11,7 @@ public class ItemComponent extends JTextField {
     private static final int COLUMNS = 1;
     private static final int UNASSIGNED = 0;
     
-    public static final String EMPTY = "";
-    public static final int ERR_VALUE = -1;
+    private static final String EMPTY = "";
     
     private final int row;
     private final int col;
@@ -34,27 +33,30 @@ public class ItemComponent extends JTextField {
     
     /**
      * Nastavi hodnotu do dane komponenty.
+     * Hodnoty jsou verifikovany InputVerifierem, nastavenym v ItemComponentFactory,
+     * ktery vola tuto metodu
      * 
      * @param value nova hodnota
-     * @throws ValueException pokud hodnota neni platna
+     * 
      */
-    public void setValue(String value ) throws ValueException {
-        int val;
-        if (value.equals(EMPTY)) {
-            val = UNASSIGNED;
-        } else {
-            val = Integer.parseInt(value);
-        }
-        this.setValue(val);
-    }
     
-    private void setValue(int value) {
+    public void setValue(int value) {
+        assert (value >= 0);
+        
         this.value = value;
         if (value==UNASSIGNED) {
             super.setText(EMPTY);
         } else {
             super.setText(""+value);
         }
+    }
+    
+    /**
+     * Nastaveni hodnoty dane komponenty na "nenastaveno".
+     * Specialni metoda slouzi k vetsi citelnosti kodu a prevenci chyb.
+     */
+    public void setEmpty() {
+        setValue(UNASSIGNED);
     }
 
     /**
@@ -113,5 +115,9 @@ public class ItemComponent extends JTextField {
      */
     public int getCol() {
         return this.col;
+    }
+    
+    public static int getUnassignedValue() {
+        return ItemComponent.UNASSIGNED;
     }
 }
