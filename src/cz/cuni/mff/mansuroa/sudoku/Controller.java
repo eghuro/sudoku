@@ -83,12 +83,13 @@ public class Controller {
                         } else {
                             model = (Sudoku)get();
                         }
-                        updateView();
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
                         JOptionPane.showMessageDialog(view.getPanel(), "Reseni nenalezeno.", "Execution error", JOptionPane.ERROR_MESSAGE);
                         
                         model = new Sudoku(view.getSize());
+                    } finally {
+                        updateView();
                     }
                 }
             };
