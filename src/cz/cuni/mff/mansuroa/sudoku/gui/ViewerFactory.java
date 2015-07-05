@@ -51,6 +51,8 @@ public class ViewerFactory {
 
        frame.setJMenuBar(MenuFactory.createMenu(controller));
        ViewerFactory.fillGrid(viewer, components);
+       frame.pack();
+       frame.setVisible(true);
        
        controller.setViewer(viewer);
        controller.setFrame(frame);
@@ -151,8 +153,6 @@ public class ViewerFactory {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         frame.add(panel);
-        frame.pack();
-        frame.setVisible(true);
         return frame;
     }
 }
