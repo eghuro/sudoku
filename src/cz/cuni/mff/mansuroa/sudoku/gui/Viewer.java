@@ -1,6 +1,7 @@
 package cz.cuni.mff.mansuroa.sudoku.gui;
 
 import cz.cuni.mff.mansuroa.sudoku.Controller;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridLayout;
 import javax.swing.JPanel;
@@ -74,5 +75,18 @@ public class Viewer {
     
     public JPanel getPanel() {
         return this.panel;
+    }
+    
+    public void setFont(Font font) {
+        for(ItemComponent[] ics : components) {
+            for(ItemComponent ic : ics) {
+                ic.setFont(font);
+            }
+        }
+    }
+    
+    public Font getFont() {
+        //predpoklada se stejny font ve vsech ItemComponentach
+        return components[0][0].getFont();
     }
 }

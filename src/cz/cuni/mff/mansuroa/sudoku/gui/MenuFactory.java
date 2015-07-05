@@ -26,6 +26,7 @@ public class MenuFactory {
         JMenuBar menu = new JMenuBar();
         menu.add(makeMenu("File", makeLoadItem(controller), makeStoreItem(controller), makeQuitItem(controller)));
         menu.add(makeMenu("Sudoku", makeSolveItem(controller), makeVerifyItem(controller), makeClearItem(controller)));
+        menu.add(makeMenu("View", makeFontItem(controller)));
         return menu;
     }
 
@@ -47,6 +48,7 @@ public class MenuFactory {
     /**
      * Vytvori polozku menu "Solve", ktera vola solve v Controlleru.
      * 
+     * @param controller controller k provedeni akce
      * @return polozka menu
      */
     private static JMenuItem makeSolveItem(Controller controller) {
@@ -66,6 +68,7 @@ public class MenuFactory {
      * Vytvori polozku menu "Verify", ktera vola verify v Controlleru a 
      * nasledne zobrazi dialog s vysledkem.
      * 
+     * @param controller controller k provedeni akce
      * @return polozka menu
      */
     private static JMenuItem makeVerifyItem(Controller controller) {
@@ -82,6 +85,7 @@ public class MenuFactory {
     /**
      * Vytvori polozku menu "Clear", ktera vola clear v Controlleru.
      * 
+     * @param controller controller k provedeni akce
      * @return polozka menu
      */
     private static JMenuItem makeClearItem(Controller controller) {
@@ -96,6 +100,7 @@ public class MenuFactory {
     /**
      * Vytvori polozku menu "Load", ktera vola load v Controlleru.
      * 
+     * @param controller controller k provedeni akce
      * @return polozka menu
      */
     private static JMenuItem makeLoadItem(Controller controller) {
@@ -110,6 +115,7 @@ public class MenuFactory {
     /**
      * Vytvori polozku menu "Store", ktera vola store v Controlleru.
      * 
+     * @param controller controller k provedeni akce
      * @return polozka menu
      */
     private static JMenuItem makeStoreItem(Controller controller) {
@@ -124,6 +130,7 @@ public class MenuFactory {
     /**
      * Vytvori polozku menu "Quit", ktera ukonci aplikaci.
      * 
+     * @param controller controller k provedeni akce
      * @return polozka menu
      */
     private static JMenuItem makeQuitItem(Controller controller) {
@@ -131,6 +138,21 @@ public class MenuFactory {
             @Override
             public void actionPerformed(ActionEvent e) {
                 controller.exit();
+            }
+        });
+    }
+
+    /**
+     * Vytvori polozku menu "Font", ktera umozni menit font v polich sudoku
+     * 
+     * @param controller controller k provedeni akce
+     * @return polozka menu
+     */
+    private static JMenuItem makeFontItem(Controller controller) {
+        return new JMenuItem(new AbstractAction("Font"){
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                controller.font();
             }
         });
     }

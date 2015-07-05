@@ -7,11 +7,15 @@ import cz.cuni.mff.mansuroa.sudoku.io.Loader;
 import cz.cuni.mff.mansuroa.sudoku.gui.Viewer;
 import cz.cuni.mff.mansuroa.sudoku.gui.FileView;
 import cz.cuni.mff.mansuroa.sudoku.gui.ItemComponent;
+import java.awt.Font;
+import java.awt.HeadlessException;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.util.concurrent.ExecutionException;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingWorker;
 
 /**
@@ -83,7 +87,7 @@ public class Controller {
                         } else {
                             model = (Sudoku)get();
                         }
-                    } catch (Exception e) {
+                    } catch (HeadlessException | InterruptedException | ExecutionException e) {
                         System.out.println(e.getMessage());
                         JOptionPane.showMessageDialog(view.getPanel(), "Reseni nenalezeno.", "Execution error", JOptionPane.ERROR_MESSAGE);
                         
@@ -208,6 +212,10 @@ public class Controller {
         }
     }
     
+    /**
+     * Zaregistruje frame
+     * @param frame frame k registraci
+     */
     public void setFrame(JFrame frame) {
         this.frame = frame;
     }
@@ -218,5 +226,27 @@ public class Controller {
     public void exit() {
         assert (frame != null);
         frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+    }
+
+    /**
+     * Zmena fontu
+     */
+    public void font() {
+        Font old = view.getFont();
+                    
+        SpinnerNumberModel sModel = new SpinnerNumberModel(0, 0, 30, 1);
+        JSpinner spinner = new JSpinner(sModel);
+        spinner.setValue(old.getSize());
+        
+        int option = JOptionPane.showOptionDialog(null, spinner, "Font size", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+        if (option == JOptionPane.OK_OPTION) {
+            // zadano cislo
+            int newSize = (int)sModel.getNumber();
+            if(old.getSize()!=newSize) {
+                // zmena velikosti pisma
+                Font derived = old.deriveFont((float)newSize);
+                view.setFont(derived);
+            }
+        }
     }
 }
