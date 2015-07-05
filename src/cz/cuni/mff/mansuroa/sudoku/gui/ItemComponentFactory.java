@@ -37,7 +37,7 @@ public class ItemComponentFactory {
 
        ItemComponent component = new ItemComponent(row, col);
        component.setInputVerifier(ItemComponentFactory.getInputVerifier(size, controller));
-       //TODO: component.addComponentListener(ItemComponentFactory.getComponentListener());
+       //component.addComponentListener(ItemComponentFactory.getComponentListener());
        return component;
    }
 
@@ -47,16 +47,17 @@ public class ItemComponentFactory {
    * @return ComponentAdapter implementujici componentResized() a upravujici 
    * velikost textu
    */
-  private static ComponentListener getComponentListener() {
+  /*private static ComponentListener getComponentListener() {
       return new ComponentAdapter() {
           @Override
           public void componentResized(ComponentEvent e) {
               Dimension newDimension = e.getComponent().getSize();
+              //System.out.println("New area: "+ItemComponent.getArea(newDimension));
               ItemComponent ic = (ItemComponent) e.getComponent();
-              //TODO: ic.setFont(newDimension);
+              //ic.setFont(newDimension);
           }
       };
-  }
+  }*/
 
    /**
     * Vytvori overovac vstupu pro danou komponentu.

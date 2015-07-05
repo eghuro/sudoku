@@ -1,7 +1,5 @@
 package cz.cuni.mff.mansuroa.sudoku.gui;
 
-import java.awt.Dimension;
-import java.awt.Font;
 import javax.swing.JTextField;
 
 /**
@@ -29,6 +27,7 @@ public class ItemComponent extends JTextField {
         this.row = row;
         this.col = col;
         this.value = UNASSIGNED;
+        this.setHorizontalAlignment(JTextField.CENTER);
     }     
     
     /**
@@ -66,39 +65,6 @@ public class ItemComponent extends JTextField {
      */
     public int getVal() {
         return this.value;
-    }
-    
-    /**
-     * Nastavi font pri uprave rozmeru komponenty.
-     * 
-     * @param newDimension novy rozmer komponenty
-     */
-    private void setFont(Dimension newDimension) {
-        Font font = super.getFont();
-        float newSize = ItemComponent.getNewSize(newDimension);
-        Font newFont = font.deriveFont(newSize);
-        super.setFont(newFont);
-    }
-    
-    /**
-     * Vrati obsah komponenty pro jeji rozmer.
-     * 
-     * @param dimension rozmer komponenty
-     * @return obsah komponenty
-     */
-    private static float getArea(Dimension dimension) {
-        return (float) (dimension.getHeight() * dimension.getWidth());
-    }
-    
-    /**
-     * Vypocita novy rozmer fontu.
-     * 
-     * @param newDimension nove velikost komponenty
-     * @return nova velikost fontu
-     */
-    private static float getNewSize(Dimension newDimension) { 
-        float newArea = ItemComponent.getArea(newDimension); //ALF: WTF, why this should reasonable work? (Making square of font 10 times small then the height)  
-        return newArea / 100;
     }
     
     /**

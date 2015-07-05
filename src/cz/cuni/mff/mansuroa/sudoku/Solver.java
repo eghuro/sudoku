@@ -36,6 +36,10 @@ public class Solver {
         }
     }
 
+    /**
+     * na i-tem miste je takove cislo, ktere ma v binarnim zapisu prave jednu 1 
+     * a to na i-tem miste zprava
+     */
     private final static int[] allowedBitFields = new int[]{
         0,
         1,
@@ -301,8 +305,8 @@ public class Solver {
      */
     private static void applyLineCandidateConstraints(final int[][] allowedValues) {
         for (int value = 1; value <= 9; value++) {
-            final int valueMask = allowedBitFields[value];
-            final int valueRemoveMask = ~valueMask;
+            final int valueMask = allowedBitFields[value]; //ma jednicku na miste "value" z prava
+            final int valueRemoveMask = ~valueMask; //ma jednicky vsude krome "value"
             final int[] sectionAvailabilityColumn = new int[9];
 
             for (int x = 0; x < 9; x++) {
@@ -310,15 +314,19 @@ public class Solver {
 
                 for (int y = 0; y < 9; y++) {
                     if ((allowedValues[finalX][y] & valueMask) != 0) {
+                        //value je pripustna na [finalX][y]
+                        //1<<(y/3) je "blok" ve smeru y
                         sectionAvailabilityColumn[finalX] |= (1 << (y / 3));
+                        // oznaci "blok", kde je value pripustna
                     }
+                    //v section availability column[x] ty bloky, kde je value pripustna
                 }
                 //ALF: pokud jsem zpracoval cely (3line) blok
-                if (finalX == 2 || finalX == 5 || finalX == 8) {
-                    for (int scanningX = finalX - 2; scanningX <= finalX; scanningX++) {
-                        final int bitCount = countSetBits(sectionAvailabilityColumn[scanningX]);
+                if (finalX == 2 || finalX == 5 || finalX == 8) { // posledni v bloku
+                    for (int scanningX = finalX - 2; scanningX <= finalX; scanningX++) { //blok
+                        final int bitCount = countSetBits(sectionAvailabilityColumn[scanningX]); //kolik je pripustnych hodnot
 
-                        if (bitCount == 1) {
+                        if (bitCount == 1) { //value se smi vyskytnout pouze v jednom bloku - vyskrta se z ostatnich
                             //ALF - exactly in one section  - tohle mu nefunguje spravne
                             for (int applyX = finalX - 2; applyX <= finalX; applyX++) {
                                 if (scanningX != applyX) { //ALF: Not the line where the value is in exactly one section 
