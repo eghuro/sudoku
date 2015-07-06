@@ -81,21 +81,34 @@ public class ViewerFactory {
     * 
     * @return vytvoreny ComponentListener
     */
-   private static ComponentListener getFrameListener() {
+   private static ComponentListener getFrameListener(JPanel panel) {
        return new ComponentAdapter() {
+           private int oldSize = ViewerFactory.getSize(panel.getSize());
+           
            @Override
            public void componentResized(ComponentEvent e) {
                JFrame frame = (JFrame) e.getComponent();
-               Dimension dimension = frame.getSize();
-               int size;
-               if (dimension.height != dimension.width) {
-                   size = Math.max(dimension.height, dimension.width);
-               } else {
-                   size = dimension.height;
+               int size = ViewerFactory.getSize(frame.getSize());
+               
+               if (size != oldSize) {
+                   oldSize = size;
+                   frame.setSize(size, size);
                }
-               frame.setSize(size, size);
            }
        };
+   }
+   
+   /**
+    * Vypocet delky strany ctvercoveho okna
+    * @param dimension rozmer okna
+    * @return nova velikost, stanovena jako prumer vysky a sirky, pokud se lisi
+    */
+   private static int getSize(Dimension dimension) {
+       if (dimension.height != dimension.width) {
+         return (int) Math.floor((dimension.width+dimension.height)/2);
+       } else {
+         return dimension.height;
+       }
    }
 
    /**
@@ -149,7 +162,7 @@ public class ViewerFactory {
    
     private static JFrame buildFrame(JPanel panel) {
         JFrame frame = new JFrame(TITLE);
-        frame.addComponentListener(ViewerFactory.getFrameListener());
+        frame.addComponentListener(ViewerFactory.getFrameListener(panel));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         frame.add(panel);

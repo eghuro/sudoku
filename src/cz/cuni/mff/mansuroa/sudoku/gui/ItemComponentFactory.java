@@ -1,10 +1,6 @@
 package cz.cuni.mff.mansuroa.sudoku.gui;
 
 import cz.cuni.mff.mansuroa.sudoku.Controller;
-import java.awt.Dimension;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import javax.swing.InputVerifier;
 import javax.swing.JComponent;
 
