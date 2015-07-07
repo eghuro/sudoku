@@ -40,64 +40,26 @@ public class Controller {
     
     /**
      * Over model Verifikatorem, zda jde o platne Sudoku.
-     * @return zda plati vsechna omezeni sudoku - kazde cislo prave jednou ve
-     * vsech radcich sloupcich a blocich
      */
-    public boolean verify() {
+    public void verify() {
+        assert (view != null);
         assert (model != null);
-        return Verificator.verify(model);
+        
+        boolean result = Verificator.verify(model);
+        String msg = result ? "VALID" : "INVALID";
+        JOptionPane.showMessageDialog(view.getPanel(), msg, "SUDOKU", JOptionPane.INFORMATION_MESSAGE);
     }
     
     /**
      * Predej stavajici data Solveru k vyreseni a prekresli obrazovku.
      * Reseni probiha v samostatnem vlakne pomoci SwingWorkeru.
-     * 
-     * @throws java.lang.InterruptedException soucasne vlakno bylo preruseno pri cekani na vysledek
      */
-    public void solve() throws InterruptedException {
+    public void solve() {
+        assert (view != null);
         assert (model != null);
+        
         if (Verificator.verify(model)) {
-            SwingWorker worker = new SwingWorker() {
-                private boolean solveException = false;
-                private String message = null;
-                
-                @Override
-                protected Sudoku doInBackground() {
-                    this.solveException = false;
-                    Sudoku copy = model.copy();
-                    try {
-                       Solver.solve(copy);
-                    } catch (SolverException e) {
-                        this.solveException = true;
-                        this.message = e.getMessage();
-                        copy = model;
-                    }
-                    return copy;
-                }
-                
-                @Override
-                protected void done() {
-                    try {
-                        if(solveException) {
-                            assert (message != null);
-                            
-                            System.out.println(message);
-                            JOptionPane.showMessageDialog(view.getPanel(), "Reseni nenalezeno.", "Execution error", JOptionPane.ERROR_MESSAGE);
-                            model = (Sudoku)get();
-                        } else {
-                            model = (Sudoku)get();
-                        }
-                    } catch (HeadlessException | InterruptedException | ExecutionException e) {
-                        System.out.println(e.getMessage());
-                        JOptionPane.showMessageDialog(view.getPanel(), "Reseni nenalezeno.", "Execution error", JOptionPane.ERROR_MESSAGE);
-                        
-                        model = new Sudoku(view.getSize());
-                    } finally {
-                        updateView();
-                    }
-                }
-            };
-            worker.execute();       
+             getWorker().execute();       
         } else {
             JOptionPane.showMessageDialog(view.getPanel(), "Zadani neni validni.", "Solve error", JOptionPane.ERROR_MESSAGE);
         }
@@ -108,6 +70,7 @@ public class Controller {
      */
     public void clear() {
         assert (view != null);
+        assert (model != null);
         
         int size = view.getSize();
         for (int i = 0; i < size; ++i) {
@@ -198,6 +161,7 @@ public class Controller {
      */
     private void updateView() {
         assert (view != null);
+        assert (model != null);
         
         int size = view.getSize();
         for (int i = 0; i < size; i++) {
@@ -225,6 +189,7 @@ public class Controller {
      */
     public void exit() {
         assert (frame != null);
+        
         frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
     }
 
@@ -232,6 +197,8 @@ public class Controller {
      * Zmena fontu
      */
     public void font() {
+        assert (view != null);
+        
         Font old = view.getFont();
                     
         SpinnerNumberModel sModel = new SpinnerNumberModel(0, 0, 30, 1);
@@ -248,5 +215,49 @@ public class Controller {
                 view.setFont(derived);
             }
         }
+    }
+
+    private SwingWorker getWorker() {
+        assert (model != null);
+        assert (view != null);
+        
+        return new SwingWorker() {
+            private boolean solveException = false;
+            private String message = null;
+
+            @Override
+            protected Sudoku doInBackground() {
+                this.solveException = false;
+                Sudoku copy = model.copy();
+                try {
+                   Solver.solve(copy);
+                } catch (SolverException e) {
+                    this.solveException = true;
+                    this.message = e.getMessage();
+                    copy = model;
+                }
+                return copy;
+            }
+
+            @Override
+            protected void done() {
+                try {
+                    if(solveException) {
+                        assert (message != null);
+
+                        System.out.println(message);
+                        JOptionPane.showMessageDialog(view.getPanel(), "Reseni nenalezeno.", "Execution error", JOptionPane.ERROR_MESSAGE);
+                    }
+                    model = (Sudoku)get();
+                } catch (HeadlessException | InterruptedException | ExecutionException e) {
+                    System.out.println(e.getMessage());
+                    JOptionPane.showMessageDialog(view.getPanel(), "Reseni nenalezeno.", "Execution error", JOptionPane.ERROR_MESSAGE);
+
+                    model = new Sudoku(view.getSize());
+                } finally {
+                    updateView();
+                }
+            }
+        };
     }
 }

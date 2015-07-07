@@ -6,7 +6,6 @@ import javax.swing.AbstractAction;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 
 /**
  * Tovarna na vyrobu menu Vieweru.
@@ -55,11 +54,7 @@ public class MenuFactory {
         return new JMenuItem(new AbstractAction("Solve"){
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    controller.solve();
-                } catch (InterruptedException ex) {
-                    System.out.println(ex.toString());
-                }
+                controller.solve();
             }
         });
     }
@@ -75,9 +70,7 @@ public class MenuFactory {
         return new JMenuItem(new AbstractAction("Verify"){
             @Override
             public void actionPerformed(ActionEvent e) {
-                boolean result = controller.verify();
-                String msg = result ? "VALID" : "INVALID";
-                JOptionPane.showMessageDialog(null, msg, "SUDOKU", JOptionPane.INFORMATION_MESSAGE);
+                controller.verify();
             }
         });
     }
