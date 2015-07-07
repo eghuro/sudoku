@@ -244,19 +244,21 @@ public class Controller {
                 try {
                     if(solveException) {
                         assert (message != null);
-
-                        System.out.println(message);
-                        JOptionPane.showMessageDialog(view.getPanel(), "Reseni nenalezeno.", "Execution error", JOptionPane.ERROR_MESSAGE);
+                        notFoundError(message);
                     }
                     model = (Sudoku)get();
                 } catch (HeadlessException | InterruptedException | ExecutionException e) {
-                    System.out.println(e.getMessage());
-                    JOptionPane.showMessageDialog(view.getPanel(), "Reseni nenalezeno.", "Execution error", JOptionPane.ERROR_MESSAGE);
+                    notFoundError(e.getMessage());
 
                     model = new Sudoku(view.getSize());
                 } finally {
                     updateView();
                 }
+            }
+            
+            private void notFoundError(String message) {
+                System.out.println(message);
+                JOptionPane.showMessageDialog(view.getPanel(), "Reseni nenalezeno.", "Execution error", JOptionPane.ERROR_MESSAGE);
             }
         };
     }
