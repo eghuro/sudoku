@@ -17,6 +17,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingWorker;
+import say.swing.JFontChooser;
 
 /**
  * Controller zajistuje komunikaci mezi datovou vrstvou - tridou Sudoku a 
@@ -198,22 +199,13 @@ public class Controller {
      */
     public void font() {
         assert (view != null);
+        assert (frame != null);
         
-        Font old = view.getFont();
-                    
-        SpinnerNumberModel sModel = new SpinnerNumberModel(0, 0, 30, 1);
-        JSpinner spinner = new JSpinner(sModel);
-        spinner.setValue(old.getSize());
-        
-        int option = JOptionPane.showOptionDialog(null, spinner, "Font size", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
-        if (option == JOptionPane.OK_OPTION) {
-            // zadano cislo
-            int newSize = (int)sModel.getNumber();
-            if(old.getSize()!=newSize) {
-                // zmena velikosti pisma
-                Font derived = old.deriveFont((float)newSize);
-                view.setFont(derived);
-            }
+        JFontChooser fontChooser = new JFontChooser();
+        fontChooser.setSelectedFont(view.getFont());
+        int result = fontChooser.showDialog(frame);
+        if (result == JFontChooser.OK_OPTION) {
+            view.setFont(fontChooser.getSelectedFont());
         }
     }
 
