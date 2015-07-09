@@ -226,6 +226,7 @@ public class Controller {
             @Override
             protected Sudoku doInBackground() {
                 this.solveException = false;
+                this.message = null;
                 Sudoku copy = model.copy();
                 try {
                    Solver.solve(copy);
