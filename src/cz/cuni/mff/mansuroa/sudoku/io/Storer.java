@@ -73,7 +73,7 @@ public class Storer {
             Element entry = doc.createElement("entry");
             entry.setAttribute("row", row + "");
             entry.setAttribute("col", col + "");
-            entry.setAttribute("value", sudoku.getValue(row, col) + "");
+            entry.setAttribute("value", value + "");
             return entry;
         } else {
             return null;

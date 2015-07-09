@@ -57,15 +57,6 @@ public class ItemComponent extends JTextField {
     public void setEmpty() {
         setValue(UNASSIGNED);
     }
-
-    /**
-     * Vrati hodnotu z dane komponenty.
-     * 
-     * @return hodnota v dane komponente
-     */
-    public int getVal() {
-        return this.value;
-    }
     
     /**
      * 

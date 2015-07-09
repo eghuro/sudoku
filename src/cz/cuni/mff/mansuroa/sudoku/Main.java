@@ -15,11 +15,8 @@ public final class Main {
      * @param args na parametry prikazove radky se nebere ohled
      */
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                ViewerFactory.getViewerFactory().createViewer(9);
-            }
+        SwingUtilities.invokeLater(() -> {
+            ViewerFactory.getViewerFactory().createViewer(9);
         });
         
     }

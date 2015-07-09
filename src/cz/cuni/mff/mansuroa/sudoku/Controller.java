@@ -89,14 +89,20 @@ public class Controller {
      * @param row Radek
      * @param col Sloupec
      * @param value Hodnota (pro hodnotu 0 bude provedeno vycisteni dat na dane pozici)
+     * @return zda byla zmena provedena, nebo zda slo o neplatnou hodnotu
      */
-    public void change(int row, int col, int value) {
+    public boolean change(int row, int col, int value) {
         assert (model != null);
+        assert (view != null);
         
-        if (value != 0) {
+        if ((value > 0) && (value <= view.getSize())) {
             model.setValue(row, col, value);
-        } else {
+            return true;
+        } else if (value == 0) {
             model.unsetValue(row, col);
+            return true;
+        } else {
+            return false;
         }
     }
     

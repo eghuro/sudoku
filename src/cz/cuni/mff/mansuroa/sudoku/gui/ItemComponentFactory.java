@@ -33,27 +33,8 @@ public class ItemComponentFactory {
 
        ItemComponent component = new ItemComponent(row, col);
        component.setInputVerifier(ItemComponentFactory.getInputVerifier(size, controller));
-       //component.addComponentListener(ItemComponentFactory.getComponentListener());
        return component;
    }
-
-  /**
-   * Vytvori ComponentListener pro zmenu fontu pri zmene rozmeru komponenty.
-   * 
-   * @return ComponentAdapter implementujici componentResized() a upravujici 
-   * velikost textu
-   */
-  /*private static ComponentListener getComponentListener() {
-      return new ComponentAdapter() {
-          @Override
-          public void componentResized(ComponentEvent e) {
-              Dimension newDimension = e.getComponent().getSize();
-              //System.out.println("New area: "+ItemComponent.getArea(newDimension));
-              ItemComponent ic = (ItemComponent) e.getComponent();
-              //ic.setFont(newDimension);
-          }
-      };
-  }*/
 
    /**
     * Vytvori overovac vstupu pro danou komponentu.
@@ -68,13 +49,10 @@ public class ItemComponentFactory {
                ItemComponent ic = (ItemComponent) input;
                String text = ic.getText();
                try {
-                   int val = Integer.parseInt(text);
-                   if ((val > 0) && (val <= size)) {
-                       ic.setValue(val);
-                       controller.change(ic.getRow(), ic.getCol(), val);
-                   } else {
-                       ic.setEmpty();
-                   }
+                 int val = Integer.parseInt(text);
+                 if (controller.change(ic.getRow(), ic.getCol(), val)) {
+                   ic.setValue(val);
+                 }
                } catch (NumberFormatException e) {
                    ic.setEmpty();
                }
