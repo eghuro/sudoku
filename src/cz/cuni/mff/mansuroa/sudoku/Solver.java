@@ -62,6 +62,7 @@ public class Solver {
      */
     private static int solveBoard(final Sudoku board) {
         final int size = board.getSize();
+        assert (size == 9);
         final int[][] allowedValues = new int[size][size];
         int placedNumberCount = 0;
 
