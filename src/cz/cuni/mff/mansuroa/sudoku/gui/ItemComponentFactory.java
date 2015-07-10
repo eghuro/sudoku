@@ -52,6 +52,8 @@ public class ItemComponentFactory {
                  int val = Integer.parseInt(text);
                  if (controller.change(ic.getRow(), ic.getCol(), val)) {
                    ic.setValue(val);
+                 } else {
+                     ic.setEmpty();
                  }
                } catch (NumberFormatException e) {
                    ic.setEmpty();
