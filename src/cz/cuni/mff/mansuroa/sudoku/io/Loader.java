@@ -67,6 +67,7 @@ public class Loader {
         try{
             if (!sudoku.isset(row, col)) {
                 int value = Integer.parseInt(entry.getAttribute("value"));
+                // System.out.println("["+col+","+row+"]"+" "+value);
                 sudoku.setValue(row, col, value);
             } else {
                 throw new LoadException();

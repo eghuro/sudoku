@@ -135,9 +135,9 @@ public class ViewerFactory {
     * @param components pole ItemComponent
     */
    private static void fillGrid(Viewer viewer, ItemComponent[][] components) {
-       for (int x = 0; x < components.length; ++x) {
-           for (int y = 0; y < components.length; ++y){
-               viewer.addComponent(components[x][y], getConstraints(x,y));
+       for (int row = 0; row < components.length; ++row) {
+           for (int col = 0; col < components.length; ++col){
+               viewer.addComponent(components[col][row], getConstraints(col, row));
            }
        }
    }

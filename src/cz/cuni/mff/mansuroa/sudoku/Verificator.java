@@ -44,6 +44,7 @@ public class Verificator {
         if (sudoku.isset(i, j)) {
             int valIndex = sudoku.getValue(i, j) - 1;
             if (haveValue[valIndex]) {
+                // System.out.println("["+i+","+j+"] "+valIndex);
                 return false;
             } else {
                 haveValue[valIndex] = true;
@@ -63,6 +64,7 @@ public class Verificator {
     private static boolean checkRows(Sudoku sudoku) {
         int size = sudoku.getSize();
         for (int i = 0; i < size; i++) {
+            // System.out.println("Check row "+i);
             boolean[] haveValue = getValueArray(size);
             for (int j = 0; j < size; j++) {
                 if (!checkPosition(i, j, haveValue, sudoku)) {
@@ -82,6 +84,7 @@ public class Verificator {
     private static boolean checkCols(Sudoku sudoku) {
         int size = sudoku.getSize();
         for (int j = 0; j < size; j++) {
+            // System.out.println("Check col "+j);
             boolean[] haveValue = getValueArray(size);
             for (int i = 0; i < size; i++) {
                 if (!checkPosition(i, j, haveValue, sudoku)) {
@@ -102,6 +105,7 @@ public class Verificator {
         int size = (int) Math.ceil(Math.sqrt(sudoku.getSize()));
         for (int blockRow = 0; blockRow < size; blockRow++) {
             for (int blockCol = 0; blockCol < size; blockCol++) {
+                // System.out.print("Block ["+blockCol+","+blockRow+"]");
                 if (!checkBlock(blockRow, blockCol, sudoku)) {
                     return false;
                 }
