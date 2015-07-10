@@ -7,15 +7,12 @@ import cz.cuni.mff.mansuroa.sudoku.io.Loader;
 import cz.cuni.mff.mansuroa.sudoku.gui.Viewer;
 import cz.cuni.mff.mansuroa.sudoku.gui.FileView;
 import cz.cuni.mff.mansuroa.sudoku.gui.ItemComponent;
-import java.awt.Font;
 import java.awt.HeadlessException;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.util.concurrent.ExecutionException;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JSpinner;
-import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingWorker;
 import say.swing.JFontChooser;
 
