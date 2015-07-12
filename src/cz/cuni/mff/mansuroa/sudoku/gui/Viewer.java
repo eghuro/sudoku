@@ -69,14 +69,30 @@ public class Viewer {
         return (row >= 0) && (row < size) && (col >= 0) && (col < size);
     }
     
+    /**
+     * Vlozi komponentu na panel.
+     * 
+     * @param ic komponenta
+     * @param c gridbag constraints
+     */
     public void addComponent(ItemComponent ic, GridBagConstraints c) {
         this.panel.add(ic,c);
     }
     
+    /**
+     * Pristup k panelu pro zobrazeni dialogu.
+     * 
+     * @return panel
+     */
     public JPanel getPanel() {
         return this.panel;
     }
     
+    /**
+     * Nastaveni fontu.
+     * Font se nastavi vsem komponentam Vieweru (vizualnim polickum sudoku)
+     * @param font nastavovany font
+     */
     public void setFont(Font font) {
         for(ItemComponent[] ics : components) {
             for(ItemComponent ic : ics) {
@@ -85,6 +101,11 @@ public class Viewer {
         }
     }
     
+    /**
+     * Vrati aktualne nastaveny font.
+     * Predpoklada se jednotny font ve vsech polickach
+     * @return nastaveny font
+     */
     public Font getFont() {
         //predpoklada se stejny font ve vsech ItemComponentach
         return components[0][0].getFont();
